@@ -1,0 +1,27 @@
+// =========================================================
+// * Vuetify Material Dashboard - v1.0.0
+// =========================================================
+
+// * Product Page: https://www.creative-tim.com/product/vuetify-material-dashboard
+// * Copyright 2019 Creative Tim (https://www.creative-tim.com)
+// * Licenses under MIT
+
+// * Coded by Creative Tim
+
+// =========================================================
+
+// * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+@import "common";
+@import "colors";
+@import "layouts/login";
+@import "layouts/wrapper";
+@import "layouts/admin";
+
+
+@import "pages/course";
+
+
+@import "partials/header";
+@import "partials/sidebar";
+
+@import "../../node_modules/toastr/toastr";

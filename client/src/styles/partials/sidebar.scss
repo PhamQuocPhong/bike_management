@@ -1,0 +1,36 @@
+
+.v-navigation-drawer{
+	z-index: 10 !important;
+	height: 100% !important;
+	max-height: 100% !important;
+	
+	.v-list{
+
+		.v-list-item{
+			justify-content: center;	
+		}
+		.v-list-item--active{
+			background-color: #FFF;
+		}
+
+		.v-list-group__items{
+
+			.v-list-item{
+				padding-left: 20px !important;
+			}
+		}
+	}
+
+	.logo{
+		justify-content: center;
+		height: 62px;
+		color: #FFF;	
+		
+		.logo-img{
+			border-radius: 0;
+		}
+	}
+	a{
+		color: #FFF;
+	}
+}
