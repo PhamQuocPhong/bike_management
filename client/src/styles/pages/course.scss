@@ -1,0 +1,43 @@
+#course{
+
+	.group-subject{
+
+		.subject{
+			.subject-title{
+				padding-bottom: 5px;
+				position: relative;
+			    &:after{
+			    	content: "";
+			    	width: 30%;
+			    	position: absolute;
+			    	bottom: 0;
+			    	border-bottom: 5px dashed $red;
+			    	left: 0;
+			    }
+			}
+		}
+	}
+
+	.item{
+		margin-bottom: 40px;
+	}
+}
+
+
+#course-detail{
+	width: 100%;	
+
+	.flex{
+		margin: 0 auto;
+
+		.v-tabs-items{
+			min-height: 500px;
+		}
+
+		.v-tabs-bar.v-slide-group--is-overflowing.v-tabs-bar--is-mobile:not(.v-tabs-bar--show-arrows):not(.v-slide-group--has-affixes) .v-slide-group__prev{
+			display: none;
+		}
+	}		
+	
+
+}

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+  <title>Demo project</title>
+</head>
+<body>
+
+<style type="text/css">
+ .page{
+    position: relative;
+    overflow: hidden;
+    padding: 0.8in;
+}
+
+.headline{
+  position: relative;
+  color: orange;
+}
+
+.headline:after{
+  content: '';
+  position: absolute;
+  padding-bottom: 10px;
+  border-bottom: 2px dashed;
+  width: 50%;
+  margin:  0 auto;
+  top: 100%;
+  color: #000;
+} 
+</style>
+  
+ <div id="app">
+    <v-app>
+      <v-main>
+        <v-layout row justify-center>
+            <v-card flat class="cols col-10" >
+                <v-card-title class="headline d-flex pb-4 justify-center"> Report Detail Sell</v-card-title>
+                <v-card-text class="">
+                   <v-container>
+                        <div class="page">
+                          <v-row class="text-center">
+                              <v-col cols="5">
+                                <label>Vehicle name:</label>
+                              </v-col>
+
+                              <v-col cols="5">
+                                <p class="pl-4 font-weight-bold"><%= transactionDetailData.vehicle.name %></p>
+                              </v-col>
+
+                              <v-col cols="5">
+                                 <label>Vehicle color:</label>
+                              </v-col>
+
+                              <v-col cols="5">
+                                 <p class="pl-4 font-weight-bold"><%= transactionDetailData.vehicle.color %></p>
+                              </v-col>
+
+
+                              <v-col cols="5">
+                                <label>Buy price:</label>
+                              </v-col>
+
+
+                              <v-col cols="5">
+                                  <p class="pl-4 font-weight-bold"> <%= formatCurrency(transactionDetailData.vehicle.buyPrice) %></p>
+                              </v-col>
+
+                              <v-col cols="5">
+                                <label>Fix price:</label>
+                              </v-col>
+
+                              <v-col cols="5">
+                                  <p class="pl-4 font-weight-bold"> <%= formatCurrency(transactionDetailData.vehicle.fixPrice) %></p>
+                              </v-col>
+
+                              <v-col cols="5">
+                                <label>Sell price:</label>
+                              </v-col>
+
+                              <v-col cols="5">
+                                  <p class="pl-4 font-weight-bold"> <%= formatCurrency(transactionDetailData.totalPrice) %></p>
+                              </v-col>
+
+                              <v-col cols="5">
+                                <label>Interest price:</label>
+                              </v-col>
+
+                              <v-col cols="5">
+                                  <p class="pl-4 font-weight-bold"> 
+                                  <%= formatCurrency(
+                                    eval( transactionDetailData.totalPrice -
+                                        transactionDetailData.vehicle.fixPrice -
+                                        transactionDetailData.vehicle.buyPrice
+                                      )
+                                  ) %>
+                                    
+                                 </p>
+                              </v-col>
+                      
+                          </v-row>
+                         </div>
+                      </v-container>
+                </v-card-text>
+            </v-card>
+        </v-layout>
+    </v-app>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+    })
+  </script>
+
+</body>
+
+</html>
+
+
+
+

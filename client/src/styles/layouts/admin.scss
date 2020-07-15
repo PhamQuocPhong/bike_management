@@ -1,0 +1,16 @@
+#layout-admin{
+	
+	.main-layout{
+		width: 100%;
+		min-height: 600px;
+
+	}
+
+	.v-list-item--active{
+		color: $blue;
+
+		&:before{
+			opacity: 0;
+		}
+	}
+}

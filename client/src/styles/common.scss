@@ -1,0 +1,32 @@
+.horizontal-line {
+    overflow: hidden;
+    text-align: center;
+}
+.horizontal-line:before,
+.horizontal-line:after {
+    background-color: #000;
+    content: "";
+    display: inline-block;
+    height: 1px;
+    position: relative;
+    vertical-align: middle;
+    width: 50%;
+}
+.horizontal-line:before {
+    right: 0.5em;
+    margin-left: -50%;
+}
+.horizontal-line:after {
+    left: 0.5em;
+    margin-right: -50%;
+}
+
+.status-bike{
+    width: 70px;
+}
+
+.table{
+    white-space: nowrap;
+}
+
+

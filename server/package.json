@@ -1,0 +1,41 @@
+{
+  "name": "quanlymubanxe",
+  "version": "1.0.0",
+  "description": "Quan ly mua ban xe ",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js",
+    "start": "node app.js",
+    "migrate": "cd database && node migration.js",
+    "seed": "cd database && node seeder.js"
+  },
+  "author": "haohao",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/storage": "^4.7.0",
+    "aws-sdk": "^2.687.0",
+    "bcrypt": "^4.0.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.3",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "faker": "^4.1.0",
+    "firebase": "^7.14.0",
+    "fs": "0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.26.0",
+    "nodemailer": "^6.4.6",
+    "passport": "^0.4.1",
+    "pg": "^8.2.1",
+    "puppeteer": "^5.0.0",
+    "puppeteer-core": "^5.0.0",
+    "randomstring": "^1.1.5",
+    "sequelize": "^5.21.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}

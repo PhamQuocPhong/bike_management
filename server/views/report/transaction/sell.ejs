@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+  <title>Demo project</title>
+</head>
+<style type="text/css">
+ .page{
+    position: relative;
+    overflow: hidden;
+    padding: 0.8in;
+ } 
+
+.headline{
+  position: relative;
+  color: orange;
+}
+
+.headline:after{
+  content: '';
+  position: absolute;
+  padding-bottom: 10px;
+  border-bottom: 2px dashed;
+  width: 50%;
+  margin:  0 auto;
+  top: 100%;
+  color: #000;
+} 
+</style>
+
+<body>
+  
+ <div id="app">
+    <v-app>
+      <v-main>
+        <v-layout row justify-center>
+            <v-card flat class="cols col-12">
+                  <v-card-title class="headline d-flex pb-4 justify-center"> Sell Transaction Report </v-card-title>
+                  <v-card-text class="">
+                      <v-container>
+                      	<% transactionData.forEach(transaction => {  %>
+                        <div class="page">
+                        	<v-row class="text-center">
+        	                    <v-col cols="6">
+        	                      <div class="d-flex">
+        	                        <label>Employee name:</label>
+        	                        <p class="pl-4 font-weight-bold"><%= transaction.employee.fullName %></p>
+        	                      </div>
+
+        	                      <div class="d-flex">
+        	                        <label>Customer name:</label>
+        	                         <p class="pl-4 font-weight-bold"><%= transaction.customer.name %></p>
+        	                      </div>
+        	                    </v-col>
+        	                    <v-col cols="6">
+        	                       <div class="d-flex">
+        	                        <label>Date:</label>
+        	                        <p class="pl-4 font-weight-bold"> <%= convertDate(transaction.date) %></p>
+        	                      </div>
+        	                    </v-col>
+                        	</v-row>
+
+                          	<v-row>
+        	                    <v-col cols="3"  class="font-weight-bold">
+        	                        Vehicle name
+        	                    </v-col>
+
+                              <v-col cols="3"  class="font-weight-bold">
+                                  Fix price
+                              </v-col>
+
+                              <v-col cols="3"  class="font-weight-bold">
+                                  Buy price
+                              </v-col>
+
+        	                    <v-col cols="3"  class="font-weight-bold"> 
+        	                        Sell price
+        	                    </v-col>
+                          	</v-row>
+
+                      		<% transaction.transactionDetailSells.forEach(transactionDetail => {  %>
+                         	<v-row >
+        	                 	<v-col cols="3">
+        	                 		<%= transactionDetail.vehicle.name %>
+        	                    </v-col>
+
+
+                              <v-col cols="3">
+                                <%= transactionDetail.vehicle.fixPrice %>
+                              </v-col>
+
+                                <v-col cols="3">
+                                <%= transactionDetail.vehicle.buyPrice %>
+                              </v-col>
+
+        	                    <v-col cols="3">
+        	                    	<%= formatCurrency(transactionDetail.totalPrice) %>
+        	                    </v-col>
+                        	</v-row>
+                        	<% }) %>
+
+                          	<v-row>
+        	                    <v-col cols="12">
+        	                      <p class="subtitle-2 text-right font-weight-bold"> Tax Price:
+        	                        <span class="orange--text"> <%= formatCurrency(transaction.taxPrice) %> </span>
+        	                      </p>
+
+        	                      <p class="subtitle-1 text-right font-weight-bold"> Total:
+        	                        <span class="orange--text"> <%= formatCurrency(transaction.totalPrice) %> </span>
+        	                      </p>
+        	                    </v-col>
+                          	</v-row>
+
+                          <hr>
+
+                         </div>
+
+                         <% }) %>
+
+                          <v-row>
+                              <v-col cols="12">
+                                <p class="title text-right font-weight-bold"> Total interest price:
+                                  <span class="orange--text"> <%= calcTotalInterest(transactionData) %> </span>
+                                </p>
+                              </v-col>
+
+                             <v-col cols="12">
+                              <p class="title text-right font-weight-bold"> Total expenditure:
+                                <span class="orange--text"> <%= calcTotal(transactionData, 'totalPrice') %>  </span>
+                              </p>
+                            </v-col>
+                          </v-row>
+
+                      </v-container>
+                  </v-card-text>
+              </v-card>
+          </v-layout>
+      </v-main>
+    </v-app>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+    })
+  </script>
+
+</body>
+
+</html>
+
+
+
+
