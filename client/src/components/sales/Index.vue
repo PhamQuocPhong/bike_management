@@ -105,7 +105,7 @@
 	   			</v-flex>
 				</v-col>
 	   		</v-row> 
-	   		<edit  v-if="editDialog" :editDialog.sync="editDialog" :sales.sync="sales"></edit>
+	   		<edit  v-if="salesEdit"  :sales.sync="sales"></edit>
 	</v-container>	
 </template>
 
@@ -116,7 +116,7 @@ import SalesEditComponent from './Edit.vue'
 import Sales from '@/store/models/sales'
 import SalesCustomerBuy from '@/store/models/sales_customer_buy'
 import Transaction from '@/store/models/reception_customer_buy'
-import HelperCommon from '@/helpers/common'
+import Modal from '@/store/models/modal'
 
 export default{
 
@@ -134,7 +134,6 @@ export default{
 	        itemsPerPage: 5,
 	        search: '',
 	        itemsPerPageList: [5, 10, 15],
-      		editDialog: false,
       		sales: '',
       		pageCounts: 1,
       		offset: 0,
@@ -149,7 +148,7 @@ export default{
 	    edit(item){
 	    			
 	    	this.sales = {...item}
-	    	this.editDialog = true
+	    	Modal.dispatch('salesEdit', {option: 'show'})
 	    },
 	    nextPage(page){
 	    	this.currentPage = page
@@ -206,7 +205,9 @@ export default{
 					})
 			}).offset(this.offset).limit(itemsPerPage).get()
 		},
-
+		salesEdit(){
+	        return Modal.getters('salesEdit')
+	    }
 	
 	}
 

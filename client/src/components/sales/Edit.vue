@@ -277,7 +277,7 @@ export default {
 
           this.infoTransaction = this.sales.salesCustomerBuy
           Modal.dispatch('salesTransaction', {option: 'show'})
-          // this.transactionDialog = true
+
       },
 
       async suggestVehicle(){

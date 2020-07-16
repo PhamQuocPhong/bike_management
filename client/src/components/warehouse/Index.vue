@@ -18,10 +18,10 @@
 									<v-flex class="pa-4">
 			    	<v-card flat>
 			    		<v-row no-gutters>
-			    	<!-- 		<v-col cols="2">
+			    			<v-col cols="2">
 			    				<v-btn color="white" class="primary mr-4" small  @click="create">Create</v-btn>
 			    			</v-col>
- -->
+
 							<v-spacer></v-spacer>
 
 			    			<v-col md="4">
@@ -195,8 +195,8 @@ export default{
 		},
 
 		warehouseCreate(){
-        	return Modal.getters('orderBuyEdit')
-      	}
+        	return Modal.getters('warehouseCreate')
+      	},
 
 	    warehouseEdit(){
 	        return Modal.getters('warehouseEdit')

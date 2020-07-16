@@ -86,7 +86,6 @@ import TransactionDetailBuy from '@/store/models/transaction_detail_buy'
 import Modal from '@/store/models/modal'
 
 
-import HelperCommon from '@/helpers/common'
 import HTTP from '@/services/http'
 
 export default {
@@ -125,7 +124,7 @@ export default {
       },
 
      async report(item){
-        var loader = this.$loading.show()
+        // var loader = this.$loading.show()
         var res = await HTTP.get('/report/detail/buy' , {
           params: {
             transactionDetailId: item.id

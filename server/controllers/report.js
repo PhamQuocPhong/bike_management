@@ -188,7 +188,6 @@ let reportTransactionDetailView = async (req, res) => {
 
 		res.render('report/transaction/detail/buy', {transactionDetailData});
 	}
-	return res.json({message: 'Dont have data'})
 }
 
 
