@@ -9,7 +9,7 @@
 				      text-color="white"
 				    >
 					    <v-icon left>mdi-label</v-icon>
-					    	Vehicle Inventory
+					    	Vehicle Warehouse
 					    </v-chip>
 				</v-col>
 			</v-row>
@@ -107,7 +107,7 @@
 				</v-col>
 	   		</v-row> 
 
-	   	<create :createDialog.sync="createDialog"></create>
+	   	<create v-if="warehouseCreate" ></create>
 <!-- 	   	<edit v-if="editDialog" :editDialog.sync="editDialog"></edit> -->
 
 	</v-container>	
@@ -117,7 +117,7 @@
 
 import Vehicle from '@/store/models/vehicle'
 import VehicleType from '@/store/models/vehicle_type'
-
+import Modal from '@/store/models/modal'
 
 import CreateComponent from './Create.vue'
 import EditComponent from './Edit.vue'
@@ -154,12 +154,12 @@ export default{
 	methods: {
 
 		create(){
-			this.createDialog = true
+			Modal.dispatch('warehouseCreate', {option: 'show'})
 		},
 
 		edit(item){
 	    	this.technicalRepair = {...item}
-	    	this.editDialog = true
+	    	Modal.dispatch('warehouseEdit', {option: 'show'})
 	    },
 	    nextPage(page){
 	    	this.currentPage = page
@@ -192,8 +192,15 @@ export default{
 				this.offset = ((page - 1) * itemsPerPage) 
 			}
 			return Vehicle.query().with('vehicleType').offset(this.offset).limit(itemsPerPage).get()
-
 		},
+
+		warehouseCreate(){
+        	return Modal.getters('orderBuyEdit')
+      	}
+
+	    warehouseEdit(){
+	        return Modal.getters('warehouseEdit')
+	    }
 
 	}
 

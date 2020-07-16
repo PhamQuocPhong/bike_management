@@ -145,9 +145,7 @@ export default {
       },
       receptionBuyEdit(){
         return Modal.getters('receptionBuyEdit')
-      }
-
-
+      },
     }
 
   }

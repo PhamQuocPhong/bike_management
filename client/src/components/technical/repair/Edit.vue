@@ -1,6 +1,6 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="editDialog" persistent max-width="700" >
+    <v-dialog v-model="technicalRepairEdit" persistent max-width="700" >
       <v-card>
           <v-card-title class="headline d-flex pb-4"> Technical Repair Edit </v-card-title>
 
@@ -101,11 +101,13 @@
 
 import HelperCommon from '@/helpers/common'
 
+// store
+import Modal from '@/store/models/modal'
 import TechnicalRepair from '@/store/models/technical_repair'
 
   export default {
 
-    props: ['editDialog', 'technicalRepair'],
+    props: ['technicalRepair'],
 
     data(){
       return {
@@ -136,10 +138,9 @@ import TechnicalRepair from '@/store/models/technical_repair'
 
     },
 
-
     methods: {
       close() {
-        this.$emit('update:editDialog', false)
+        Modal.dispatch('technicalRepairEdit', {option: 'hide'})
       },
       async save(){
         if (this.$refs.form.validate()) {
@@ -150,7 +151,8 @@ import TechnicalRepair from '@/store/models/technical_repair'
               data:  res.response.data.data
             })
             toastr.success(res.response.data.message, 'Success!', {timeOut: 1000})
-            this.$emit('update:editDialog', false)
+            Modal.dispatch('technicalRepairEdit', {option: 'hide'})
+            // this.$emit('update:editDialog', false)
           }
         }
       },
@@ -168,10 +170,10 @@ import TechnicalRepair from '@/store/models/technical_repair'
       },
 
       formatStartDate () {
-        return HelperCommon.formatDate(this.getTechnicalRepair.startDate)
+        return this.$helper.formatDate(this.getTechnicalRepair.startDate)
       },
       formatEndDate () {
-        return HelperCommon.formatDate(this.getTechnicalRepair.endDate)
+        return this.$helper.formatDate(this.getTechnicalRepair.endDate)
       },
   
       finishFlag: {
@@ -181,6 +183,10 @@ import TechnicalRepair from '@/store/models/technical_repair'
         set(val){
           this.getTechnicalRepair.finishFlg = (val === true) ? 1 : 0 
         }
+      },
+
+      technicalRepairEdit(){
+        return Modal.getters('technicalRepairEdit')
       } 
     }
 

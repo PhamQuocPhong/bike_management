@@ -1,6 +1,6 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="editSellDialog" persistent max-width="1200">
+    <v-dialog v-model="orderSellEdit" persistent max-width="1200">
       <v-card>
           <v-card-title class="headline d-flex pb-4"> Sell Transaction </v-card-title>
           <v-card-text class="mt-4">
@@ -76,11 +76,13 @@
 import Customer from '@/store/models/customer'
 import Transaction from '@/store/models/transaction'
 import TransactionDetailSell from '@/store/models/transaction_detail_sell'
+import Modal from '@/store/models/modal'
+
 import HTTP from '@/services/http'
 import { mapMutations } from 'vuex'
 export default {
 
-    props: ['editSellDialog', 'transactionData'],
+    props: [ 'transactionData'],
 
     data(){
       return {
@@ -110,7 +112,7 @@ export default {
 
     methods: {
       close() {
-        this.$emit('update:editSellDialog', false)
+        Modal.dispatch('orderSellEdit', {option: 'show'})
        },
 
      async report(item){
@@ -145,13 +147,12 @@ export default {
       employee(){
         return this.transactionData.employee
       },
-
+      orderSellEdit(){
+        return Modal.getters('orderSellEdit')
+      }
 
 
     }
-
-
-
-  }
+}
 
 </script>

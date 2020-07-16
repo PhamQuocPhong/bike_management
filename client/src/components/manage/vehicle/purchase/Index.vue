@@ -103,7 +103,7 @@
 				</v-col>
 	   		</v-row>
 
-	   		<vehicle-purchase v-if="dialogEdit" :dialogEdit.sync="dialogEdit" :vehiclePurchase.sync="vehiclePurchase"></vehicle-purchase> 
+	   		<vehicle-purchase v-if="manageVehiclePurchaseEdit"  :vehiclePurchase.sync="vehiclePurchase"></vehicle-purchase> 
 	</v-container>	
 </template>
 
@@ -121,7 +121,7 @@ import Vehicle from '@/store/models/vehicle'
 import VehiclePurchase from '@/store/models/vehicle_purchase'
 import VehicleRepair from '@/store/models/vehicle_repair'
 import ReceptionCustomerSell from '@/store/models/reception_customer_sell'
-
+import Modal from '@/store/models/modal'
 
 import HelperCommon from '@/helpers/common' 
 export default{
@@ -174,8 +174,8 @@ export default{
 
 	methods: {
 	    edit(item){
-	    	this.dialogEdit = true
 	    	this.vehiclePurchase = {...item}
+	    	Modal.dispatch('manageVehiclePurchaseEdit', {option: 'show'})
 	    },	
 
 
@@ -207,6 +207,9 @@ export default{
 			}).with('vehicleRepair').get()
 		},
 
+	    manageVehiclePurchaseEdit(){
+	        return Modal.getters('manageVehiclePurchaseEdit')
+	    }
 	}
 
 }

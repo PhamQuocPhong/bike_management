@@ -9,7 +9,7 @@
 				      text-color="white"
 				    >
 					    <v-icon left>mdi-label</v-icon>
-					    	Customer Sell
+					    	Vehicle test
 					    </v-chip>
 				</v-col>
 			</v-row>
@@ -105,7 +105,13 @@
 						    <div class="text-center pt-2">
 						      <v-pagination v-model="page" :length="pageCount"></v-pagination>
 						    </div>		  
-						    <vehicle-test v-if="dialogVehicleTest" :role="role"  :dialogVehicleTest.sync="dialogVehicleTest" :vehicleTest.sync="vehicleTest"></vehicle-test>
+						    <vehicle-test 
+						    v-if="technicalTestEdit" 
+						    :role="role"  
+						    :vehicleTest.sync="vehicleTest"
+						    >
+						    	
+						    </vehicle-test>
 				    	</v-card> 	 
 	   				</v-flex>
 				</v-col>
@@ -114,12 +120,14 @@
 </template>
 
 <script>
+
 import VehicleTestComponent from './VehicleTest.vue'
 import TechnicalTest from '@/store/models/technical_test'
 import VehicleType from '@/store/models/vehicle_type' 
 import VehicleTest from '@/store/models/vehicle_test'
+import Modal from '@/store/models/modal'
 
-import HelperCommon from '@/helpers/common' 
+
 export default{
 
 	components: {
@@ -170,7 +178,7 @@ export default{
 	methods: {
 	    edit(item){
 	    	this.vehicleTest = {...item}
-	    	this.dialogVehicleTest = true
+	    	Modal.dispatch('technicalTestEdit', {option: 'show'})
 	    },
 
 
@@ -183,9 +191,12 @@ export default{
 
 		employeeInfo(){
 			return this.$cookies.get('dataUser').employee
-		}
+		},
+
+	    technicalTestEdit(){
+	        return Modal.getters('technicalTestEdit')
+	    } 
 
 	}
-
 }
 </script>

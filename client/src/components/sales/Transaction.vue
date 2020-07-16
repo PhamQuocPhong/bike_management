@@ -1,6 +1,6 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="transactionDialog" persistent max-width="1000">
+    <v-dialog v-model="salesTransaction" persistent max-width="1000">
       <v-card>
           <v-card-title class="headline d-flex pb-4"> Customer Transaction </v-card-title>
           <v-card-text class="mt-4">
@@ -112,6 +112,8 @@ import SalesCustomerBuy from '@/store/models/sales_customer_buy'
 import Vehicle from '@/store/models/vehicle'
 import Transaction from '@/store/models/transaction'
 import TransactionDetailSell from '@/store/models/transaction_detail_sell'
+import Modal from '@/store/models/modal'
+
 
 import HelperCommon from '@/helpers/common'
   export default {
@@ -151,7 +153,7 @@ import HelperCommon from '@/helpers/common'
 
     methods: {
       close() {
-        this.$emit('update:transactionDialog', false)
+        Modal.dispatch('salesTransaction', {option: 'hide'})
       },
 
       async payment(){
@@ -187,7 +189,7 @@ import HelperCommon from '@/helpers/common'
             })
 
             toastr.success(res.response.data.message, 'Success!', {timeOut: 1000})
-            this.$emit('update:transactionDialog', false)
+            Modal.dispatch('salesTransaction', {option: 'hide'})
           }
       },
 
@@ -242,6 +244,10 @@ import HelperCommon from '@/helpers/common'
 
       employeeInfo(){
         return this.$cookies.get('dataUser').employee
+      },
+
+      salesTransaction(){
+        return Modal.getters('salesTransaction')
       }
   }
 }

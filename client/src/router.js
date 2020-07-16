@@ -23,9 +23,9 @@ import Technical from './components/technical/Technical'
 import TechnicalTest from './components/technical/test/Index'
 import TechnicalRepair from './components/technical/repair/Index'
 
-// inventory
-import Inventory from './components/inventory/Inventory'
-import InventoryIndex from './components/inventory/Index'
+// warehouse
+import Warehouse from './components/warehouse/Warehouse'
+import WarehouseIndex from './components/warehouse/Index'
 
 // order 
 import Order from './components/order/Order'
@@ -130,14 +130,14 @@ const routes = [
 			},
 
 			{
-				path: 'inventory',
-				component: Inventory,
+				path: 'warehouse',
+				component: Warehouse,
 				meta: { requireAuth: true, permission: 'admin' },
 				children: [
 					{
 						path: '/',
-						component: InventoryIndex,
-						name: 'inventoryIndex'
+						component: WarehouseIndex,
+						name: 'warehouseIndex'
 					}
 				]
 			},

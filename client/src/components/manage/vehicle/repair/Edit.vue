@@ -1,6 +1,6 @@
 <template>
     <v-layout row justify-center>
-      <v-dialog v-model="editDialog" persistent max-width="900" v-if="getVehicleRepair">
+      <v-dialog v-model="manageVehicleRepairEdit" persistent max-width="900" v-if="getVehicleRepair">
         <v-card>
             <v-card-title class="headline d-flex pb-4"> Edit Vehicle Repair </v-card-title>
             <v-card-text class="mt-4">
@@ -223,7 +223,7 @@ import AddFixDetail from './AddFixDetail'
 // store
 import VehicleRepair from '@/store/models/vehicle_repair'
 import TechnicalRepair from '@/store/models/technical_repair'
-
+import Modal from '@/store/models/modal'
 
 // hepler
 import HelperCommon from '@/helpers/common'
@@ -272,7 +272,7 @@ export default {
       parseDate: HelperCommon.parseDate,
 
       close() {
-          this.$emit('update:editDialog', false)
+        Modal.dispatch('manageVehicleRepairEdit', {option: 'hide'})
       },
 
       async save(){
@@ -287,7 +287,7 @@ export default {
               data:  res.response.data.data
             })
             toastr.success(res.response.data.message, 'Success!', {timeOut: 1000})
-            vm.$emit('update:editDialog', false)
+            Modal.dispatch('manageVehicleRepairEdit', {option: 'hide'})
           }
         }
         else{
@@ -324,6 +324,9 @@ export default {
         }
       },
 
+      manageVehicleRepairEdit(){
+        return Modal.getters('manageVehicleRepairEdit')
+      }
 
     }
   }

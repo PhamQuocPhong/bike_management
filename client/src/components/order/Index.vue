@@ -278,7 +278,7 @@ import Transaction from '@/store/models/transaction'
 import TransactionDetailSell from '@/store/models/transaction_detail_sell'
 import TransactionDetailbuy from '@/store/models/transaction_detail_buy'
 import HelperCommon from '@/helpers/common'
-
+import Modal from '@/store/models/modal'
 
 import HTTP from '@/services/http'
 export default{
@@ -349,10 +349,10 @@ export default{
 
 	    	// event click 
 	    	if(option === 'sell'){
-	    		this.editSellDialog = true
+	    		Modal.dispatch('orderSellEdit', {option: 'show'})
 	    		this.transactionData = transactionData
 	    	}else{
-	    		this.editBuyDialog = true
+	    		Modal.dispatch('orderBuyEdit', {option: 'show'})
 	    		this.transactionData = transactionData
 	    	}
 	    },
@@ -578,6 +578,15 @@ export default{
 	    formatEndDateBuy() {
 			return this.$helper.formatDate(this.filter.buy.endDate)
 	    },
+
+	    orderBuyEdit(){
+        	return Modal.getters('orderBuyEdit')
+     	},
+
+        orderSellEdit(){
+	        return Modal.getters('orderSellEdit')
+	    }
+
 	}
 
 }
