@@ -1,7 +1,7 @@
 <template>
 <v-container>
   <v-layout row justify-center>
-    <v-dialog v-model="editDialog" persistent max-width="900" v-if="getSales" >
+    <v-dialog v-model="salesEdit" persistent max-width="900" v-if="getSales" >
       <v-card>
         <v-card-title primary-title>
           Vehicle Info
@@ -190,12 +190,10 @@
   </v-layout>
 
   <transaction 
-  v-if="transactionDialog"  
-  :transactionDialog.sync="transactionDialog" 
+  v-if="salesTransaction"
   :vehiclesTransaction.sync="vehiclesTransaction"
   :infoTransaction.sync="infoTransaction"
   >
-    
   </transaction>
 
 
@@ -212,11 +210,11 @@ import VehicleType from '@/store/models/vehicle_type'
 import Vehicle from '@/store/models/vehicle'
 import VehicleSuggest from '@/store/models/vehicle_suggest' 
 import Sales from '@/store/models/sales' 
-
+import Modal from '@/store/models/modal'
 
 export default {
 
-    props: ['editDialog', 'sales'],
+    props: ['sales'],
     components: {
       'transaction': TransactionSell
     },
@@ -266,7 +264,7 @@ export default {
     methods: {
 
       close(){
-        this.$emit('update:editDialog', false)
+        Modal.dispatch('salesEdit', {option: 'hide'})
       },
 
       transaction(){
@@ -278,7 +276,8 @@ export default {
           }
 
           this.infoTransaction = this.sales.salesCustomerBuy
-          this.transactionDialog = true
+          Modal.dispatch('salesTransaction', {option: 'show'})
+          // this.transactionDialog = true
       },
 
       async suggestVehicle(){
@@ -312,6 +311,14 @@ export default {
 
       vehicleSuggests() {
         return VehicleSuggest.query().with('vehicle').where('salesCustomerBuyId', this.getSales.salesCustomerBuy.id).get()
+      },
+
+      salesEdit(){
+          return Modal.getters('salesEdit')
+      },
+
+      salesTransaction(){
+        return Modal.getters('salesTransaction')
       }
 
     }

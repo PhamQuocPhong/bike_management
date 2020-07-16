@@ -122,7 +122,7 @@
 				</v-col>
 	   		</v-row>
 
-	   		<vehicle-repair v-if="editDialog" :editDialog.sync="editDialog" :vehicleRepair.sync="vehicleRepair"></vehicle-repair> 
+	   		<vehicle-repair v-if="manageVehicleRepairEdit" :vehicleRepair.sync="vehicleRepair"></vehicle-repair> 
 	</v-container>	
 </template>
 
@@ -136,7 +136,7 @@ import VehicleRepairEdit from './Edit'
 import VehicleType from '@/store/models/vehicle_type' 
 import Vehicle from '@/store/models/vehicle'
 import VehicleRepair from '@/store/models/vehicle_repair'
-
+import Modal from '@/store/models/modal'
 
 import HelperCommon from '@/helpers/common' 
 export default{
@@ -189,7 +189,7 @@ export default{
 
 	methods: {
 	    edit(item){
-	    	this.editDialog = true
+	    	Modal.dispatch('manageVehicleRepairEdit', {option: 'show'})
 	    	this.vehicleRepair = {...item}
 	    },	
 
@@ -249,7 +249,9 @@ export default{
 			}
 			return VehicleRepair.query().with('vehiclePurchase').offset(this.offset).limit(itemsPerPage).get()
 		},
-
+		manageVehicleRepairEdit(){
+          return Modal.getters('manageVehicleRepairEdit')
+      	}
 	}
 
 }

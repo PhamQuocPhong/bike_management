@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-layout row justify-center>
-      <v-dialog v-model="dialogEdit" persistent max-width="900" v-if="getVehiclePurchase">
+      <v-dialog v-model="manageVehiclePurchaseEdit" persistent max-width="900" v-if="getVehiclePurchase">
         <v-card>
             <v-card-title class="headline d-flex pb-4"> Edit Customer Buy </v-card-title>
             <v-card-text class="mt-4">
@@ -96,7 +96,7 @@
 // store
 import VehicleRepair from '@/store/models/vehicle_repair'
 import VehiclePurchase from '@/store/models/vehicle_purchase'
-
+import Modal from '@/store/models/modal'
 
 // hepler
 import HelperCommon from '@/helpers/common'
@@ -131,7 +131,7 @@ export default {
     methods: {
 
       close() {
-          this.$emit('update:dialogEdit', false)
+          Modal.dispatch('manageVehiclePurchaseEdit', {option: 'hide'})
       },
 
       async save(){
@@ -188,8 +188,6 @@ export default {
             return this.getVehiclePurchase.vehicleRepair
           }
         },
-
-
       },
 
       approveFlg:{
@@ -210,6 +208,10 @@ export default {
             return false
           }
         }
+      },
+
+      manageVehiclePurchaseEdit(){
+          return Modal.getters('manageVehiclePurchaseEdit')
       }
     }
 

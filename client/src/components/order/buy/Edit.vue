@@ -1,6 +1,6 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="editBuyDialog" persistent  max-width="1200">
+    <v-dialog v-model="orderBuyEdit" persistent  max-width="1200">
       <v-card>
           <v-card-title class="headline d-flex pb-4"> Detail Buy Transaction </v-card-title>
           <v-card-text class="mt-4">
@@ -83,10 +83,12 @@ import ReceptionCustomerSell from '@/store/models/reception_customer_sell'
 import VehicleTest from '@/store/models/vehicle_test'
 import Transaction from '@/store/models/transaction'
 import TransactionDetailBuy from '@/store/models/transaction_detail_buy'
+import Modal from '@/store/models/modal'
+
 
 import HelperCommon from '@/helpers/common'
 import HTTP from '@/services/http'
-import { mapMutations } from 'vuex'
+
 export default {
 
     props: ['editBuyDialog', 'transactionData'],
@@ -118,9 +120,9 @@ export default {
     },
 
     methods: {
-     close(){
-      this.$emit('update:editBuyDialog', false)
-     },
+      close(){
+        Modal.dispatch('orderBuyEdit', {option: 'hide'})
+      },
 
      async report(item){
         var loader = this.$loading.show()
@@ -139,7 +141,7 @@ export default {
           link.href = window.URL.createObjectURL(blob)
           link.download = `report.pdf`
           link.click()
-        loader.hide()
+          loader.hide()
      }
 
     },
@@ -163,18 +165,11 @@ export default {
         return this.transactionData.employee
       },
 
-      // vehiclePurchase(){
-      //   return this.transactionDetails.vehiclePurchase
-      // },
-
-      // vehicleRepair(){
-      //   return this.vehiclePurchase.vehicleRepair
-      // },
-
+      orderBuyEdit(){
+        return Modal.getters('orderBuyEdit')
+      }
     }
 
-
-
-  }
+}
 
 </script>

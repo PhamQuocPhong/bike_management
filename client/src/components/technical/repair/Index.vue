@@ -99,7 +99,7 @@
 		    	</v-card> 	 
 			</v-col>
    		</v-row> 
-   		<technical-repair-edit v-if="editDialog" :editDialog.sync="editDialog" :technicalRepair.sync="technicalRepair"></technical-repair-edit>
+   		<technical-repair-edit v-if="technicalRepairEdit"  :technicalRepair.sync="technicalRepair"></technical-repair-edit>
 	</v-container>	
 </template>
 
@@ -111,6 +111,7 @@ import TechnicalRepairEdit from './Edit'
 
 // store	
 import TechnicalRepair from '@/store/models/technical_repair'
+import Modal from '@/store/models/modal'
 
 // helpers
 import HelperCommon from '@/helpers/common' 
@@ -133,7 +134,6 @@ export default{
 	        itemsPerPageList: [5, 10, 15],
       		pageCounts: 0,
       		offset: 0,
-      		editDialog: false,
       		technicalRepair: null
 		}
 	},
@@ -146,7 +146,8 @@ export default{
 
 	    edit(item){
 	    	this.technicalRepair = {...item}
-	    	this.editDialog = true
+	    	Modal.dispatch('technicalRepairEdit', {option: 'show'})
+
 	    },
 	    nextPage(page){
 	    	this.currentPage = page
@@ -189,7 +190,11 @@ export default{
 
 		employeeInfo(){
 			return this.$cookies.get('dataUser').employee
-		}
+		},
+
+		technicalRepairEdit(){
+	       return Modal.getters('technicalRepairEdit')
+	    }
 
 	}
 

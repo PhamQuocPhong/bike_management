@@ -83,10 +83,10 @@
 </template>
 
 <script>
-
+// component
 import EditCustomerBuy from '@/components/reception/buy/Edit.vue'
 
-
+// store
 import ReceptionCustomerBuy from '@/store/models/reception_customer_buy'
 import Modal from '@/store/models/modal'
 
@@ -138,8 +138,9 @@ export default{
 	methods: {
 
 		edit(item){
-			Modal.dispatch('receptionBuyEdit', {option: 'show'})
+			
 			this.receptionCustomerBuy = {...item}
+			Modal.dispatch('receptionBuyEdit', {option: 'show'})
 		},
 
 	},

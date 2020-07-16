@@ -1,6 +1,6 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="dialogVehicleTest" persistent max-width="700" v-if="getVehicleTest">
+    <v-dialog v-model="technicalTestEdit" persistent max-width="700" v-if="getVehicleTest">
       <v-card>
           <v-card-title class="headline d-flex pb-4"> ReceptionDeal </v-card-title>
 
@@ -103,7 +103,7 @@
 
 <script>
 
-import HelperCommon from '@/helpers/common'
+import Modal from '@/store/models/modal'
 
 import ReceptionCustomerSell from '@/store/models/reception_customer_sell'
 import VehicleTest from '@/store/models/vehicle_test'
@@ -111,7 +111,7 @@ import VehicleType from '@/store/models/vehicle_type'
 
   export default {
 
-    props: ['dialogVehicleTest', 'vehicleTest', 'role'],
+    props: ['vehicleTest', 'role'],
 
     data(){
       return {
@@ -129,7 +129,7 @@ import VehicleType from '@/store/models/vehicle_type'
 
     methods: {
       close() {
-        this.$emit('update:dialogVehicleTest', false)
+         Modal.dispatch('technicalTestEdit', {option: 'hide'})
       },
 
       async save(){
@@ -146,7 +146,7 @@ import VehicleType from '@/store/models/vehicle_type'
               data: this.getVehicleTest
             })
             toastr.success(res.response.data.message, 'Success!', {timeOut: 1000})
-            this.$emit('update:dialogVehicleTest', false)
+            Modal.dispatch('technicalTestEdit', {option: 'hide'})
           }
         }
       },
@@ -159,10 +159,13 @@ import VehicleType from '@/store/models/vehicle_type'
 
       statusBikes(){
         return this.$enum.progressVehicleBuy.list
-      }
+      },
+
+      technicalTestEdit(){
+        return Modal.getters('technicalTestEdit')
+      } 
    
     }
-
-  }
+}
 
 </script>
