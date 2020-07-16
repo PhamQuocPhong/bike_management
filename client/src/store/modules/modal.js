@@ -8,13 +8,13 @@ export default {
     receptionSellTransaction: state => state.reception.sell.transaction,
 
     salesEdit: state => state.sales.edit,
-    salesTransaction: state => sales.sales.transaction,
+    salesTransaction: state => state.sales.transaction,
 
     technicalRepairEdit: state => state.technical.repair.edit,
     technicalTestEdit: state => state.technical.test.edit,
 
     orderSellEdit: state =>  state.order.sell.edit,
-    orderBuyEdit: state =>  state.order.sell.edit,
+    orderBuyEdit: state =>  state.order.buy.edit,
 
     manageVehicleRepairEdit: state =>  state.manage.vehicle.repair.edit,
     manageVehicleRepairAddFixDetail: state => state.manage.vehicle.repair.addFixDetail,
@@ -286,7 +286,7 @@ export default {
     },
 
     // warehouse
-    warehouseCreate(){
+    warehouseCreate(state, payload){
       var option = payload.option
 
       if(option === 'show'){
@@ -296,7 +296,7 @@ export default {
       state.warehouse.create = false
     },
 
-    warehouseEdit(){
+    warehouseEdit(state, payload){
       var option = payload.option
 
       if(option === 'show'){

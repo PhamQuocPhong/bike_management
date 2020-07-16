@@ -257,8 +257,8 @@
 	   				</v-flex>
 				</v-col>
 	   		</v-row> 
-	   		<edit-sell  v-if="editSellDialog" :editSellDialog.sync="editSellDialog" :transactionData.sync="transactionData" ></edit-sell>
-	   		<edit-buy  v-if="editBuyDialog" :editBuyDialog.sync="editBuyDialog" :transactionData.sync="transactionData"></edit-buy>
+	   		<edit-sell  v-if="orderSellEdit" :transactionData.sync="transactionData" ></edit-sell>
+	   		<edit-buy  v-if="orderBuyEdit"  :transactionData.sync="transactionData"></edit-buy>
 
 
 	</v-container>	

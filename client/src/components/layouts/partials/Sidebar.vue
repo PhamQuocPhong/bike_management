@@ -129,7 +129,7 @@ export default {
 
 	        listMenu: [
 	        	{ title: 'Sales', link: '/sales', icon: 'mdi-point-of-sale', permission: null, position: 4 },
-	        	{ title: 'Inventory', link: '/inventory', icon: 'mdi-recycle', permission: null  },
+	        	{ title: 'Warehouse', link: '/warehouse', icon: 'mdi-recycle', permission: null  },
 	        	{ title: 'Orders', link: '/orders', icon: 'mdi-billboard', permission: null  },
 	        ],
 	        check: "admin"	

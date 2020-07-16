@@ -107,8 +107,6 @@ let printTransactionDetailPDF = async (condition, callback) => {
 	if(!query){
 		return
 	}
-
-
 	getURL += 'transactionDetailId=' + query.transactionDetailId
 
 
@@ -119,7 +117,7 @@ let printTransactionDetailPDF = async (condition, callback) => {
 	const page = await browser.newPage();
 	await page.goto(getURL, {waitUntil: 'networkidle0'});
 	const pdf = await page.pdf({ format: 'A4',  printBackground: true, pageRanges: '1-5' });
-	 
+	
 	await browser.close();
 
 	if(typeof callback === 'function'){

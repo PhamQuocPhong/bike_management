@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-layout row justify-center>
-      <v-dialog v-model="createDialog" persistent max-width="900">
+      <v-dialog v-model="warehouseCreate" persistent max-width="900">
         <v-card>
             <v-card-title class="headline d-flex pb-4"> ReceptionDeal </v-card-title>
 
@@ -84,11 +84,11 @@
 
 import VehicleType from '@/store/models/vehicle_type'  
 import Vehicle from '@/store/models/vehicle' 
-
+import Modal from '@/store/models/modal'
 
 import UploadFileComponent from '@/components/custom/UploadFile.vue'
 
-import { mapMutations } from 'vuex'
+
 export default {
 
     props: [ 'createDialog'],
@@ -137,7 +137,7 @@ export default {
       },
 
       close(){
-        this.$emit('update:createDialog', false)
+         Modal.dispatch('warehouseCreate', {option: 'hide'})
       }
     },
 
@@ -149,6 +149,10 @@ export default {
 
       vehicleTypes(){
         return VehicleType.all()
+      },
+
+      warehouseCreate(){
+        return Modal.getters('warehouseCreate')
       }
 
     }
