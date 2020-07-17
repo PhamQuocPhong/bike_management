@@ -230,7 +230,6 @@ router.beforeEach((to, from, next) => {
 
 	if(to.matched.some(m => m.meta.requireAuth)){
 
-
 		if (to.name !== 'login' && !tokenUser) 
 			next({ name: 'login' })
 	  	else{

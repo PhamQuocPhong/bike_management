@@ -112,7 +112,7 @@ export default {
 
     methods: {
       close() {
-        Modal.dispatch('orderSellEdit', {option: 'show'})
+        Modal.dispatch('orderSellEdit', {option: 'hide'})
        },
 
      async report(item){

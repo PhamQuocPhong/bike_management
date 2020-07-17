@@ -39,8 +39,8 @@ export default class VehiclePurchase extends Model {
             },
             save: false
           })
-        } catch(error) {
-          return error.response
+        } catch(e) {
+          return e.response
         }
       },
 

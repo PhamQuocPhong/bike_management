@@ -27,25 +27,25 @@ export default class VehicleTest extends Model {
 
   static apiConfig = {
     actions: {
-      async update(id, data) {
+      async update(id, payload) {
         try {
-          return await this.post(`/technical/vehicle-test/${id}`, data, {
+          return await this.put(`/technical/vehicle-test/${id}`, payload, {
             headers: {'x-access-token': $cookies.get('accessToken')},
             save: false
           })
-        } catch(error) {
-          return error.response
+        } catch(e) {
+          return e.response
         }
       },
 
-      async fetchAll(id, data) {
+      async fetchAll() {
         try {
           return await this.get('/technical/vehicle-test/', {
             headers: {'x-access-token': $cookies.get('accessToken')},
             save: false
           })
-        } catch(error) {
-          return error.response
+        } catch(e) {
+          return e.response
         }
       }      
 

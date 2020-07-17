@@ -129,7 +129,18 @@ export default{
 	},
 
 	async created(){
-		this.retrieveData()
+			var progress =  this.$Progress
+			progress.start()
+		    const res = await Vehicle.api().fetchPaging(this.currentPage, this.itemsPerPage)
+
+			if(res.response.status === 200){
+				Vehicle.insert({data: res.response.data.data})
+				this.pageCounts = res.response.data.pageCounts
+				progress.finish()
+			}else{
+				progress.fail()
+			}
+			
 	},
 
 	data(){
@@ -143,12 +154,14 @@ export default{
       		offset: 0,
       		currentPage: 1,
       		editDialog: false,
-      		createDialog: false
+      		createDialog: false,
 		}
 	},
 
 	mounted(){
-	
+		console.log(this.vehicles)
+		 console.log(this.$el)
+		// console.log(this.vehicles)
 	},
 
 	methods: {

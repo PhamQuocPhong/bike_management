@@ -178,7 +178,7 @@ export default {
           const file = this.vehicleItem.image
           if(!file){
               this.imageData = ''
-               this.loadImage = false
+              this.loadImage = false
               return
           }
 

@@ -38,8 +38,8 @@ export default class VehicleRepair extends Model {
             },
             save: false
           })
-        } catch(error) {
-          return error.response
+        } catch(e) {
+          return e.response
         }
       },
 

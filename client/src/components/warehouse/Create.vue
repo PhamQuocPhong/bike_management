@@ -3,7 +3,7 @@
     <v-layout row justify-center>
       <v-dialog v-model="warehouseCreate" persistent max-width="900">
         <v-card>
-            <v-card-title class="headline d-flex pb-4"> ReceptionDeal </v-card-title>
+            <v-card-title class="headline d-flex pb-4"> Create vehicle </v-card-title>
 
             <v-card-text class="mt-4">
                 <v-form
@@ -13,11 +13,34 @@
                 >
                   <v-container>
                     <v-row v-if="newVehicle">
+
+                      <v-col cols="6">
+                        <v-text-field 
+                        label="Code"
+                        v-model="newVehicle.code"
+                        :rules="[
+                           $validation.required(newVehicle.code, 'Code'),
+                        ]" 
+                        ></v-text-field>
+                      </v-col>
+
+                      <v-col cols="6">
+                        <v-text-field 
+                        label="Registration plate"
+                        v-model="newVehicle.name"
+                        :rules="[
+                           $validation.required(newVehicle.registrationPlate, 'Registration plate'),
+                        ]" 
+                        ></v-text-field>
+                      </v-col>
+
                       <v-col cols="6">
                         <v-text-field 
                         label="Name"
                         v-model="newVehicle.name"
-                         :rules="nameRules"
+                        :rules="[
+                           $validation.required(newVehicle.name, 'Name'),
+                        ]" 
                         ></v-text-field>
                       </v-col>
                       <v-col cols="6">
@@ -27,7 +50,9 @@
                         label="Type"
                         item-text="name"
                         return-object
-                        :rules="typeRules"
+                        :rules="[
+                           $validation.required(newVehicle.vehicleType, 'Vehicle type'),
+                        ]" 
                       ></v-select>
                       </v-col>
 
@@ -35,16 +60,21 @@
                         <v-text-field 
                         label="Color" 
                         type="text" 
-                        v-model="newVehicle.color" 
+                        v-model="newVehicle.color"
+                        :rules="[
+                           $validation.required(newVehicle.buyPrice, 'Buy price'),
+                        ]" 
                         ></v-text-field>
                       </v-col>
 
                       <v-col cols="6">
                         <v-text-field 
-                        label="Quantity" 
+                        label="Buy price" 
                         type="number" 
-                        v-model="newVehicle.quantity" 
-                         :rules="quantityRules"
+                        v-model="newVehicle.buyPrice" 
+                         :rules="[
+                           $validation.required(newVehicle.buyPrice, 'Buy price'),
+                         ]"
                         ></v-text-field>
                       </v-col>
 
@@ -53,14 +83,16 @@
                         label="Price" 
                         type="number" 
                         v-model="newVehicle.price" 
-                         :rules="priceRules"
+                        :rules="[
+                           $validation.required(newVehicle.price, 'Price'),
+                        ]" 
                         ></v-text-field>
                       </v-col>
                     </v-row>      
 
                     <v-row>
                       <v-col cols="12">
-                        <upload :image.sync="image"></upload>
+                        <upload :image.sync="image" ></upload>
                       </v-col>  
                     </v-row>                   
                   </v-container>
@@ -105,39 +137,23 @@ export default {
       return {
         valid: true,
         lazy: false,
-
-        // rule form
-        nameRules: [
-          v => !!v || 'Code bike is required!',
-          v => /[0-9A-z]+/.test(v) || 'Code bike include number & word',
-        ],
-
-        quantityRules: [
-          v => !!v || 'Status bike is required!',
-        ],
-
-        priceRules: [
-          v => !!v || 'Range price is required!',
-        ],
-
-        typeRules: [
-          v => !!v || 'Range price is required!',
-        ],
         image: null
-
       }
     },
 
     methods: {
-      save(){
+      async save(){
         if(this.$refs.form.validate()){
           this.newVehicle.image = this.image
-          console.log(this.newVehicle)
+          this.newVehicle.quantity = 1
+          var data  = this.newVehicle
+
+          const res = await Vehicle.api().create(JSON.stringify(data))
         }
       },
 
       close(){
-         Modal.dispatch('warehouseCreate', {option: 'hide'})
+        Modal.dispatch('warehouseCreate', {option: 'hide'})
       }
     },
 

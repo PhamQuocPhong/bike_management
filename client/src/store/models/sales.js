@@ -43,9 +43,9 @@ export default class Sales extends Model {
         }
       },
 
-      async suggestVehicles(data){
+      async suggestVehicles(payload){
         try {    
-          return await this.post('/sales/suggest-vehicles', data, {
+          return await this.post('/sales/suggest-vehicles', payload, {
             headers: {'x-access-token': $cookies.get('accessToken')},
             save: false
           })

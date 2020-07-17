@@ -25,8 +25,19 @@ export default class Vehicle extends Model {
 
   static apiConfig = {
     actions: {
-      fetchAll(){
 
+      async create(payload){
+        try {    
+          return await this.post('/vehicle/create',  payload, {
+            headers: {
+              'x-access-token': $cookies.get('accessToken'),
+              'Content-Type': 'application/json'
+            },
+            save: false
+          })
+        } catch(error) {
+          return error.response
+        }
       },
 
       async fetchPaging(page, itemPerPage = null){
@@ -52,8 +63,8 @@ export default class Vehicle extends Model {
               vehicleTypeId: vehicleTypeId
             }
           })
-        } catch(e) {
-          return e.response
+        } catch(error) {
+          return error.response
         }
       }   
     }

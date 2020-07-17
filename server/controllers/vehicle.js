@@ -7,86 +7,21 @@ const ReceptionCustomerSell = require('../models/reception_customer_sell')
 const VehicleRepair = require('../models/vehicle_repair')
 const helperFunctions = require('../helpers/function')
 
-/*let vehicleList = (req, res) => {
 
-	const vehicleList = [
-		{
-			id: 1,
-			name: 'vison 2020',
-			color: 'red',
-			price: '1500',
-			quantity: 1,
-			image: '#',
-			valid: 0,
-			description: "xe vison 2020 màu đỏ",
-			vehicleTypeId: 1
+const ENABLE_VEHICLE_FLG = 1
 
-		},
-		{
-			id: 2,
-			name: 'vison 2019',
-			color: 'blue',
-			price: '1500',
-			quantity: 1,
-			image: '#',
-			valid: 0,
-			description: "xe vison 2019 màu xanh",
-			vehicleTypeId: 1
 
-		},
+let createVehicle = async (req, res) => {
 
-		{
-			id: 1,
-			name: 'vison 2020',
-			color: 'red',
-			price: '1500',
-			quantity: 1,
-			image: '#',
-			valid: 0,
-			description: "xe vison 2020 màu đỏ",
-			vehicleTypeId: 1
+	var data = req.body
 
-		}
-		{
-			id: 1,
-			name: 'vison 2020',
-			color: 'red',
-			price: '1500',
-			quantity: 1,
-			image: '#',
-			valid: 0,
-			description: "xe vison 2020 màu đỏ",
-			vehicleTypeId: 1
+	return res.json(data)
 
-		}
-		{
-			id: 1,
-			name: 'vison 2020',
-			color: 'red',
-			price: '1500',
-			quantity: 1,
-			image: '#',
-			valid: 0,
-			description: "xe vison 2020 màu đỏ",
-			vehicleTypeId: 1
 
-		}
-		{
-			id: 1,
-			name: 'vison 2020',
-			color: 'red',
-			price: '1500',
-			quantity: 1,
-			image: '#',
-			valid: 0,
-			description: "xe vison 2020 màu đỏ",
-			vehicleTypeId: 1
+	var res = await Vehicle.create(data)
+	return res.status(201).json({message: 'Create success', data: res})
 
-		}
-	]
-
-	return res.status(200).json(vehicleList)
-}*/
+}
 
 let getAllVehicle = async (req, res) => {
 	const vehicles = await Vehicle.findAll()
@@ -259,10 +194,6 @@ let publishVehicleRepair = async (req, res) => {
 
 	// if admin publish => add this vehicle to my inventory
 
-	if(!vehicleRepair.fixFlg === 1){
-		return res.status(401).json({message: 'Update failed!'})
-	}
-
 	try{
 		await VehicleRepair.update(vehicleRepair, {
 			where: {
@@ -282,7 +213,7 @@ let publishVehicleRepair = async (req, res) => {
 				fixPrice: vehicleRepair.fixPrice,
 				buyPrice: vehiclePurchase.price,
 				vehicleTypeId: vehiclePurchase.vehicleTypeId,
-				valid: 1
+				valid: ENABLE_VEHICLE_FLG
 			})
 		
 
@@ -340,6 +271,7 @@ module.exports = {
 	getAllVehiclePurchases: getAllVehiclePurchases,
 	getAllVehiclePurchasePaging: getAllVehiclePurchasePaging,
 	getAllVehicleRepairPaging: getAllVehicleRepairPaging,
+	createVehicle: createVehicle,
 	createVehicleRepair: createVehicleRepair,
 	updateVehiclePurchase: updateVehiclePurchase,
 	updateVehicleRepair: updateVehicleRepair,

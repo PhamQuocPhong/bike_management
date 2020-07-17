@@ -1,5 +1,5 @@
 <template>
-  <vue-dropzone ref="myVueDropzone" id="upload" :options="dropzoneOptions" @vdropzone-drag-drop="remove"  @vdropzone-complete="complete" :useCustomSlot=true>
+  <vue-dropzone ref="myVueDropzone" id="upload" :options="dropzoneOptions"  @vdropzone-complete="complete" :useCustomSlot=true>
      <div class="dropzone-custom-content">
         <h3 class="dropzone-custom-title">Drag and drop to upload content!</h3>
         <v-icon>mdi-cloud-upload</v-icon>
@@ -24,9 +24,13 @@ export default {
     return {
       dropzoneOptions: {
           url: 'https://httpbin.org/post',
+          maxFilesize: 5, // MB
+          maxFiles: 5,
+          chunking: true,
           thumbnailWidth: 150,
           maxFilesize: 0.5,
           headers: { "My-Awesome-Header": "header value" },
+          addRemoveLinks: true,
       }
     }
   },
@@ -39,9 +43,8 @@ export default {
     complete(file){
       this.$emit('update:image', file)
     },
-    remove(file){
 
-    }
+
   },
 
   computed:{

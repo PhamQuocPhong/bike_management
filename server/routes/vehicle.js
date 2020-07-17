@@ -1,10 +1,11 @@
 const express = require('express');
 const vehicleController = require('../controllers/vehicle.js')
 var router = express.Router()
+var multer  = require('multer')
 
 
 router.get('/', vehicleController.getAllVehicleByType)
-
+router.post('/create', vehicleController.createVehicle)
 router.get('/page/:page', vehicleController.getAllVehiclePaging)
 
 

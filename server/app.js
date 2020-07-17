@@ -55,7 +55,7 @@ app.use('/api/report/', reportRouter)
 
 //Connect database
 db.sync().then(function() {
-   //   { force: true }
+     // { force: true }
 		 // require('./database/seeder')
 
 	app.listen(port)

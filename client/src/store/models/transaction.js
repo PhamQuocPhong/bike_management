@@ -27,9 +27,9 @@ export default class Transaction extends Model {
 
   static apiConfig = {
     actions: {
-      async create(data){
+      async create(payload){
         try {
-          return await this.post('/transaction/create', data, {
+          return await this.post('/transaction/create', payload, {
             headers: {'x-access-token': $cookies.get('accessToken')},
             save: false
           })
@@ -49,8 +49,8 @@ export default class Transaction extends Model {
             },
             save: false
           })
-        } catch(error) {
-          return error.response
+        } catch(e) {
+          return e.response
         }
       },
 
@@ -67,8 +67,8 @@ export default class Transaction extends Model {
             },
             save: false
           })
-        } catch(error) {
-          return error.response
+        } catch(e) {
+          return e.response
         }
       }
 

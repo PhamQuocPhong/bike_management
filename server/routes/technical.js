@@ -6,7 +6,7 @@ router.get('/test', Technical.getAllTechnicalTests)
 
 router.get('/vehicle-test', Technical.getAllVehicleTests)
 
-router.post('/vehicle-test/:id', Technical.updateVehicleTest)
+router.put('/vehicle-test/:id', Technical.updateVehicleTest)
 
 
 router.post('/repair/create', Technical.createTechnicalRepair)

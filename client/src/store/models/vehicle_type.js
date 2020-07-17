@@ -18,8 +18,8 @@ export default class VehicleType extends Model {
             headers: {'x-access-token': $cookies.get('accessToken')},
             save: false
           })
-        } catch(error) {
-          return error.response
+        } catch(e) {
+          return e.response
         }
       }
     }
