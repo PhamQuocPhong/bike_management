@@ -6,87 +6,53 @@ const VehicleType = require('../models/vehicle_type')
 const ReceptionCustomerSell = require('../models/reception_customer_sell')
 const VehicleRepair = require('../models/vehicle_repair')
 const helperFunctions = require('../helpers/function')
+const helper = require('../helpers/helper')
+const AwsService = require('../services/aws')
 
-/*let vehicleList = (req, res) => {
 
-	const vehicleList = [
-		{
-			id: 1,
-			name: 'vison 2020',
-			color: 'red',
-			price: '1500',
-			quantity: 1,
-			image: '#',
-			valid: 0,
-			description: "xe vison 2020 màu đỏ",
-			vehicleTypeId: 1
+let createVehicle = async(req, res) => {
 
-		},
-		{
-			id: 2,
-			name: 'vison 2019',
-			color: 'blue',
-			price: '1500',
-			quantity: 1,
-			image: '#',
-			valid: 0,
-			description: "xe vison 2019 màu xanh",
-			vehicleTypeId: 1
+	var data = req.body
+	var lastBike = await helperFunctions.getLastRecord(Vehicle, {vehicleTypeId: 1})
 
-		},
+	var vehicleType = null
+	if(data.vehicleTypeId === 1){
+		vehicleType = 'bike'
+	}else{
+		vehicleType = 'car'
+	}
 
-		{
-			id: 1,
-			name: 'vison 2020',
-			color: 'red',
-			price: '1500',
-			quantity: 1,
-			image: '#',
-			valid: 0,
-			description: "xe vison 2020 màu đỏ",
-			vehicleTypeId: 1
+	var newCode = helper.addCode(lastBike.code, vehicleType)
 
+	try {
+
+		var urlImage = '';
+		if(data.image) {
+			await AwsService.uploadImageBase64(data.image, (url) => {
+				urlImage = AwsService.getCallbackURL(url)
+			})
 		}
-		{
-			id: 1,
-			name: 'vison 2020',
-			color: 'red',
-			price: '1500',
+
+		var newVehicle = await Vehicle.create({
+			code: newCode,
+			name: data.name,
+			registrationPlate: data.registrationPlate,
+			color: data.color,
 			quantity: 1,
-			image: '#',
-			valid: 0,
-			description: "xe vison 2020 màu đỏ",
-			vehicleTypeId: 1
+			image: urlImage,
+			price: data.price,
+			fixPrice: data.fixPrice,
+			buyPrice: data.price,
+			vehicleTypeId: data.vehicleTypeId,
+			valid: 1
+		})
+		return res.status(200).json({message: "Create success", data: newVehicle })
 
-		}
-		{
-			id: 1,
-			name: 'vison 2020',
-			color: 'red',
-			price: '1500',
-			quantity: 1,
-			image: '#',
-			valid: 0,
-			description: "xe vison 2020 màu đỏ",
-			vehicleTypeId: 1
+	} catch(e) {
+		return res.status(500).json({message: 'Network Error'})
+	}
 
-		}
-		{
-			id: 1,
-			name: 'vison 2020',
-			color: 'red',
-			price: '1500',
-			quantity: 1,
-			image: '#',
-			valid: 0,
-			description: "xe vison 2020 màu đỏ",
-			vehicleTypeId: 1
-
-		}
-	]
-
-	return res.status(200).json(vehicleList)
-}*/
+}
 
 let getAllVehicle = async (req, res) => {
 	const vehicles = await Vehicle.findAll()
@@ -105,8 +71,6 @@ let getAllVehiclePaging = async(req, res) => {
 	}
 
 	const vehicles = await Vehicle.findAll({
-		offset: offset, 
-		limit: itemPerPage, 
 		include: {
 			model: VehicleType
 		}
@@ -334,6 +298,7 @@ let updateVehicleRepair = async (req, res) => {
 
 
 module.exports = {
+	createVehicle: createVehicle,
 	getAllVehicle: getAllVehicle,
 	getAllVehiclePaging: getAllVehiclePaging,
 	getAllVehicleByType: getAllVehicleByType,

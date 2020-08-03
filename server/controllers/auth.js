@@ -8,7 +8,7 @@ const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || "1h"
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "access-token-secret-quocphong@gmail.com"
 const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE || "365d"
 const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-secret-quocphong@gmail.com"
-const sendMailHelper = require("../helpers/sendmail")
+const sendMailService = require("../services/email")
 const randomString = require('randomstring')
 const permission = {
   admin: 2,
@@ -27,7 +27,6 @@ let login = async (req, res) => {
 	const { email, password } = req.body
 
 	try {
-
     const findUser = await User.findOne({
       attributes: ['id','email', 'password', 'roleId'],
       where: {
@@ -55,6 +54,7 @@ let login = async (req, res) => {
     }
 
 	}catch (error) {
+    console.log(error)
 	    return res.status(500).json(error)
 	}
 }
@@ -97,7 +97,7 @@ let register = async (req, res) => {
       })
 
       // var subject = 'Verify Account Registration'
-      // sendMailHelper.sendMailRegister('Hao Hao', email, subject, verifyCode)
+      // sendMailService.sendMailRegister('Hao Hao', email, subject, verifyCode)
       return res.status(200).json({success: 'Create success!'})
     }
     

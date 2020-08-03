@@ -43,11 +43,11 @@ export default {
         datasets: [
           {
             backgroundColor: [this.gradient, this.gradient2, this.gradient3, this.gradient4],
-            data: [40, 10, 30, 20]
+            data: this.data
           }
         ]
       },
-      { responsive: true, maintainAspectRatio: false }
+      this.option
     );
 
   }

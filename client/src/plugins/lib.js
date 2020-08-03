@@ -1,10 +1,10 @@
 import Vue from 'vue';
-import VueCookies from 'vue-cookies'
 import VueResizeText from 'vue-resize-text'
 import VueProgressBar from 'vue-progressbar'
 import Loading from 'vue-loading-overlay';
 import colors from 'vuetify/lib/util/colors'
 import 'vue-loading-overlay/dist/vue-loading.css';
+
 
 Vue.use(Loading, {
 	  canCancel: true, // default false
@@ -19,9 +19,6 @@ Vue.use(Loading, {
  })
 
 
-Vue.use(VueCookies)
-Vue.config.productionTip = false 
-Vue.$cookies.config(60 * 300, '')
 
 
 Vue.use(VueProgressBar, {
@@ -32,7 +29,3 @@ Vue.use(VueProgressBar, {
 
 
 Vue.use(VueResizeText);
-
-export default {
-
-}

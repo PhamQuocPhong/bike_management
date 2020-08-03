@@ -9,32 +9,65 @@ const enumData = require("../helpers/enum.data")
 const SalesCustomerBuy = require('../models/sales_customer_buy')
 const Sales = require('../models/sales')
 const AwsService = require('../services/aws')
+const helperFunctions = require('../helpers/function')
+const POSITION_MANAGE_ID = 1
+const { Op } = require("sequelize")
 
+let getReceptionCustomerSellPaging = async(req, res) => {
 
-const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "access-token-secret-quocphong@gmail.com"
+	const userId = req.decoded.userId
+	var employeeInfo = await helperFunctions.findEmployee(userId)
+	var conditionGetData = {}
+	var itemPerPage = req.query.itemPerPage
+	var page = req.params.page
+	var offset = 0
+	
+	if(page == 1){
+		offset = 0
+	}
+	else{
+		offset = ((page - 1) * itemPerPage) 
+	}
 
-let getAllReceptionCustomerSell = async (req, res) => {
+	if(employeeInfo.positionId != POSITION_MANAGE_ID){
+		conditionGetData = {
+			[Op.or]: [
+				{employeeId: employeeInfo.id}, 
+			]
+		}
+	}
 
-	const receptionCustomerSellData = await ReceptionCustomerSell.findAll({
-		include: [
-			{
-				model: Customer,
-			},
+	try {
 
-			{
-				model: Employee,
-			},
+		const receptionCustomerSellData = await ReceptionCustomerSell.findAll({
+			offset: offset, 
+			limit: itemPerPage, 
+			include: [
+				{
+					model: Customer,
+				},
 
-			{
-				model: VehicleTest,
-				include: {
-					model: VehicleType
-				}
-			},
-		]
-	})
+				{
+					model: Employee,
+				},
 
-	return res.status(200).json(receptionCustomerSellData)
+				{
+					model: VehicleTest,
+					include: {
+						model: VehicleType
+					}
+				},
+			],
+			where: conditionGetData
+		})
+
+		const counts  = Math.ceil(await ReceptionCustomerSell.count({ where: conditionGetData} ) / itemPerPage ) 
+		return res.status(200).json({message: 'Retrive success', data: receptionCustomerSellData, pageCounts: counts })
+
+	} catch(error) {
+		return res.status(500).json(error)
+	}
+
 }
 
 
@@ -43,8 +76,7 @@ let createReceptionCustomerSell = async (req, res) => {
 	var customerData = req.body.customer
 	var vehicleTestData = req.body.vehicleTests
 	var employeeTest = req.body.employeeTest
-	var accessToken = req.body.token || req.query.token || req.headers["x-access-token"]
-	// var decoded = await jwtHelper.verifyToken(accessToken, accessTokenSecret)
+
 	var decoded = req.decoded
 	var userId = decoded.userId
 	var customerId = null
@@ -204,12 +236,36 @@ let createReceptionCustomerBuy = async (req, res) => {
 
 }
 
+let getReceptionCustomerBuyPaging = async (req, res) => {
 
-let getAllReceptionCustomerBuy = async (req, res) => {
+	const userId = req.decoded.userId
+	var employeeInfo = await helperFunctions.findEmployee(userId)
+	var conditionGetData = {}
+	var itemPerPage = req.query.itemPerPage
+	var page = req.params.page
+	var offset = 0
+	
+	if(page == 1){
+		offset = 0
+	}
+	else{
+		offset = ((page - 1) * itemPerPage) 
+	}
 
+	if(employeeInfo.positionId != POSITION_MANAGE_ID){
+		conditionGetData = {
+			[Op.or]: [
+				{employeeId: employeeInfo.id}, 
+			]
+		}
+	}
 
-	const receptionCustomerBuyData = await ReceptionCustomerBuy.findAll({
-		include: [
+	try {
+			
+		const receptionCustomerBuyData = await ReceptionCustomerBuy.findAll({
+			offset: offset, 
+			limit: itemPerPage, 
+			include: [
 				{
 					model: SalesCustomerBuy,
 					include: [
@@ -218,40 +274,18 @@ let getAllReceptionCustomerBuy = async (req, res) => {
 						}
 					]
 				}
-			]
-	})
+			],
+			conditionGetData
+		})
 
-	return res.status(200).json({message: 'Retrive success', data: receptionCustomerBuyData})
-}
+		const counts  = Math.ceil(await ReceptionCustomerBuy.count({ where: conditionGetData} ) / itemPerPage ) 
 
-let getReceptionCustomerBuyPaging = async (req, res) => {
+		return res.status(200).json({message: 'Retrive success', data: receptionCustomerBuyData, pageCounts: counts })
 
-	var itemPerPage = req.query.itemPerPage
-	var page = req.params.page
-	var offset = 0
-	if(page == 1){
-		offset = 0
-	}
-	else{
-		offset = ((page - 1) * itemPerPage) 
+	} catch(error) {
+		return res.status(500).json(error)
 	}
 
-	const receptionCustomerBuyData = await ReceptionCustomerBuy.findAll({
-		offset: offset, 
-		limit: itemPerPage, 
-		include: [
-			{
-				model: Customer,
-			},
-
-			{
-				model: Employee,
-			},
-		]
-	})
-	const counts  = Math.ceil(await ReceptionCustomerBuy.count() / itemPerPage ) 
-
-	return res.status(200).json({message: 'Retrive success', data: receptionCustomerBuyData, pageCounts: counts })
 }
 
 let updateReceptionCustomerBuy = async (req, res) => {
@@ -304,10 +338,9 @@ let updateReceptionCustomerBuy = async (req, res) => {
 
 
 module.exports = {
-	getAllReceptionCustomerSell: getAllReceptionCustomerSell,
+	getReceptionCustomerSellPaging: getReceptionCustomerSellPaging,
 	createReceptionCustomerSell: createReceptionCustomerSell,
 
-	getAllReceptionCustomerBuy: getAllReceptionCustomerBuy,
 	getReceptionCustomerBuyPaging: getReceptionCustomerBuyPaging,
 	createReceptionCustomerBuy: createReceptionCustomerBuy,
 	updateReceptionCustomerBuy: updateReceptionCustomerBuy

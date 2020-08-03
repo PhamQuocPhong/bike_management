@@ -23,12 +23,28 @@ export default class ReceptionCustomerSell extends Model {
       async fetchAll() {
         try {
           return await this.get('/reception/customer-sell', {
-            headers: {'x-access-token': $cookies.get('accessToken')}
+            save: false,
+            headers: {'x-access-token': $cookies.get('accessToken')},
           })
         } catch(error) {
           return error.response
         }
       },
+
+      async fetchPaging(page, itemPerPage = null){
+        try {    
+          return await this.get('/reception/customer-sell/page/' +  page, {
+            params: {
+              itemPerPage: itemPerPage
+            },
+            save: false,
+            headers: {'x-access-token': $cookies.get('accessToken')},
+          })
+        } catch(error) {
+          return error.response
+        }
+      },
+
     }
   }
 

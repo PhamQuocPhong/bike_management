@@ -2,8 +2,10 @@
 import { Model } from '@vuex-orm/core'
 import Employee from './employee'
 import SalesCustomerBuy from './sales_customer_buy'
+
 export default class Sales extends Model {
   static entity = 'sales'
+
 
   static fields () {
     return {
@@ -20,8 +22,9 @@ export default class Sales extends Model {
       async fetchAll(){
         try {    
           return await this.get('/sales/', {
+            
+            save: false,
             headers: {'x-access-token': $cookies.get('accessToken')},
-            save: false
           })
         } catch(error) {
           return error.response
@@ -32,11 +35,12 @@ export default class Sales extends Model {
       async fetchPaging(page, itemPerPage = null){
         try {    
           return await this.get('/sales/page/' +  page, {
-            headers: {'x-access-token': $cookies.get('accessToken')},
+            
             params: {
               itemPerPage: itemPerPage
             },
-            save: false
+            save: false,
+            headers: {'x-access-token': $cookies.get('accessToken')},
           })
         } catch(error) {
           return error.response
@@ -46,8 +50,9 @@ export default class Sales extends Model {
       async suggestVehicles(data){
         try {    
           return await this.post('/sales/suggest-vehicles', data, {
+            
+            save: false,
             headers: {'x-access-token': $cookies.get('accessToken')},
-            save: false
           })
         } catch(error) {
           return error.response
@@ -57,8 +62,9 @@ export default class Sales extends Model {
       async contactCustomer(id, payload){
         try {    
           return await this.post('/sales/contact-customer/' + id, payload, {
+            
+            save: false,
             headers: {'x-access-token': $cookies.get('accessToken')},
-            save: false
           })
         } catch(error) {
           return error.response

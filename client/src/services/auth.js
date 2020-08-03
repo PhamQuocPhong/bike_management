@@ -11,7 +11,7 @@ export default {
 				return res
 			}		      
 	    } catch (error) {
-	    	console.log(error.response)
+	    	console.log(error)
 	    	return error.response
 	    }
 	},

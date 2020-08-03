@@ -15,24 +15,32 @@ export default class TechnicalTest extends Model {
 
   static apiConfig = {
     actions: {
-      // fetchAll: {
-      //   method: 'get',
-      //   url: '/technical/test',
-      //   dataTransformer: (response) => {
-      //     return response.data
-      //   }
-      // },
 
-      async fetchAll(){
+
+      async fetchPaging(page, itemPerPage = null){
         try {    
-          return await this.get('/technical/test', {
-              headers: {'x-access-token': $cookies.get('accessToken')},
-              save: false
-            })
-          } catch(error) {
-            return error.response
-          }
+          return await this.get('/technical/test/page/' +  page, {
+            params: {
+              itemPerPage: itemPerPage
+            },
+            save: false,
+            headers: {'x-access-token': $cookies.get('accessToken')},
+          })
+        } catch(error) {
+          return error.response
+        }
       },
+
+      // async fetchAll(){
+      //   try {    
+      //     return await this.get('/technical/test', {
+      //         headers: {'x-access-token': $cookies.get('accessToken')},
+      //         save: false
+      //       })
+      //     } catch(error) {
+      //       return error.response
+      //     }
+      // },
     }
   }
 }

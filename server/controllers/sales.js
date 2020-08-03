@@ -1,4 +1,3 @@
-
 const Customer = require('../models/customer')
 const Employee = require('../models/employee')
 const enumData = require("../helpers/enum.data")
@@ -6,7 +5,7 @@ const SalesCustomerBuy = require('../models/sales_customer_buy')
 const VehicleSuggest = require('../models/vehicle_suggest')
 const Sales = require('../models/sales')
 const Vehicle = require('../models/vehicle')
-const sendMailService = require('../helpers/sendmail')
+const sendMailService = require("../services/email")
 
 let getAllSales = async (req, res) => {
 
@@ -138,7 +137,6 @@ let contactCustomer = async (req, res) => {
 		})
 
 		if(record){
-
 			var from = 'zipzizza20@gmail.com'
 			var mailTo = customer.email
 			var subject = 'Confirm Requirement'
@@ -148,7 +146,7 @@ let contactCustomer = async (req, res) => {
 
 		
 	}catch(error){
-
+		return res.status(500).json(error)
 	}
 
 }

@@ -5,6 +5,7 @@ var router = express.Router()
 
 router.get('/', vehicleController.getAllVehicleByType)
 
+router.post('/create', vehicleController.createVehicle)
 router.get('/page/:page', vehicleController.getAllVehiclePaging)
 
 

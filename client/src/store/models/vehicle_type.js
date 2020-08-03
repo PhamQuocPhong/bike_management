@@ -15,8 +15,8 @@ export default class VehicleType extends Model {
       async fetchAll(){
         try {
           return await this.get(`/vehicle-type/`, {
+            save: false,
             headers: {'x-access-token': $cookies.get('accessToken')},
-            save: false
           })
         } catch(error) {
           return error.response

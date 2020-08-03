@@ -4,3 +4,6 @@
 /client/node_modules
 /server/.env
 node_modules
+
+client.bat
+server.bat

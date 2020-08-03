@@ -2,7 +2,7 @@ const express = require('express');
 const Technical = require('../controllers/technical.js')
 var router = express.Router()
 
-router.get('/test', Technical.getAllTechnicalTests)
+router.get('/test/page/:page', Technical.getTechnicalTestPaging)
 
 router.get('/vehicle-test', Technical.getAllVehicleTests)
 

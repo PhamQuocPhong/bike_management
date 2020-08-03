@@ -30,8 +30,8 @@ export default class Transaction extends Model {
       async create(data){
         try {
           return await this.post('/transaction/create', data, {
+            save: false,
             headers: {'x-access-token': $cookies.get('accessToken')},
-            save: false
           })
         } catch(e) {
           return e.response
@@ -40,14 +40,14 @@ export default class Transaction extends Model {
       async fetchSellPaging(page, itemPerPage = null, startDate = null, endDate = null, month = null){
         try {    
           return await this.get('/transaction/sell/page/' +  page, {
-            headers: {'x-access-token': $cookies.get('accessToken')},
             params: {
               itemPerPage: itemPerPage,
               startDate: startDate,
               endDate: endDate,
               month: month
             },
-            save: false
+            save: false,
+            headers: {'x-access-token': $cookies.get('accessToken')},
           })
         } catch(error) {
           return error.response
@@ -58,14 +58,14 @@ export default class Transaction extends Model {
       fetchBuyPaging(page, itemPerPage = null, startDate = null, endDate = null, month = null){
         try {    
           return this.get('/transaction/buy/page/' +  page, {
-            headers: {'x-access-token': $cookies.get('accessToken')},
             params: {
               itemPerPage: itemPerPage,
               startDate: startDate,
               endDate: endDate,
               month: month
             },
-            save: false
+            save: false,
+            headers: {'x-access-token': $cookies.get('accessToken')},
           })
         } catch(error) {
           return error.response

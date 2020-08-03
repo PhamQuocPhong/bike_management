@@ -129,6 +129,23 @@ let callbackPintPDF = (data) => {
 	return data
 }
 
+let getLastRecord = async (model, condition = null) => {
+
+	if(condition){
+		condition = {
+			where: condition
+		}
+	}
+
+	return await model.findOne({
+		limit: 1,
+		condition,
+		order: [ 
+			[ 'createdAt', 'DESC' ]
+		],
+		raw: true
+	})
+}
 
 
 module.exports = {
@@ -139,5 +156,6 @@ module.exports = {
 	calcFixedRepairPrice: calcFixedRepairPrice,
 	printTransactionPDF: printTransactionPDF,
 	printTransactionDetailPDF: printTransactionDetailPDF,
-	callbackPintPDF: callbackPintPDF
+	callbackPintPDF: callbackPintPDF,
+	getLastRecord: getLastRecord
 }

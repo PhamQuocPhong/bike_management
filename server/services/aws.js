@@ -1,13 +1,13 @@
-require('dotenv').config()
+const path = require( "path" )
+require('dotenv').config({path: path.resolve('../.env')})
 
 const aws  = require('aws-sdk')
 const fs = require('fs')
 
-const bucket = process.env.BUCKET || "quanlymuabanxe/bikes"
-const region = process.env.REGION || "Singapore"
-const accessKey = process.env.AWS_ACCESS_KEY || "AKIAIX4FNPNZMNEV6QKA"
-const secretAccessKey = process.env.AWS_SECRET_KEY || "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"
-
+const bucket = process.env.BUCKET
+const region = process.env.REGION
+const accessKey = process.env.AWS_ACCESS_KEY 
+const secretAccessKey = process.env.AWS_SECRET_KEY 
 
 
 aws.config.update({
@@ -15,6 +15,8 @@ aws.config.update({
   secretAccessKey: secretAccessKey,
   // region: region
 })
+
+console.log(path.join('/server'))
 
 
 let uploadImageBase64 = async (image, callback) => {

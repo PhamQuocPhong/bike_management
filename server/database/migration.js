@@ -20,6 +20,8 @@ const VehicleRepair = require('../models/vehicle_repair')
 const VehicleSuggest = require('../models/vehicle_suggest')
 const Sales = require('../models/sales')
 const SalesCustomerBuy = require('../models/sales_customer_buy')
+const UserNotification = require('../models/user_notification')
+
 
 VehicleType.hasMany(Vehicle, {onDelete: 'cascade', hooks:true})
 Vehicle.belongsTo(VehicleType, {onDelete: 'cascade', hooks:true})
@@ -110,3 +112,9 @@ VehicleRepair.belongsTo(VehiclePurchase, {onDelete: 'cascade', hooks:true})
 VehiclePurchase.hasOne(VehicleRepair, {onDelete: 'cascade', hooks:true})
  
  
+ // user notify
+UserNotification.belongsTo(User, {onDelete: 'cascade', hooks:true, foreignKey: 'receiverId', as: 'receiver'})
+UserNotification.belongsTo(User, {onDelete: 'cascade', hooks:true, foreignKey: 'senderId',  as: 'sender'})
+User.hasMany(UserNotification, {onDelete: 'cascade', hooks:true , foreignKey: 'receiverId'})
+User.hasMany(UserNotification, {onDelete: 'cascade', hooks:true , foreignKey: 'senderId'})
+

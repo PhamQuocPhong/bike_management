@@ -22,8 +22,8 @@ export default class Employee extends Model {
       getByPostion(positionId){
         try {    
           return this.get('/employee/position/' +  positionId,{
+            save: false,
             headers: {'x-access-token': $cookies.get('accessToken')},
-            save: false
           })
         } catch(error) {
           return error.response

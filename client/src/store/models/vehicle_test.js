@@ -30,8 +30,8 @@ export default class VehicleTest extends Model {
       async update(id, data) {
         try {
           return await this.post(`/technical/vehicle-test/${id}`, data, {
+            save: false,
             headers: {'x-access-token': $cookies.get('accessToken')},
-            save: false
           })
         } catch(error) {
           return error.response
@@ -41,8 +41,8 @@ export default class VehicleTest extends Model {
       async fetchAll(id, data) {
         try {
           return await this.get('/technical/vehicle-test/', {
+            save: false,
             headers: {'x-access-token': $cookies.get('accessToken')},
-            save: false
           })
         } catch(error) {
           return error.response

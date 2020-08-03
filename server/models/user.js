@@ -31,9 +31,5 @@ const User = db.define('user', {
   }
 });
 
-module.exports.createUser = function(newUser, callback){
-  newUser.save(callback)
-}
-
 
 module.exports = db.model('user', User);

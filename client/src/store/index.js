@@ -6,19 +6,36 @@ import database from './database/index'
 import axios from 'axios'
 import ModalModules from './modules/modal'
 
+
+
 Vue.use(Vuex)
 
 
 const store = new Vuex.Store({
-	// modules: {
-	//   	storeModal: ModalModules
-	// },
+
+    state: {},
+    mutations: {
+        SOCKET_REMOVE_USER() {
+
+        }
+    },
+    actions: {
+        SOCKET_REMOVE_USER() {
+            $cookies.remove('accessToken')
+            $cookies.remove('dataUser')
+        }
+    },
+
 	plugins: [VuexORM.install(database)]
 })
 
+
+
 VuexORM.use(VuexORMAxios, {
   axios,
-  headers: { 'X-Requested-With': 'XMLHttpRequest'},
+  headers: { 
+    'X-Requested-With': 'XMLHttpRequest',
+  },
   baseURL: process.env.VUE_APP_ROOT_API || 'http://localhost:3000/api'
 })
 

@@ -24,8 +24,8 @@ export default class VehicleSuggest extends Model {
       fetchByType(vehicleTypeId){
          try {
           return this.get('/vehicle', {
-            headers: {'x-access-token': $cookies.get('accessToken')},
             save: false,
+            headers: {'x-access-token': $cookies.get('accessToken')},
             params: {
               vehicleTypeId: vehicleTypeId
             }

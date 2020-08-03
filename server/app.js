@@ -7,6 +7,7 @@ const cors = require('cors')
 const app = express()
 const port = process.env.PORT || 3000
 const auth = require('./middleware/auth_middleware')
+const socketModules = require('./socket')
 require('./database/migration')
 
 
@@ -27,21 +28,33 @@ app.locals = require('./helpers/helper')
 
 
 app.use(express.json())
+const whitelist = ['http://localhost:4200'];
+const corsOptions = {
+  credentials: true, // This is important.
+  origin: (origin, callback) => {
+    if(whitelist.includes(origin))
+      return callback(null, true)
+  }
+}
 app.use(cors())
 
 // Load routes
-var authRouter = require('./routes/auth')
-var customerRouter = require('./routes/customer')
-var emplyoeeRouter = require('./routes/employee')
-var receptionRouter = require('./routes/reception')
-var technicalRouter = require('./routes/technical')
-var transactionRouter = require('./routes/transaction')
-var salesRouter = require('./routes/sales')
-var vehicleRouter = require('./routes/vehicle')
-var vehicleTypeRouter = require('./routes/vehicle_type')
-var reportRouter = require('./routes/report')
+const authRouter = require('./routes/auth')
+const dasboardRouter = require('./routes/dashboard')
+const customerRouter = require('./routes/customer')
+const emplyoeeRouter = require('./routes/employee')
+const receptionRouter = require('./routes/reception')
+const technicalRouter = require('./routes/technical')
+const transactionRouter = require('./routes/transaction')
+const salesRouter = require('./routes/sales')
+const vehicleRouter = require('./routes/vehicle')
+const vehicleTypeRouter = require('./routes/vehicle_type')
+const reportRouter = require('./routes/report')
+const notifyRouter = require('./routes/notification')
+const userRouter = require('./routes/user')
 
 app.use('/api/auth/', authRouter)
+app.use('/api/dashboard/', dasboardRouter)
 app.use('/api/customer/',  auth.isAuth, customerRouter)
 app.use('/api/employee/',  auth.isAuth, emplyoeeRouter)
 app.use('/api/reception/', auth.isAuth, receptionRouter)
@@ -51,16 +64,36 @@ app.use('/api/sales/', auth.isAuth, salesRouter)
 app.use('/api/vehicle/', auth.isAuth, vehicleRouter)
 app.use('/api/vehicle-type/', auth.isAuth, vehicleTypeRouter)
 app.use('/api/report/', reportRouter)
+app.use('/api/notify/', notifyRouter)
+app.use('/api/user/', auth.isAuth, userRouter)
+
+
+
 
 
 //Connect database
 db.sync().then(function() {
-   //   { force: true }
-		 // require('./database/seeder')
-
+     // { force: true }
 	app.listen(port)
   	console.log(`Server is listening on port ${port}`)
 }).catch(function(err) {
   console.log(err)
   process.exit(1)
+})
+
+
+// Connect socket
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+server.listen(4200)
+
+io.on('connection', (socket) => {
+  socketModules.addUser(socket)
+	socketModules.sendMail(socket)
+  socketModules.sendNotify(socket)
+	socketModules.removeUser(socket)
+
+	socket.on('disconnect', () => {
+
+	})
 })

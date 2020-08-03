@@ -32,11 +32,11 @@ export default class VehicleRepair extends Model {
       fetchPaging(page, itemPerPage = null){
         try {    
           return this.get('/vehicle/repair/page/' +  page,{
-            headers: {'x-access-token': $cookies.get('accessToken')},
             params: {
               itemPerPage: itemPerPage
             },
-            save: false
+             save: false,
+            headers: {'x-access-token': $cookies.get('accessToken')},
           })
         } catch(error) {
           return error.response
@@ -46,8 +46,8 @@ export default class VehicleRepair extends Model {
       fetchByType(vehicleTypeId){
         try {
           return this.get('/vehicle', {
+             save: false,
             headers: {'x-access-token': $cookies.get('accessToken')},
-            save: false,
             params: {
               vehicleTypeId: vehicleTypeId
             }
@@ -60,8 +60,8 @@ export default class VehicleRepair extends Model {
       create(payload){
         try {
           return this.post('vehicle/repair/create', payload, {
+             save: false,
             headers: {'x-access-token': $cookies.get('accessToken')},
-            save: false,
           })
         } catch(e) {
           return e.response
@@ -71,8 +71,8 @@ export default class VehicleRepair extends Model {
       update(id, payload){
         try {
           return this.post('vehicle/repair/update/' + id , payload, {
-            headers: {'x-access-token': $cookies.get('accessToken')},
             save: false,
+            headers: {'x-access-token': $cookies.get('accessToken')},
           })
         } catch(e) {
           return e.response
@@ -82,8 +82,8 @@ export default class VehicleRepair extends Model {
       publish(id, payload){
         try {
           return this.post('vehicle/repair/publish/' + id , payload, {
+             save: false,
             headers: {'x-access-token': $cookies.get('accessToken')},
-            save: false,
           })
         } catch(e) {
           return e.response

@@ -11,11 +11,21 @@ const POSITION_MANAGE_ID = 1
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "access-token-secret-quocphong@gmail.com"
 const helperFunctions = require('../helpers/function')
 
-let getAllTechnicalTests = async (req, res) => {
+let getTechnicalTestPaging = async (req, res) => {
 
 	const userId = req.decoded.userId
 	var employeeInfo = await helperFunctions.findEmployee(userId)
 	var conditionGetData = {}
+	var itemPerPage = req.query.itemPerPage
+	var page = req.params.page
+	var offset = 0
+	
+	if(page == 1){
+		offset = 0
+	}
+	else{
+		offset = ((page - 1) * itemPerPage) 
+	}
 
 	if(employeeInfo.positionId != POSITION_MANAGE_ID){
 		conditionGetData = {
@@ -25,21 +35,30 @@ let getAllTechnicalTests = async (req, res) => {
 		}
 	}
 
-	const technicalTestData = await TechnicalTest.findAll({	
-		include: [
-			{
-				model: VehicleTest,
-				include: {
-					model: VehicleType
-				}
-			},
-		],
+	try {
+		
+		const technicalTestData = await TechnicalTest.findAll({	
+			include: [
+				{
+					model: VehicleTest,
+					include: {
+						model: VehicleType
+					}
+				},
+			],
 
-		where: conditionGetData
-	})
+			where: conditionGetData
+		})
 
 
-	return res.status(200).json({message: 'Retrieve success', data: technicalTestData})
+		const counts  = Math.ceil(await TechnicalTest.count({ where: conditionGetData} ) / itemPerPage ) 
+		return res.status(200).json({message: 'Retrieve success', data: technicalTestData, pageCounts: counts })
+
+	} catch(e) {
+
+		return res.status(500).json(error)
+	}
+
 }
 
 let getAllVehicleTests = async (req, res) => {
@@ -255,7 +274,7 @@ let updateTechnicalRepair = async (req, res) => {
 }
 
 module.exports = {
-	getAllTechnicalTests: getAllTechnicalTests,
+	getTechnicalTestPaging: getTechnicalTestPaging,
 	getAllVehicleTests: getAllVehicleTests,
 	updateVehicleTest: updateVehicleTest,
 	getAllTechnicalRepairPaging: getAllTechnicalRepairPaging,

@@ -26,8 +26,8 @@ export default class TechnicalRepair extends Model {
       async create(payload){
         try {    
           return await this.post('/technical/repair/create', payload, {
-            headers: {'x-access-token': $cookies.get('accessToken')},
             save: false,
+            headers: {'x-access-token': $cookies.get('accessToken')},
           })
 
         } catch(error) {
@@ -38,8 +38,8 @@ export default class TechnicalRepair extends Model {
       async update(id, payload){
         try {    
           return await this.post('/technical/repair/update/' + id, payload, {
-            headers: {'x-access-token': $cookies.get('accessToken')},
             save: false,
+            headers: {'x-access-token': $cookies.get('accessToken')},
           })
         } catch(error) {
           return error.response
@@ -48,12 +48,12 @@ export default class TechnicalRepair extends Model {
 
       async fetchPaging(page, itemPerPage = null){
         try {    
-          return await this.get('/technical/repair/page/' +  page,{
-              headers: {'x-access-token': $cookies.get('accessToken')},
+          return await this.get('/technical/repair/page/' +  page, {
               params: {
                 itemPerPage: itemPerPage
               },
-              save: false
+              save: false,
+              headers: {'x-access-token': $cookies.get('accessToken')},
             })
           } catch(error) {
             return error.response
@@ -63,8 +63,8 @@ export default class TechnicalRepair extends Model {
       async fetchByVehicleRepairId(vehicleRepairId){
         try {    
           return await  this.get('/technical/vehicle-repair/' + vehicleRepairId, {
-            headers: {'x-access-token': $cookies.get('accessToken')},
             save: false,
+            headers: {'x-access-token': $cookies.get('accessToken')},
           })
         } catch(error) {
           return error.response

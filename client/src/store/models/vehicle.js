@@ -25,18 +25,27 @@ export default class Vehicle extends Model {
 
   static apiConfig = {
     actions: {
-      fetchAll(){
 
+      async create(payload){
+        try {    
+          return await this.post('/vehicle/create', payload, {
+             save: false,
+            headers: {'x-access-token': $cookies.get('accessToken')},
+          })
+        } catch(error) {
+          return error.response
+        }
       },
+
 
       async fetchPaging(page, itemPerPage = null){
         try {    
           return await this.get('/vehicle/page/' +  page, {
-            headers: {'x-access-token': $cookies.get('accessToken')},
             params: {
               itemPerPage: itemPerPage
             },
-            save: false
+            save: false,
+            headers: {'x-access-token': $cookies.get('accessToken')},
           })
         } catch(error) {
           return error.response
@@ -46,8 +55,8 @@ export default class Vehicle extends Model {
       async fetchByType(vehicleTypeId){
          try {
           return await this.get('/vehicle', {
-            headers: {'x-access-token': $cookies.get('accessToken')},
             save: false,
+            headers: {'x-access-token': $cookies.get('accessToken')},
             params: {
               vehicleTypeId: vehicleTypeId
             }
