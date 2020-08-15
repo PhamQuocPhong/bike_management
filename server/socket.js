@@ -2,7 +2,10 @@ const sendMailService = require('./services/email')
 const UserNotification = require('./models/user_notification')
 const User = require('./models/user')
 const Employee = require('./models/employee')
+const Room = require('./models/room')
 const helper = require('./helpers/helper')
+// const redis = require("redis");
+// const client = redis.createClient({ detect_buffers: true });
 
 var users = {}
 
@@ -10,10 +13,41 @@ let addUser = (socket) => {
 
 	socket.on('ADD_USER', async (req, res) => {
 
-		console.log("add user sucess")
-
 		socket.userId = req.userId
 		users[socket.userId] = socket
+
+	})	
+}
+
+let userJoinRoom = (socket) => {
+
+	socket.on('USER_JOIN_ROOM', (req, res) => {
+		var roomId = req.roomId
+		socket.join(roomId)
+	})
+}
+
+let userLeaveRoom = (socket) => {
+
+	socket.on('USER_LEAVE_ROOM', (req, res) => {
+		var roomId = req.roomId
+
+		socket.leave(roomId, () => {
+
+		    socket.to(roomId).emit('USER_LEAVE_ROOM', {message: "User has left the room"});
+		});
+	})
+}
+
+let sendMessenger = (socket) => {
+
+	socket.on('SEND_MESSENGER', (req, res) => {
+		var roomId = req.roomId
+		var message = req.message
+		var userId = req.userId
+
+
+		socket.to(roomId).emit('SEND_MESSENGER', {message: message, userId: userId})
 
 	})
 }
@@ -69,5 +103,8 @@ module.exports = {
 	sendMail: sendMail,
 	addUser: addUser,
 	sendNotify: sendNotify,
-	removeUser: removeUser 
+	removeUser: removeUser,
+	sendMessenger: sendMessenger, 
+	userJoinRoom: userJoinRoom,
+	userLeaveRoom: userLeaveRoom
 }

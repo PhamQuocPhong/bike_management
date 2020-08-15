@@ -23,9 +23,7 @@ let getNotificationUser = async (req, res) => {
 
 	try {
 
-
 		var before7Days = moment().subtract(7, 'days').format("YYYY-MM-DD HH:mm:ss")
-
 		const userNotfiy = await UserNotification.findAll({
 			include: [
 				{
@@ -61,7 +59,10 @@ let getNotificationUser = async (req, res) => {
 				createdAt: {
 					[Op.gte]: before7Days
 				}
-			}
+			},
+
+			offset: offset, 
+			limit: itemPerPage, 
 		})
 
 		var retrieveData = []

@@ -33,6 +33,7 @@
     "toastr": "^2.1.4",
     "vue": "^2.6.10",
     "vue-chartjs": "^3.5.0",
+    "vue-chat-scroll": "^1.4.0",
     "vue-cookies": "^1.7.0",
     "vue-facebook-login-component": "^2.3.0",
     "vue-google-oauth2": "^1.5.4",

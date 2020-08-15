@@ -116,13 +116,13 @@
           </v-card-actions>
       </v-card>
     </v-dialog>
-     <confirm-dialog 
+    <confirm-dialog 
       :returnConfirm.sync="returnConfirm" 
       :showConfirm.sync="showConfirm"
       title="Confirm Payment"
       content="🔥 Will this payment be made as soon as you agree? Are you sure?"
      >
-     </confirm-dialog>
+    </confirm-dialog>
   </v-layout>
 </template>
 

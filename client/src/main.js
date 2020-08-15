@@ -26,22 +26,24 @@ Vue.use(new VueSocketIO({
     connection: 'http://localhost:4200',
     vuex: {
         store,
-        actionPrefix: 'SOCKET_',
-        mutationPrefix: 'SOCKET_'
+        actionPrefix: '',
+        mutationPrefix: ''
     },
     // options: { path: "/my-app/" } //Optional options
 }))
 
 
 // component
-import confirmDialog from '@/components/custom/dialog/Confirm.vue'
-import breadCrumbs from '@/components/custom/BreadCrumbs'
-import labelTable from '@/components/custom/LabelTable'
+import ConfirmDialog from '@/components/custom/dialog/Confirm.vue'
+import PinDialog from '@/components/custom/dialog/Pin.vue'
+import BreadCrumbs from '@/components/custom/BreadCrumbs'
+import LabelTable from '@/components/custom/LabelTable'
 	
 
-Vue.component('confirm-dialog', confirmDialog)
-Vue.component('breadcrumbs', breadCrumbs)
-Vue.component('label-table', labelTable)
+Vue.component('confirm-dialog', ConfirmDialog)
+Vue.component('breadcrumbs', BreadCrumbs)
+Vue.component('label-table', LabelTable)
+Vue.component('pin-dialog', PinDialog)
 
 require('moment/locale/es');
 

@@ -35,7 +35,6 @@
 			          		<th>No.</th>
 	    					<th>Customer name</th>
 	    					<th>Customer phone</th>
-	    					<th>Status bike</th>
 	    					<th>Progess transaction</th>
 	    					<th class="text-center">Action</th>
 				        </tr>
@@ -47,15 +46,6 @@
 				        	</td>
 					    	<td>{{item.customer.name}}</td>
 					    	<td>{{item.customer.phoneNumber}}</td>
-					    	<td>
-					    		<v-chip :color="$helper.colorStatusBike(item.bikeStatus)"  class="justify-center status-bike" small dark v-if="item.bikeStatus"> 
-					    			{{item.bikeStatus}} 
-					    		</v-chip>
-
-					    		<v-chip :color="$helper.colorStatusBike(item.bikeStatus)"  class="justify-center status-bike" small  dark v-else>
-					    			waiting 
-					    		</v-chip>
-					    	</td>
 					    	<td>
 					    		<v-chip small :color="$helper.colorStatusTransaction(item)" dark >
 					    			{{item.status}}	
@@ -82,15 +72,6 @@
 			        			</li>
 			        			<li class="flex-item" data-label="Customer name">{{item.customer.name}}</li>
 						    	<li class="flex-item" data-label="Customer phone">{{item.customer.phoneNumber}}</li>
-						    	<li class="flex-item" data-label="Status bike">
-						    		<v-chip :color="$helper.colorStatusBike(item.bikeStatus)"  class="justify-center status-bike" small dark v-if="item.bikeStatus"> 
-						    			{{item.bikeStatus}} 
-						    		</v-chip>
-
-						    		<v-chip :color="$helper.colorStatusBike(item.bikeStatus)"  class="justify-center status-bike" small  dark v-else>
-						    			waiting 
-						    		</v-chip>
-						    	</li>
 						    	<li class="flex-item" data-label="Progess transaction">
 						    		<v-chip small :color="$helper.colorStatusTransaction(item)" dark >
 						    			{{item.status}}	

@@ -81,12 +81,8 @@
 
                             <template v-slot:item.bikeStatus="{ item }">
                               
-                                <v-chip :color="$helper.colorStatusBike(item.bikeStatus)"  class="justify-center status-bike" small dark v-if="item.bikeStatus"> 
+                                <v-chip :color="$helper.colorStatusBike(item.bikeStatus)"  class="justify-center status-bike" small dark> 
                                   {{item.bikeStatus}} 
-                                </v-chip>
-
-                                <v-chip :color="$helper.colorStatusBike(item.bikeStatus)"  class="justify-center status-bike" small  dark v-else>
-                                  Waiting 
                                 </v-chip>
 
                             </template>

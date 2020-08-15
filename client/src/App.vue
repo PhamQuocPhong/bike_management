@@ -36,7 +36,7 @@ export default {
  					toastr.success(data.message, '', {timeOut: 1000})
  				}		
 
-           		this.sockets.listener.unsubscribe('SEND_NOTIFY');
+           		// this.sockets.listener.unsubscribe('SEND_NOTIFY');
             })
 		}
 

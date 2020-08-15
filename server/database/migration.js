@@ -21,6 +21,8 @@ const VehicleSuggest = require('../models/vehicle_suggest')
 const Sales = require('../models/sales')
 const SalesCustomerBuy = require('../models/sales_customer_buy')
 const UserNotification = require('../models/user_notification')
+const Room = require('../models/room')
+const UserInRoom = require('../models/user_in_room')
 
 
 VehicleType.hasMany(Vehicle, {onDelete: 'cascade', hooks:true})
@@ -118,3 +120,10 @@ UserNotification.belongsTo(User, {onDelete: 'cascade', hooks:true, foreignKey: '
 User.hasMany(UserNotification, {onDelete: 'cascade', hooks:true , foreignKey: 'receiverId'})
 User.hasMany(UserNotification, {onDelete: 'cascade', hooks:true , foreignKey: 'senderId'})
 
+// user room
+UserInRoom.belongsTo(User, {onDelete: 'cascade', hooks:true })
+UserInRoom.belongsTo(Room, {onDelete: 'cascade', hooks:true })
+User.hasMany(UserInRoom, {onDelete: 'cascade', hooks:true })
+Room.hasMany(UserInRoom, {onDelete: 'cascade', hooks:true })
+
+Room.belongsTo(User, {onDelete: 'cascade', hooks:true })

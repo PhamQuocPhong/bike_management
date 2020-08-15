@@ -52,6 +52,7 @@ const vehicleTypeRouter = require('./routes/vehicle_type')
 const reportRouter = require('./routes/report')
 const notifyRouter = require('./routes/notification')
 const userRouter = require('./routes/user')
+const roomRouter = require('./routes/room')
 
 app.use('/api/auth/', authRouter)
 app.use('/api/dashboard/', dasboardRouter)
@@ -66,6 +67,7 @@ app.use('/api/vehicle-type/', auth.isAuth, vehicleTypeRouter)
 app.use('/api/report/', reportRouter)
 app.use('/api/notify/', notifyRouter)
 app.use('/api/user/', auth.isAuth, userRouter)
+app.use('/api/room/', auth.isAuth, roomRouter)
 
 
 
@@ -73,7 +75,7 @@ app.use('/api/user/', auth.isAuth, userRouter)
 
 //Connect database
 db.sync().then(function() {
-     // { force: true }
+     // { force: true } 
 	app.listen(port)
   	console.log(`Server is listening on port ${port}`)
 }).catch(function(err) {
@@ -92,7 +94,9 @@ io.on('connection', (socket) => {
 	socketModules.sendMail(socket)
   socketModules.sendNotify(socket)
 	socketModules.removeUser(socket)
-
+  socketModules.sendMessenger(socket)
+  socketModules.userJoinRoom(socket)
+  socketModules.userLeaveRoom(socket)
 	socket.on('disconnect', () => {
 
 	})

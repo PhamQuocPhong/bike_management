@@ -55,6 +55,11 @@ import Auth from '@/services/auth'
 import User from './views/user/User'
 import Profile from './views/user/Profile'
 
+import Chat from './views/chat/Chat'
+import ChatIndex from './views/chat/Index'
+import Room from './views/chat/room/Room'
+import RoomIndex from './views/chat/room/Index'
+
 import store from './store/index'
 
 
@@ -254,6 +259,42 @@ const routes = [
 						path: 'profile',
 						component: Profile,
 						name: 'profile',
+					},
+				]
+			},
+
+			{
+				path: 'chat',
+				component: Chat,
+				meta: {
+					breadCrumb: 'Chat'
+				},
+				name: 'chat',
+				children: [
+					{
+						path: '/',
+						component: ChatIndex,
+						name: 'chatIndex',
+						meta: {
+							breadCrumb: 'List Room'
+						},
+					},
+
+					{
+						path: 'room',
+						component: Room,
+						name: 'room',
+
+						meta: {
+							breadCrumb: 'Room'
+						},
+
+						children: [
+							{
+								path: ':id',
+								component: RoomIndex,
+							}
+						]
 					},
 				]
 			}

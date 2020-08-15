@@ -33,6 +33,7 @@
     "puppeteer": "^5.0.0",
     "puppeteer-core": "^5.0.0",
     "randomstring": "^1.1.5",
+    "redis": "^3.0.2",
     "sequelize": "^5.21.5",
     "socket.io": "^2.3.0",
     "web-push": "^3.4.4"
