@@ -67,6 +67,8 @@
 </template>
 
 <script>
+
+import HTTP from '@/services/http'
 export default {
 	data(){
 		return {

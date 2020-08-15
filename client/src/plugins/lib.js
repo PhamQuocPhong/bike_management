@@ -1,10 +1,12 @@
 import Vue from 'vue';
 import VueResizeText from 'vue-resize-text'
 import VueProgressBar from 'vue-progressbar'
-import Loading from 'vue-loading-overlay';
+import Loading from 'vue-loading-overlay'
 import colors from 'vuetify/lib/util/colors'
-import 'vue-loading-overlay/dist/vue-loading.css';
+import 'vue-loading-overlay/dist/vue-loading.css'
 
+import VueChatScroll from 'vue-chat-scroll'
+Vue.use(VueChatScroll)
 
 Vue.use(Loading, {
 	  canCancel: true, // default false

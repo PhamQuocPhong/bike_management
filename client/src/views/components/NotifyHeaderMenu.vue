@@ -69,6 +69,13 @@
 		          ></v-divider>
 		        </template>
 		      </v-list-item-group>
+		       <v-progress-linear
+		        v-show="loadingProgress"
+		        :indeterminate="loadingProgress"
+		        absolute
+		        bottom
+		        color="cyan"
+		      ></v-progress-linear>
 		    </v-list>
 	  	</v-menu>
 </v-layout>
@@ -76,7 +83,7 @@
 
 <style scoped="">
 .v-list {
-  height: 200px;
+  height: 300px;
   overflow-y: auto;
 }	
 </style>
@@ -92,7 +99,12 @@ export default {
 		    visible: false,
 		    userInfo: this.$cookies.get('dataUser'),
 		    userNotifications: [],
-		    loadData: false
+		    loadData: false,
+		    page: 1,
+		    itemPerPage: 10,
+		    type: 'notify',
+		    loadingProgress: false,
+		    nextPageAllow: true
 		}
 	},
 
@@ -102,15 +114,20 @@ export default {
 
 	watch: {
 		visible(val){
-			return val === false ? UserNotification.deleteAll() : this.retrieveData()
+			if(!val){
+				UserNotification.deleteAll()
+				this.resetData()
+
+			}
+			this.retrieveData()
 		}
 	},
 
 	methods: {
 		async retrieveData(){
 			var userId = this.userInfo.id
-			var type = 'notify'
-			const res = await UserNotification.api().fetchPaging(userId, type)
+			var page = this.page
+			const res = await UserNotification.api().fetchPaging(userId, this.type, this.page, this.itemPerPage)
 			if(res.response.status === 200){
 				UserNotification.insert({data: res.response.data.data})
 				this.userNotifications = res.response.data.data
@@ -119,20 +136,38 @@ export default {
 
 		async onScroll(e){
 
-			if(e.target.scrollHeight - 200 === e.target.scrollTop){
+			if(e.target.scrollHeight - 300 === e.target.scrollTop){
 				this.loadData = true
-				if(this.loadData === true){
+				if(this.loadData === true && this.nextPageAllow !== false){
+					this.loadingProgress = true
+					this.page++
 					var userId = this.userInfo.id
 					var type = 'notify'
-					 UserNotification.api().fetchPaging(userId, type).then(res => {
-					 	console.log(res)
-					 })
+
+					setTimeout(() => {
+						UserNotification.api().fetchPaging(userId, type, this.page, this.itemPerPage).then(res => {
+
+							if(res.response.data.data.length > 0){
+								this.userNotifications.push(...res.response.data.data)
+							}else{
+								this.nextPageAllow = false				
+							}
+							this.loadingProgress = false	
+						})
+					}, 500)
 				}
 				else{
 					this.loadData = false
 				}
 			}
+		},
 
+		resetData(){
+			this.userNotifications = []
+		    this.loadData = false
+		    this.page = 1
+		    this.loadingProgress = false
+		    this.nextPageAllow = true
 		}
 	},
 

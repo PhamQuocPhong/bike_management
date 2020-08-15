@@ -18,6 +18,7 @@ import VehicleSuggest from '../models/vehicle_suggest'
 import VehiclePurchase from '../models/vehicle_purchase'
 import VehicleRepair from '../models/vehicle_repair'
 import UserNotification from '../models/user_notification'
+import Room from '../models/room'
 import Modal from '../models/modal'
 
 // modules
@@ -46,6 +47,7 @@ database.register(VehicleSuggest)
 database.register(VehiclePurchase)
 database.register(VehicleRepair)
 database.register(UserNotification)
+database.register(Room)
 
 database.register(Modal, ModalModules)
 export default database

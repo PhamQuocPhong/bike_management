@@ -119,6 +119,7 @@ export default {
 	        		link: '/manage', 
 	        		action: 'mdi-view-dashboard', 
 	        		active: false,
+	        		position: 1,
 	        		items: [
 	        			{ title: 'Vehicle Purchase ', link: '/manage/vehicle-purchase', icon: 'mdi-moped',   },
 	        			{ title: 'Vehicle Repair', link: '/manage/vehicle-repair', icon: 'mdi-moped',   },
@@ -128,9 +129,10 @@ export default {
 
 	        listMenu: [
 	        	{ title: 'Sales', link: '/sales', icon: 'mdi-point-of-sale', permission: null, position: 4 },
-	        	{ title: 'Warehouse', link: '/warehouse', icon: 'mdi-recycle', permission: null  },
-	        	{ title: 'Orders', link: '/orders', icon: 'mdi-billboard', permission: null  },
-	        	{ title: 'Setting', link: '/settings', icon: 'fa fa-cog', permission: null  },
+	        	{ title: 'Warehouse', link: '/warehouse', icon: 'mdi-recycle', permission: null, position: 1  },
+	        	{ title: 'Orders', link: '/orders', icon: 'mdi-billboard', permission: null, position: 1  },
+	        	{ title: 'Setting', link: '/settings', icon: 'fa fa-cog', permission: null, position: 1  },
+	        	{ title: 'Chatting', link: '/chat', icon: 'fa fa-comments', permission: null, position: null  },
 	        ],
 	        check: "admin"	
 		}

@@ -14,6 +14,10 @@ Vue.directive('check-position', {
 		var currentUser = $cookies.get('dataUser')
 		var employeeInfo = currentUser.employee
 
+		if(!binding.value){
+			return
+		}
+
 		if(employeeInfo.positionId === 1){
 			return
 		}

@@ -7,8 +7,9 @@ export default {
 		return !val ? 0 : parseInt(val)
 	},
 
-	colorStatusBike(val){
-		switch(val){
+	colorStatusBike(value){
+
+		switch(value){
     		case 'new':
     			return 'red'
     		break

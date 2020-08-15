@@ -104,6 +104,7 @@ import Transaction from '@/store/models/transaction'
 import TransactionDetailbuy from '@/store/models/transaction_detail_buy'
 
 
+import HTTP from '@/services/http'
 import Modal from '@/store/models/modal'
 
 

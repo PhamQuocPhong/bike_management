@@ -26,6 +26,7 @@ let getAllSales = async (req, res) => {
 }
 
 let getAllSalesPaging = async (req, res) => {
+	
 	var itemPerPage = req.query.itemPerPage
 	var page = req.params.page
 	var offset = 0
