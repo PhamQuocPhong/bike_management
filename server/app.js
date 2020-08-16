@@ -28,14 +28,7 @@ app.locals = require('./helpers/helper')
 
 
 app.use(express.json())
-const whitelist = ['http://localhost:4200'];
-const corsOptions = {
-  credentials: true, // This is important.
-  origin: (origin, callback) => {
-    if(whitelist.includes(origin))
-      return callback(null, true)
-  }
-}
+
 app.use(cors())
 
 // Load routes
@@ -70,13 +63,15 @@ app.use('/api/user/', auth.isAuth, userRouter)
 app.use('/api/room/', auth.isAuth, roomRouter)
 
 
+// conect socket
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
 
-
+server.listen(port)
 
 //Connect database
 db.sync().then(function() {
-     // { force: true } 
-	app.listen(port)
+     // { force: true }
   	console.log(`Server is listening on port ${port}`)
 }).catch(function(err) {
   console.log(err)
@@ -84,10 +79,7 @@ db.sync().then(function() {
 })
 
 
-// Connect socket
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
-server.listen(4200)
+
 
 io.on('connection', (socket) => {
   socketModules.addUser(socket)

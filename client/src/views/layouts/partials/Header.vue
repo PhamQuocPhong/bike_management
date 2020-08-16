@@ -11,6 +11,16 @@
 			</div>
 		  	<v-spacer></v-spacer>
 
+		  	<div style="width: 60px;">
+		  		<v-btn 
+		  		icon 
+		  		@click="switchMode()"
+		  		>
+	              <v-icon>{{modeIcon}}</v-icon>
+	            </v-btn>
+
+		  	</div>
+
 			<div style="width: 60px;">
 				<email-header></email-header>
 			</div>
@@ -74,16 +84,18 @@ export default {
 				{title: 'Logout', icon: 'mdi-login-variant', link: '/auth/logout'},
 			],
 			userInfo: this.$cookies.get('dataUser'),
-			
 		}
 	},
 
 	mounted(){
-
+		this.$vuetify.theme.dark = this.getTheme()
 	},
 
 	watch: {
 		visible(val){
+			console.log(val)
+		},
+		themeStorage(val){
 			console.log(val)
 		}
 	},
@@ -97,11 +109,32 @@ export default {
             	this.drawer = true
                 return false
             }
+        },
+
+        switchMode(){
+
+        	var theme = this.getTheme()
+
+        	theme = !theme 
+        	this.$vuetify.theme.dark = theme
+
+        	this.setTheme(theme)
+
+        },
+
+        setTheme(val){
+        	localStorage.setItem("mode", JSON.stringify(val)) 
+        },
+
+        getTheme(){
+        	return JSON.parse(localStorage.getItem("mode"))
         }
     },
    	
    	computed: {
-
+   		modeIcon(){
+   			return this.themeStorage ? 'mdi-brightness-4' : 'mdi-brightness-5'
+   		},
    	}
 
 }

@@ -4,6 +4,7 @@ const User = require('./models/user')
 const Employee = require('./models/employee')
 const Room = require('./models/room')
 const helper = require('./helpers/helper')
+const config = require('./config')
 // const redis = require("redis");
 // const client = redis.createClient({ detect_buffers: true });
 
@@ -97,6 +98,16 @@ let removeUser = (socket) => {
 
 		console.log("remove success")
 	})
+}
+
+
+let showUsersInRoom = (socket) => {
+	// socket.on('REMOVE_USER', (req, res) => {
+	// 	var userId = req.userId
+	// 	delete users[userId]
+
+	// 	console.log("remove success")
+	// })
 }
 
 module.exports = {

@@ -147,7 +147,7 @@ import EditCustomerBuy from './Edit.vue'
 // store
 import ReceptionCustomerBuy from '@/store/models/reception_customer_buy'
 import Modal from '@/store/models/modal'
-
+import ComponentStore from '@/store/models/component'
 
 
 export default{
@@ -157,8 +157,11 @@ export default{
 	},
 
 	async created(){
-		
-		this.retrieveData()
+		ComponentStore.dispatch('loadingProgress', {option: 'show'})
+		setTimeout( async() => {
+			await this.retrieveData()
+			ComponentStore.dispatch('loadingProgress', {option: 'hide'})
+		}, 500)
 	},
 
 	data(){
@@ -200,15 +203,13 @@ export default{
 	    },
 
 	    async retrieveData(){
-	    	var progress =  this.$Progress
-			progress.start()
-			const res = await ReceptionCustomerBuy.api().fetchPaging(this.currentPage, this.itemsPerPage)
+    		const res = await ReceptionCustomerBuy.api().fetchPaging(this.currentPage, this.itemsPerPage)
 			if(res.response.status === 200){
 				this.loadData = true
 				ReceptionCustomerBuy.insert({data: res.response.data.data})
-				progress.finish()
+				ComponentStore.dispatch('loadingProgress', {option: 'hide'})
 			}else{
-				progress.fail()
+				ComponentStore.dispatch('loadingProgress', {option: 'hide'})
 			}
 	    }
 

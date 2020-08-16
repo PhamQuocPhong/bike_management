@@ -6,6 +6,7 @@ const VehicleSuggest = require('../models/vehicle_suggest')
 const Sales = require('../models/sales')
 const Vehicle = require('../models/vehicle')
 const sendMailService = require("../services/email")
+const config = require('../config')
 
 let getAllSales = async (req, res) => {
 
@@ -80,7 +81,7 @@ let suggestVehiclesForCustomer = async (req, res) => {
 
 	var salesCustomerBuyUpdate = await SalesCustomerBuy.update({
 		customerRequire: salesCustomerBuy.customerRequire,
-		contactFlg: 1,
+		contactFlg: config.sales.CONTACTED_FLG,
 		status: 'confirm'
 	}, 
 	{	where: {

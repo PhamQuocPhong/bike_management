@@ -20,10 +20,12 @@ import VehicleRepair from '../models/vehicle_repair'
 import UserNotification from '../models/user_notification'
 import Room from '../models/room'
 import Modal from '../models/modal'
+import Component from '../models/component'
 
 // modules
 import VehicleTestModules from '../modules/vehicle_test'
 import ModalModules from '../modules/modal'
+import ComponentModules from '../modules/component'
 
 const database = new Database()
 
@@ -50,4 +52,5 @@ database.register(UserNotification)
 database.register(Room)
 
 database.register(Modal, ModalModules)
+database.register(Component, ComponentModules)
 export default database

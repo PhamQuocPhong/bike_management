@@ -5,7 +5,6 @@ const config = {
   baseApiUrl:  process.env.VUE_APP_ROOT_API
 }
 
-
 export default {
   install (Vue) {
     Vue.appConfig = config

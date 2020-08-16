@@ -1,6 +1,7 @@
 <template>
     <v-app>
-    	<vue-progress-bar></vue-progress-bar>
+    	<progress-bar></progress-bar>
+    	<!-- <vue-progress-bar></vue-progress-bar> -->
     	<router-view></router-view>
   	</v-app>
 </template>
@@ -14,7 +15,13 @@
 
 
 <script>
+import ProgressBar from './components/custom/HeaderProgress.vue'
 export default {
+
+	components: {
+		'progress-bar': ProgressBar
+	},
+
 	data(){
 		return {
 			userInfo: this.$cookies.get('dataUser')

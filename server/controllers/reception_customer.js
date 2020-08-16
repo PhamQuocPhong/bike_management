@@ -10,6 +10,8 @@ const SalesCustomerBuy = require('../models/sales_customer_buy')
 const Sales = require('../models/sales')
 const AwsService = require('../services/aws')
 const helperFunctions = require('../helpers/function')
+const config = require('../config')
+
 const POSITION_MANAGE_ID = 1
 const { Op } = require("sequelize")
 
