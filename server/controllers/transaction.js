@@ -12,6 +12,8 @@ const helpers =  require('../helpers/function')
 const moment = require('moment')
 const sequelize = require('../database/db')
 const { Op } = require("sequelize")
+const config = require('../config')
+
 let createTransaction = async (req, res) => {
 
 	var transactionData = req.body.transaction
@@ -33,7 +35,7 @@ let createTransaction = async (req, res) => {
 						transactionId: newTransaction.id
 					})
 
-					Vehicle.update({valid: 0}, {
+					Vehicle.update({valid: config.vehicle.UNVALID}, {
 						where: {
 							id: item.vehicleId
 						}

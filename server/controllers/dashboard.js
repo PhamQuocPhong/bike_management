@@ -12,11 +12,13 @@ const helper = require('../helpers/helper')
 const moment = require('moment'); 
 const { Op } = require("sequelize")
 const sequelize = require('../database/db')
+const config = require('../config')
+
 
 let getAllVehiclesSold = async (req, res) => {
 	return await Vehicle.count({
 		where: {
-			valid: 0
+			valid: config.vehicle.UNVALID
 		}
 	})
 }
@@ -96,7 +98,7 @@ let getVehicleChart = async(req, res) => {
 
 	var getBikesSold = await Vehicle.count({
 		where: {
-			vehicleTypeId: 1,
+			vehicleTypeId: config.vehicleType.MOTOR_BIKE,
 			valid: 0,
 			[Op.and]: [
 				sequelize.where(sequelize.fn("date_part",'year', sequelize.col("createdAt")), {
@@ -108,7 +110,7 @@ let getVehicleChart = async(req, res) => {
 
 	var getBikesBuy= await Vehicle.count({
 		where: {
-			vehicleTypeId: 1,
+			vehicleTypeId: config.vehicleType.MOTOR_BIKE,
 			valid: 1,
 			[Op.and]: [
 				sequelize.where(sequelize.fn("date_part",'year', sequelize.col("createdAt")), {
@@ -120,7 +122,7 @@ let getVehicleChart = async(req, res) => {
 
 	var getCarsSold = await Vehicle.count({
 		where: {
-			vehicleTypeId: 2,
+			vehicleTypeId: config.vehicleType.CAR,
 			valid: 0,
 			[Op.and]: [
 				sequelize.where(sequelize.fn("date_part",'year', sequelize.col("createdAt")), {
@@ -132,8 +134,8 @@ let getVehicleChart = async(req, res) => {
 
 	var getCarsBuy = await Vehicle.count({
 		where: {
-			vehicleTypeId: 2,
-			valid: 1,
+			vehicleTypeId: config.vehicleType.CAR,
+			valid: config.vehicle.VALID,
 			[Op.and]: [
 				sequelize.where(sequelize.fn("date_part",'year', sequelize.col("createdAt")), {
 		            [Op.eq]: 2020

@@ -16,6 +16,10 @@ export default {
     fileSize(val, name, size){
     	var converSize = size * 1024000 // convert to MB
     	return val => !val || val.size < converSize || `${name} size should be less than ${size} MB!`
+    },
+
+    phoneNumber(val){
+        return val => /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(val) || 'Phone number must be valid'
     }	
 
 }

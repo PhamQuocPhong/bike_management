@@ -10,11 +10,8 @@ const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE || "365d"
 const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-secret-quocphong@gmail.com"
 const sendMailService = require("../services/email")
 const randomString = require('randomstring')
-const permission = {
-  admin: 2,
-  user: 3,
-  guest: 4
-}
+const config = require('../config')
+
 
 let tokenList = {}
 /**
@@ -86,6 +83,7 @@ let register = async (req, res) => {
       email: email,
       password: bcrypt.hashSync(password, 10),
       rememberToken: verifyCode,
+      RoleId: config.userRole.EMPLYOEE
     })
 
     if(newUser){
@@ -152,7 +150,7 @@ let loginSocial = async (req, res) => {
     if(findUser){
       return res.status(200).json({message: "Login success"})
     }else{
-      userData.RoleId = permission.guest
+      userData.RoleId = config.userRole.GUEST
       var newUser = await User.create(userData)
       if(newUser){
 

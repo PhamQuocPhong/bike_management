@@ -41,17 +41,3 @@ VuexORM.use(VuexORMAxios, {
 
 export default store
 
-
-
-// import authModule from './auth/store.js'
-// import receptionModule from './reception/store.js'
-// import customerModule from './customer/store.js'
-
-// export default new Vuex.Store({
-//    modules: {
-//   	storeAuth: authModule,
-//   	storeReception: receptionModule,
-//   	storeCustomer: customerModule,
-//   },
-// })
-

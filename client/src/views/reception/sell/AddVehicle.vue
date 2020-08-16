@@ -63,7 +63,19 @@
                           ></v-text-field>
                         </v-col>
 
-                       <v-col cols="6">
+                        <v-col cols="6">
+                          <v-select
+                            :items="vehicleStatus"
+                            label="Bike status"
+                            v-model="vehicleItem.bikeStatus"
+                             :rules="[
+                              $validation.required(vehicleItem.bikeStatus, 'Bike status'), 
+                            ]" 
+                          ></v-select>
+                        </v-col>
+
+
+                         <v-col cols="6">
                            <v-file-input  
                            label="Image"
                            small-chips
@@ -115,28 +127,12 @@ export default {
       return{
         lazy: false,
         valid: true,
-        nameRules: [
-          v => !!v || 'Name is required',
-        ],
 
-        codeRules: [
-          v => !!v || 'Code is required',
-        ],
-
-        typeRules: [
-          v => !!v || 'Type is required',
-        ],
-
-        registrationPlateRules: [
-          v => !!v || 'Registration plate is required',
-        ],
-
-        colorRules: [
-          v => !!v || 'Color is required',
-        ],
-
-        imageRules: [
-          v => !v || v.size < 204000 || 'Image size should be less than 2 MB!',
+        vehicleStatus: [
+          "waiting",
+          "normal",
+          "new",
+          "old"
         ],
 
         image: null,

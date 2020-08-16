@@ -8,7 +8,10 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 Vue.use(Vuetify);
 
-
+const themeCache = {
+	get: key => localStorage.getItem(key),
+    set: (key, value) => localStorage.setItem(key, value),
+}
 
 export default new Vuetify({
 	icons: {
@@ -17,16 +20,20 @@ export default new Vuetify({
   	theme: {
   		dark: false,
 	    themes: {
-	      light: {
-	        primary: colors.blue.darken4, // #E53935
-	        secondary: colors.red.lighten4, // #FFCDD2
-	        accent: colors.indigo.base, // #3F51B5
-	        error: {
-	        	base: colors.red.darken1,
-	        	darken4: colors.red.darken4,
-	        }
-	      },
+	      	light: {
+		        primary: colors.blue.darken4, // #E53935
+		        secondary: colors.red.lighten4, // #FFCDD2
+		        accent: colors.indigo.base, // #3F51B5
+		        error: {
+		        	base: colors.red.darken1,
+		        	darken4: colors.red.darken4,
+		        }
+		    },
 	    },
+
+	    options: {
+	    	themeCache
+	    }
   	},
 
 

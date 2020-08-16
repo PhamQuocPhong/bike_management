@@ -8,7 +8,7 @@ const VehicleRepair = require('../models/vehicle_repair')
 const helperFunctions = require('../helpers/function')
 const helper = require('../helpers/helper')
 const AwsService = require('../services/aws')
-
+const config = require('../config')
 
 let createVehicle = async(req, res) => {
 
@@ -16,7 +16,7 @@ let createVehicle = async(req, res) => {
 	var lastBike = await helperFunctions.getLastRecord(Vehicle, {vehicleTypeId: 1})
 
 	var vehicleType = null
-	if(data.vehicleTypeId === 1){
+	if(data.vehicleTypeId === config.vehicleType.MOTOR_BIKE){
 		vehicleType = 'bike'
 	}else{
 		vehicleType = 'car'
@@ -38,13 +38,13 @@ let createVehicle = async(req, res) => {
 			name: data.name,
 			registrationPlate: data.registrationPlate,
 			color: data.color,
-			quantity: 1,
+			quantity: config.vehicle.QUANTITY_DEFAULT,
 			image: urlImage,
 			price: data.price,
 			fixPrice: data.fixPrice,
 			buyPrice: data.price,
 			vehicleTypeId: data.vehicleTypeId,
-			valid: 1
+			valid: config.vehicle.VALID,
 		})
 		return res.status(200).json({message: "Create success", data: newVehicle })
 
@@ -87,7 +87,7 @@ let getAllVehicleByType = async (req, res) => {
 	const vehicles = await Vehicle.findAll({
 		where: {
 			vehicleTypeId: vehicleTypeId,
-			valid: 1
+			valid: config.vehicle.VALID,
 		}
 	})
 	return res.status(200).json(vehicles)
@@ -240,13 +240,13 @@ let publishVehicleRepair = async (req, res) => {
 				code: vehiclePurchase.code,
 				registrationPlate: vehiclePurchase.registrationPlate,
 				color: vehiclePurchase.color,
-				quantity: 1,
+				quantity: config.vehicle.QUANTITY_DEFAULT,
 				image: vehiclePurchase.image,
 				price: vehicleRepair.price,
 				fixPrice: vehicleRepair.fixPrice,
 				buyPrice: vehiclePurchase.price,
 				vehicleTypeId: vehiclePurchase.vehicleTypeId,
-				valid: 1
+				valid: config.vehicle.VALID,
 			})
 		
 

@@ -26,7 +26,7 @@ Vue.use(Loading, {
 Vue.use(VueProgressBar, {
   color: 'rgb(143, 255, 199)',
   failedColor: 'red',
-  height: '2px'
+  height: '5px'
 })
 
 

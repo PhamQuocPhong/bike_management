@@ -45,19 +45,22 @@
 							      Visit ten places on our planet that are undergoing the biggest changes today.
 							    </v-card-text>
 
-							    <v-card-actions>
+							    <v-card-actions class="justify-end">
 							      <v-btn
 							      	@click="joinRoom(item.id)"
 							      	outlined
 							        text
-							        color="deep-purple accent-4"
+							        color="white"
+							        class="primary"
 							      >
 							      	<v-icon>mdi-plus</v-icon>
 							        Join
 							      </v-btn>
 
-							      <v-spacer></v-spacer>
-							      <v-btn text color="primary">
+							      <v-btn 
+							      text  
+							      color="white"
+							      class="primary">
 							      	50
 							        <v-icon>mdi-account</v-icon>
 							      </v-btn>

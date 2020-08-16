@@ -5,6 +5,7 @@
 		item-text="fullName"
 		return-object
 		v-model="getEmployee"
+		:rules="employeeRules"
 	></v-select>
 </template>
 
@@ -13,7 +14,7 @@ import Employee from '@/store/models/employee'
 
 export default {
 
-	props: ['positionId', 'employee', 'label'],
+	props: ['positionId', 'employee', 'label', "employeeRules"],
 
 	data(){
 		return {

@@ -22,7 +22,9 @@
 
 		        <v-text-field
 		            v-model="newCustomer.name"
-		            :rules="nameRules"
+		            :rules="[
+		               $validation.required(newCustomer.phoneNumber, 'Customer name'), 
+                    ]"
 		            label="Full Name"
 		            required
 		        ></v-text-field>
@@ -30,14 +32,20 @@
 		        <v-text-field
 		            v-model="newCustomer.phoneNumber"
 		            :counter="10"
-		            :rules="phoneRules"
+		            :rules="[
+		               $validation.required(newCustomer.phoneNumber, 'Phone number'), 
+                       $validation.phoneNumber(newCustomer.phoneNumber), 
+                    ]"
 		            label="Phone Number"
 		            required
 		        ></v-text-field>
 
 		        <v-text-field
 		            v-model="newCustomer.email"
-		            :rules="emailRules"
+		            :rules="[
+                       $validation.required(newCustomer.email, 'Email'), 
+                       $validation.email(newCustomer.email), 
+                    ]"
 		            label="Email"
 		            required
 		        ></v-text-field>
@@ -52,6 +60,9 @@
 		        	:employee.sync="employeeTest" 
 		        	:positionId.sync="technicalTestPosition"
 		        	label="Technical test"
+		        	:employeeRules="[
+                       $validation.required(technicalTestPosition, 'Technical test'), 
+                    ]"
 		        > 
 		        </employee-dropdown>
 
@@ -183,30 +194,6 @@ export default {
       return {
       	
         valid: true,
-        name: '',
-        nameRules: [
-        	v => !!v || 'Name is required',
-        ],
-        phoneRules: [
-        	v => !!v || 'Phone number is required',
-        ],
-
-        emailRules: [
-        	v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-        ],
-
-        vehicleTypeRules: [
-        	v => !!v || 'Vehicle type must be valid',
-        ],
-
-        bikeCodeRules: [
-        	v => !!v || 'Vehicle code must be valid',
-        ],
-
-        registrationPlateRules: [
-        	v => !!v || 'Registration plate must be valid',
-        ],
-
         lazy: false,
         vehicleIndex: null,
         vehicleItem: null,

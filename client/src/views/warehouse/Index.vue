@@ -10,6 +10,9 @@
 			<v-flex :class="{'pa-4': !isMobile}">
 		    	<v-card flat>
 			    	<v-row no-gutters>
+
+			    		<v-btn class="mr-4" small color="primary" @click="create()">Create</v-btn>
+
 						<v-spacer></v-spacer>
 		    			<v-col md="4" sm="6" cols="12">
 		    				<v-text-field
