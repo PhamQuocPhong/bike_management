@@ -84,6 +84,7 @@ export default {
 				{title: 'Logout', icon: 'mdi-login-variant', link: '/auth/logout'},
 			],
 			userInfo: this.$cookies.get('dataUser'),
+			theme: this.getTheme()
 		}
 	},
 
@@ -113,12 +114,10 @@ export default {
 
         switchMode(){
 
-        	var theme = this.getTheme()
+        	this.theme = !this.theme 
+        	this.$vuetify.theme.dark = this.theme
 
-        	theme = !theme 
-        	this.$vuetify.theme.dark = theme
-
-        	this.setTheme(theme)
+        	this.setTheme(this.theme)
 
         },
 
@@ -133,7 +132,7 @@ export default {
    	
    	computed: {
    		modeIcon(){
-   			return this.themeStorage ? 'mdi-brightness-4' : 'mdi-brightness-5'
+   			return this.theme ? 'mdi-brightness-4' : 'mdi-brightness-5'
    		},
    	}
 
