@@ -71,7 +71,6 @@ const routes = [
 	{
 		path: '/auth',
 		component: LayoutLogin,
-		meta: { requireAuth: true },
 		name: 'auth',
 		children: [
 			{
@@ -89,12 +88,13 @@ const routes = [
 				component: Logout,
 				name:'logout'
 			},
-			{
-				path: 'forbidden',
-				component: ForbiddenPage,
-				name: 'forbidden',
-			}
 		]
+	},
+
+	{
+		path: '/forbidden',
+		component: ForbiddenPage,
+		name: 'forbidden',
 	},
 
 	{
@@ -331,6 +331,7 @@ router.beforeEach((to, from, next) => {
 	  	else{
 	  		next()
 	  	}
+	  	return next()
 	}
 	return next()
 })

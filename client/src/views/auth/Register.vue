@@ -141,9 +141,7 @@ export default {
     },
 
     redirectLogin(){
-      this.$router.push({path: '/auth/login'}).catch((err) => {
-        throw new Error(`Problem handling something: ${err}.`);
-      });
+      this.$router.push('/auth/login')
     }
 
   },

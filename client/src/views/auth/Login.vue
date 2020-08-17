@@ -179,19 +179,20 @@ export default {
         data.password = ''
         data.providerId = googleUser.getId()
         data.providerType = googleUser.getAuthResponse().idpId
-        data.fullName = googleUser.getBasicProfile().Ad
+        data.fullName = googleUser.getBasicProfile().Cd
         data.accessToken = googleUser.getAuthResponse().access_token
         data.expires = googleUser.getAuthResponse().expires_in
 
+
          Auth.loginSocial(data, 'google').then(res => {
-          
+
             if(res.status === 200){
-              this.$cookies.set('dataUser', res.data.findUser)
-              this.$cookies.set('accessToken', res.data.accessToken)
-              this.$cookies.set('refreshToken', res.data.refreshToken)
+              this.$cookies.set('dataUser', res.data.data.userInfo)
+              this.$cookies.set('accessToken', res.data.data.accessToken)
+              this.$cookies.set('refreshToken', res.data.data.refreshToken)
 
               this.$socket.emit('ADD_USER', {
-                userId: res.data.findUser.id
+                userId: res.data.data.userInfo.id
               })
 
               this.$router.push('/dashboard')
@@ -206,7 +207,6 @@ export default {
     async loginFacebook() {
 
       FB.getLoginStatus((res) => {
-
 
         FB.login((res) => {
 
@@ -227,14 +227,17 @@ export default {
 
               Auth.loginSocial(data, 'facebook').then(res => {
 
-                console.log(res)
-          
-                // if(res.status === 200){
-                //   this.$cookies.set('dataUser', res.data.findUser)
-                //   this.$cookies.set('accessToken', res.data.accessToken)
-                //   this.$cookies.set('refreshToken', res.data.refreshToken)
-                //   this.$router.push('admin/reception')
-                // }
+                if(res.status === 200){
+                  this.$cookies.set('dataUser', res.data.data.userInfo)
+                  this.$cookies.set('accessToken', res.data.data.accessToken)
+                  this.$cookies.set('refreshToken', res.data.data.refreshToken)
+
+                  this.$socket.emit('ADD_USER', {
+                    userId: res.data.data.userInfo.id
+                  })
+
+                  this.$router.push('/dashboard')
+                }
               })
 
             })

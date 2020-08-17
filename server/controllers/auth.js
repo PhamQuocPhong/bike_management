@@ -83,7 +83,7 @@ let register = async (req, res) => {
       email: email,
       password: bcrypt.hashSync(password, 10),
       rememberToken: verifyCode,
-      RoleId: config.userRole.EMPLYOEE
+      roleId: config.userRole.EMPLYOEE
     })
 
     if(newUser){
@@ -138,28 +138,63 @@ let refreshToken = async (req, res) => {
 let loginSocial = async (req, res) => {
 
   var userData = req.body
-
   try{
+
     var findUser = await User.findOne({
       where: {
         providerId: userData.providerId
-      }
+      },
+      include: {
+        model: Employee
+      },
     })
 
     // if exist user => return 
     if(findUser){
-      return res.status(200).json({message: "Login success"})
+
+      delete findUser.password
+
+      const accessToken = await jwtHelper.generateToken(findUser.id, accessTokenSecret, accessTokenLife)
+      const refreshToken = await jwtHelper.generateToken(findUser.id, refreshTokenSecret, refreshTokenLife)
+      tokenList[refreshToken] = {accessToken, refreshToken}
+
+      return res.status(200).json({message: "Login success", data: {
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+        userInfo: findUser,
+      }})
     }else{
-      userData.RoleId = config.userRole.GUEST
+
+      userData.roleId = config.userRole.GUEST
       var newUser = await User.create(userData)
       if(newUser){
 
-        Employee.create({
+        await Employee.create({
           fullName: userData.fullName,
-          UserId: newUser.id
+          userId: newUser.id,
+          positionId: 3
         })
 
-        return res.status(200).json({message: "Login success"})
+        var findUser = await User.findOne({
+          where: {
+            providerId: userData.providerId
+          },
+          include: {
+            model: Employee
+          },
+        })
+
+        delete findUser.password
+        const accessToken = await jwtHelper.generateToken(findUser.id, accessTokenSecret, accessTokenLife)
+        const refreshToken = await jwtHelper.generateToken(findUser.id, refreshTokenSecret, refreshTokenLife)
+        tokenList[refreshToken] = {accessToken, refreshToken}
+
+
+        return res.status(200).json({message: "Login success", data: {
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+          userInfo: findUser,
+        }})
       }
     }
 
