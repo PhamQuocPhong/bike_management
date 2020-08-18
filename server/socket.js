@@ -5,8 +5,10 @@ const Employee = require('./models/employee')
 const Room = require('./models/room')
 const helper = require('./helpers/helper')
 const config = require('./config')
+const randomString = require('randomstring')
 // const redis = require("redis");
 // const client = redis.createClient({ detect_buffers: true });
+
 
 var users = {}
 
@@ -45,9 +47,7 @@ let sendMessenger = (socket) => {
 	socket.on('SEND_MESSENGER', (req, res) => {
 		var roomId = req.roomId
 		var message = req.message
-		var userId = req.userId
-
-
+		var userId = req.userId		
 		socket.to(roomId).emit('SEND_MESSENGER', {message: message, userId: userId})
 
 	})
@@ -99,7 +99,6 @@ let removeUser = (socket) => {
 		console.log("remove success")
 	})
 }
-
 
 let showUsersInRoom = (socket) => {
 	// socket.on('REMOVE_USER', (req, res) => {

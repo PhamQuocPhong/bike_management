@@ -25,7 +25,7 @@ let login = async (req, res) => {
 
 	try {
     const findUser = await User.findOne({
-      attributes: ['id','email', 'password', 'roleId'],
+      attributes: ['id','email', 'password', 'avatar', 'roleId'],
       where: {
         email: email
       },
@@ -138,11 +138,12 @@ let refreshToken = async (req, res) => {
 let loginSocial = async (req, res) => {
 
   var userData = req.body
+
   try{
 
     var findUser = await User.findOne({
       where: {
-        providerId: userData.providerId
+        email: userData.email
       },
       include: {
         model: Employee
@@ -163,6 +164,9 @@ let loginSocial = async (req, res) => {
         refreshToken: refreshToken,
         userInfo: findUser,
       }})
+
+
+
     }else{
 
       userData.roleId = config.userRole.GUEST
@@ -177,7 +181,7 @@ let loginSocial = async (req, res) => {
 
         var findUser = await User.findOne({
           where: {
-            providerId: userData.providerId
+            id: newUser.id
           },
           include: {
             model: Employee

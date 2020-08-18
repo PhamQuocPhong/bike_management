@@ -7,7 +7,7 @@
 			</label-table>
 		</v-row>
 		<v-row>
-			<v-flex class="pa-4">
+			<v-flex :class="{'pa-4': !isMobile}">
 		    	<v-card flat>
 			    	<v-row no-gutters>
 
@@ -155,8 +155,8 @@
 
 <script>
 
-import Vehicle from '@/store/models/vehicle'
-import VehicleType from '@/store/models/vehicle_type'
+import Room from '@/store/models/room'
+
 import Modal from '@/store/models/modal'
 
 import CreateComponent from './Create.vue'
@@ -238,8 +238,6 @@ export default{
            		this.isMobile = true;
           	else
             	this.isMobile = false;
-
-            console.log(this.isMobile)
 	    }
 	},
 

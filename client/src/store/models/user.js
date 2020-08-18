@@ -7,7 +7,8 @@ export default class User extends Model {
     return {
       id: this.attr(null),
       email: this.attr(null),
-      password: this.attr(null)
+      password: this.attr(null),
+      avatar: this.attr(null),
     }
   }
 }

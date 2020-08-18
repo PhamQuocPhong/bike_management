@@ -13,14 +13,14 @@
                 >
                   <v-container>
                     <v-row v-if="newVehicle">
-                      <v-col cols="6">
+                      <v-col md="4" sm="6" cols="12">
                         <v-text-field 
                         label="Name"
                         v-model="newVehicle.name"
              
                         ></v-text-field>
                       </v-col>
-                      <v-col cols="6">
+                      <v-col md="4" sm="6" cols="12">
                        <v-select
                         :items="vehicleTypes"
                         v-model="newVehicle.vehicleType"
@@ -30,7 +30,7 @@
                       ></v-select>
                       </v-col>
 
-                      <v-col cols="6">
+                      <v-col md="4" sm="6" cols="12">
                         <v-text-field 
                         label="Color" 
                         type="text" 
@@ -38,7 +38,7 @@
                         ></v-text-field>
                       </v-col>
 
-                      <v-col cols="6">
+                      <v-col md="4" sm="6" cols="12">
                         <v-text-field 
                         label="Registration plate" 
                         type="text" 
@@ -47,7 +47,7 @@
                         ></v-text-field>
                       </v-col>
 
-                      <v-col cols="6">
+                      <v-col md="4" sm="6" cols="12">
                         <v-text-field 
                         label="Buy price" 
                         type="number" 
@@ -55,7 +55,7 @@
                         ></v-text-field>
                       </v-col>
 
-                      <v-col cols="6">
+                      <v-col md="4" sm="6" cols="12">
                         <v-text-field 
                         label="Price" 
                         type="number" 

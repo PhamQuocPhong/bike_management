@@ -20,11 +20,10 @@ module.exports = {
 		CONTACTED_FLG: 1,
 	},
 
-
 	notify: {
 		EMAIL: 'email',
 		NOTICE: 'notify',
-		MESSAGE: 'message',
+		MESSENGER: 'messenger',
 	},
 
 	statusVehicleTest: {

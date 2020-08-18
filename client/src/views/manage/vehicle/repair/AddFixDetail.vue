@@ -13,14 +13,14 @@
                   <v-container>
                         <v-row v-if="getVehicleRepair">
 
-                          <v-col cols="6">
+                          <v-col cols="12" md="4" sm="6">
                             <v-text-field 
                             label="Accessory name" 
                             v-model="accessory"
                             ></v-text-field>
                           </v-col>
 
-                          <v-col cols="6">
+                          <v-col cols="12" md="4" sm="6">
                             <v-select
                               :items="employeeTechnicalTests"
                               v-model="employee"
@@ -30,7 +30,7 @@
                             ></v-select>
                           </v-col>
 
-                          <v-col cols="6">
+                          <v-col cols="12" md="4" sm="6">
                             <v-menu
                               ref="menu1"
                               v-model="menu1"

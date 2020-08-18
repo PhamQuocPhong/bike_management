@@ -2,6 +2,7 @@
 <v-layout>
 	<v-menu
 	  	transition="slide-y-transition"
+	  	class="menu"
 	  	v-model="visible"
 	  	>
 	  		<template v-slot:activator="{ on: activeNotify }" >
@@ -28,7 +29,7 @@
 
 	  		<v-list two-line
 	  		v-scroll.self="onScroll"
-	  		width="500"
+	  		min-width="500"
 	  		>
 		      <v-list-item-group
 		        multiple
@@ -77,7 +78,7 @@
 		        color="cyan"
 		      ></v-progress-linear>
 		    </v-list>
-	  	</v-menu>
+	</v-menu>
 </v-layout>
 </template>
 
@@ -86,6 +87,10 @@
   height: 300px;
   overflow-y: auto;
 }	
+.menu{
+	z-index: 10;
+}
+
 </style>
 
 <script>

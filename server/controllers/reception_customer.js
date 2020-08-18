@@ -277,7 +277,7 @@ let getReceptionCustomerBuyPaging = async (req, res) => {
 					]
 				}
 			],
-			conditionGetData
+			where: conditionGetData
 		})
 
 		const counts  = Math.ceil(await ReceptionCustomerBuy.count({ where: conditionGetData} ) / itemPerPage ) 

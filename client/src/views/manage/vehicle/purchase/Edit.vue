@@ -13,21 +13,21 @@
                   <v-container>
                         <v-row v-if="getVehiclePurchase">
 
-                          <v-col cols="6">
+                          <v-col cols="12" md="4" sm="6">
                             <v-text-field 
                             label="Customer name" 
                             v-model="getVehiclePurchase.name"
                             ></v-text-field>
                           </v-col>
 
-                          <v-col cols="6">
+                          <v-col cols="12" md="4" sm="6">
                             <v-text-field 
                             label="Code" 
                             v-model="getVehiclePurchase.code"
                             ></v-text-field>
                           </v-col>
 
-                          <v-col cols="6">
+                          <v-col cols="12" md="4" sm="6">
                             <v-text-field 
                             label="Registration Plate" 
                             type="text" 
@@ -35,7 +35,7 @@
                             ></v-text-field>
                           </v-col>
 
-                          <v-col cols="6">
+                          <v-col cols="12" md="4" sm="6">
                             <v-text-field 
                             label="Status" 
                             type="text" 
@@ -43,7 +43,7 @@
                             ></v-text-field>
                           </v-col>
 
-                          <v-col cols="6">
+                          <v-col cols="12" md="4" sm="6">
                             <v-text-field 
                             label="Price" 
                             type="text" 
@@ -51,10 +51,8 @@
                             ></v-text-field>
                           </v-col>
 
-                          <v-col cols="6">
-
+                          <v-col cols="12" md="4" sm="6" v-if="getVehiclePurchase.image">
                             <v-img  height="50" width="100" contain :src="getVehiclePurchase.image"></v-img>
-
                            </v-col>
                         </v-row>
 

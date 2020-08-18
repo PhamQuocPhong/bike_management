@@ -109,7 +109,7 @@ export default {
       if(!tokenUser){
         return  next()
       }
-      return next({path: 'admin/reception'})
+      return next({path: '/dashboard'})
   },
 
   data(){
@@ -175,7 +175,8 @@ export default {
       try{
         const googleUser = await this.$gAuth.signIn()
         var data = {}
-        data.email = googleUser.getBasicProfile().yu
+
+        data.email = googleUser.getBasicProfile().$t || googleUser.getBasicProfile().yu
         data.password = ''
         data.providerId = googleUser.getId()
         data.providerType = googleUser.getAuthResponse().idpId
@@ -216,7 +217,8 @@ export default {
             var authResponse = res.authResponse
 
             FB.api('/me', {fields: 'id, name, email'}, (res) => {
-              
+
+
               data.email = res.email
               data.password = ''
               data.providerId = authResponse.userID
