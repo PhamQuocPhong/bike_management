@@ -2,7 +2,7 @@
   <v-layout row justify-center>
     <v-dialog v-model="technicalTestEdit" persistent max-width="700" v-if="getVehicleTest">
       <v-card>
-          <v-card-title class="headline d-flex pb-4"> ReceptionDeal </v-card-title>
+          <v-card-title class="headline d-flex pb-4"> Technical Test </v-card-title>
 
           <v-card-text class="mt-4">
               <v-form
@@ -12,7 +12,7 @@
               >
                 <v-container>
                       <v-row v-if="getVehicleTest">                
-                        <v-col cols="6">
+                        <v-col cols="12" md="4" sm="6">
 
                           <v-select
                             :items="vehicleTypes"
@@ -25,7 +25,7 @@
                           ></v-select>
                         </v-col>
 
-                      <v-col cols="6">
+                      <v-col cols="12" md="4" sm="6">
                           <v-text-field 
                           label="Bike Code" 
                           type="text" 
@@ -35,7 +35,7 @@
                           ></v-text-field>
                         </v-col>
 
-                        <v-col cols="6">
+                        <v-col cols="12" md="4" sm="6">
                           <v-text-field 
                           label="Registration Plate" 
                           type="text" 
@@ -45,7 +45,7 @@
                           ></v-text-field>
                         </v-col>
 
-                        <v-col cols="6">
+                        <v-col cols="12" md="4" sm="6">
                           <v-select
                             :items="statusBikes"
                             v-model="getVehicleTest.bikeStatus"
@@ -59,7 +59,7 @@
                           ></v-select>
                         </v-col>
 
-                        <v-col cols="6">
+                        <v-col cols="12" md="4" sm="6">
                           <v-text-field 
                             label="Min price" 
                             type="number" 
@@ -73,7 +73,7 @@
                         </v-col>
 
 
-                        <v-col cols="6">
+                        <v-col cols="12" md="4" sm="6">
                           <v-text-field 
                             label="Max price" 
                             type="number" 

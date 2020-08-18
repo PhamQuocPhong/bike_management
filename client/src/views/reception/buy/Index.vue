@@ -149,11 +149,6 @@ export default {
 	    },
 	    create: async function(){
 
-	    	this.$socket.emit('SEND_NOTIFY', {
-          		userId: 1
-          	})
-	    	return false
-
 	    	var vm = this
 	    	if (this.$refs.form.validate()) {
 

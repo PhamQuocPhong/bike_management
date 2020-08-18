@@ -1,12 +1,14 @@
+const path = require( "path" )
+require('dotenv').config({path: path.resolve('../.env')})
 const VehicleTest = require('../models/vehicle_test')
 const VehicleRepair= require('../models/vehicle_repair')
 const TechnicalRepair= require('../models/technical_repair')
 const Vehicle = require('../models/vehicle')
 const Employee = require('../models/employee')
-
 const helpers = require('../helpers/helper')
 const { Op } = require("sequelize");
 const puppeteer = require("puppeteer")
+const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'
 
 let checkConfirmReception = async (receptionCustomerSellId) => {
 
@@ -70,7 +72,7 @@ let printTransactionPDF = async (condition, callback) => {
 
 	var param = condition.param
 	var query = condition.query
-	var getURL  = 'http://localhost:3000/api/report/view/' + param + '/?'
+	var getURL  = BASE_URL + '/api/report/view/' + param + '/?'
 	if(!query){
 		return
 	}
@@ -84,13 +86,12 @@ let printTransactionPDF = async (condition, callback) => {
 	}
 
 	const browser = await puppeteer.launch({
-		headless: true,
+		headless: false,
 		args:['--no-sandbox', '--disable-setuid-sandbox']
     });
 	const page = await browser.newPage();
 	await page.goto(getURL, {waitUntil: 'networkidle0'});
 	const pdf = await page.pdf({ format: 'A4',  printBackground: true, pageRanges: '1-5' });
-	 
 	await browser.close();
 
 	if(typeof callback === 'function'){
@@ -103,7 +104,7 @@ let printTransactionDetailPDF = async (condition, callback) => {
 
 	var param = condition.param
 	var query = condition.query
-	var getURL  = 'http://localhost:3000/api/report/view/detail/' + param + '/?'
+	var getURL  =  BASE_URL +'/api/report/view/detail/' + param + '/?'
 	if(!query){
 		return
 	}

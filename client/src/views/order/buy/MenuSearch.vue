@@ -106,11 +106,11 @@ export default {
 			   }
 	    	})
 	    	const blob = new Blob([res.data], {type: 'application/pdf'})
-	       const link = document.createElement('a')
-	       link.href = window.URL.createObjectURL(blob)
-	       link.download = `report.pdf`
-	       link.click()
-	    	loader.hide()
+		    const link = document.createElement('a')
+		    link.href = window.URL.createObjectURL(blob)
+		    link.download = `report.pdf`
+		    link.click()
+		   	loader.hide()
 	    },
 	},
 

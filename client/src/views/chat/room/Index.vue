@@ -6,22 +6,34 @@
 
 	          <v-spacer></v-spacer>
 
-	          <v-menu 
-	          offset-y
-	          transition="slide-x-transition"
-	          >
+		        <v-menu 
+		          offset-y
+		          transition="slide-x-transition"
+		          >
 	          	<template v-slot:activator="{ on }">
-	           		<v-btn icon v-on="on" color="primary" dark slot="activator">
-	           			<v-icon>mdi-account</v-icon>
+	           		<v-btn icon v-on="on"  dark slot="activator">
+	           			<v-icon>mdi-dots-vertical</v-icon>
 	           		</v-btn>
 	           	</template>
-	            <v-list>
-	              <v-list-item v-for="(item, index) in menu" :key="index">
-		  				<v-list-item-content>
-		  					<v-list-item-title>{{item.title}}</v-list-item-title>
-		  				</v-list-item-content>
-		  			</v-list-item>
-	            </v-list>
+
+	            <v-list two-line
+		  		>
+				    <v-list-item-group
+				    >
+				      	<template v-for="(item, index) in menu" >
+				            <v-list-item >
+				              	 <template>
+						            <v-list-item-icon>
+							      		<v-icon>{{item.icon}}</v-icon>
+							      	</v-list-item-icon>
+					  				<v-list-item-content>
+					  					<v-list-item-title class="font-weight-bold">{{item.title}}</v-list-item-title>
+					  				</v-list-item-content>
+					  			</template>
+					  		</v-list-item>
+					  	</template>
+	        		</v-list-item-group>
+	        	</v-list>
 	          </v-menu>
 	        </v-toolbar>
 
@@ -41,7 +53,7 @@
 		        		<v-subheader class="header-name">{{item.username}}</v-subheader>
 		        		<v-list-item v-if="item.userId !== userInfo.id">
 		        			<v-list-item-avatar class="logo-img">
-					            <v-img src="https://cdn.vuetifyjs.com/images/john.jpg"></v-img>
+					            <v-img :src="userInfo.avatar"></v-img>
 					        </v-list-item-avatar>
 					        <v-list-item-title>
 					        	<v-chip :ripple="false">{{item.message}}</v-chip>
@@ -53,7 +65,7 @@
 		        	 	<v-list-item 
 		        	 	class="justify-end"
 		        	 	>
-		        	 		<v-chip color="secondary" :ripple="false">{{item.message}}</v-chip>
+		        	 		<v-chip color="pink" :ripple="false">{{item.message}}</v-chip>
 		        	 	</v-list-item>
 		        	</div>
 
@@ -68,7 +80,7 @@
 	        <v-card-actions >
 	     		<v-col cols="12">
 	     			<v-spacer></v-spacer>
-	     			<v-col class="d-flex float-right" cols="6">
+	     			<v-col class="d-flex float-right" md="5" sm="6" cols="12">
 		     		  	<v-text-field
 		     		  		v-model="message"
 				            solo
@@ -76,6 +88,7 @@
 				            label="Message"
 				            hide-details="auto"
 				            @click:clear="clearMessage"
+				            class="textfield__message"
 				          ></v-text-field>
 				          <v-btn @click.sync="send" fab dark small color="primary" class="ml-4 pa-3">
 				            <v-icon dark>send</v-icon>
@@ -103,6 +116,14 @@
 .header-name{
 	margin-bottom: -15px;
 	margin-top: -10px;
+}
+
+.theme--dark.textfield__message .v-input__slot{
+	background: #383838 !important;
+}
+
+.v-chip.pink{
+	color: #fff;
 }
 
 </style>
@@ -139,11 +160,13 @@ export default{
 
       		menu: [
       			{
-      				title: "Nodejs"
+      				icon: "mdi-account-group",
+      				title: "Users in room"
       			},
 
       			{
-      				title: "PHP"
+      				icon: "mdi-arrow-left-bold-circle-outline",
+      				title: "Leave the room"
       			}
       		],
 

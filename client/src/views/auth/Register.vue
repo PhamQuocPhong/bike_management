@@ -96,6 +96,14 @@ import Employee from '@/store/models/employee'
 import Auth from '@/services/auth'
 export default {
 
+   beforeRouteEnter (to, from, next) {
+      const tokenUser = $cookies.get('accessToken')
+      if(!tokenUser){
+        return  next()
+      }
+      return next({path: '/dashboard'})
+  },
+
   data(){
     return{
       valid: true,

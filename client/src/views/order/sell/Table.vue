@@ -109,7 +109,7 @@ import TransactionDetailbuy from '@/store/models/transaction_detail_buy'
 
 
 import Modal from '@/store/models/modal'
-
+import HTTP from '@/services/http'
 
 
 export default{

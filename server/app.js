@@ -11,6 +11,8 @@ const socketModules = require('./socket')
 require('./database/migration')
 
 
+
+
 // app.use(express.static(__dirname  + '/public'))
 app.use('/static', express.static(path.join(__dirname, 'public')))
 app.use(bodyParser.urlencoded({
@@ -62,7 +64,6 @@ app.use('/api/notify/', notifyRouter)
 app.use('/api/user/', auth.isAuth, userRouter)
 app.use('/api/room/', auth.isAuth, roomRouter)
 
-
 // conect socket
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
@@ -93,3 +94,5 @@ io.on('connection', (socket) => {
 
 	})
 })
+
+

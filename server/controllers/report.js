@@ -56,6 +56,8 @@ let reportTransactionView = async(req, res) => {
 	var transactionId = req.query.transactionId
 	var transactionData = null
 	var condition = {}
+
+
 	if(mode === 'sell'){
 		condition.mode = 'sell'
 

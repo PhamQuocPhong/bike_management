@@ -16,8 +16,6 @@ aws.config.update({
   // region: region
 })
 
-console.log(path.join('/server'))
-
 
 let uploadImageBase64 = async (image, callback) => {
 

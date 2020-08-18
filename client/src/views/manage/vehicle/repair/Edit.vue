@@ -11,21 +11,21 @@
                 >
                   <v-container>
                         <v-row v-if="getVehicleRepair">
-                          <v-col cols="6">
+                          <v-col cols="12" md="4" sm="6">
                             <v-text-field 
                             label="Customer name" 
                             v-model="getVehicleRepair.vehiclePurchase.name"
                             ></v-text-field>
                           </v-col>
 
-                          <v-col cols="6">
+                          <v-col cols="12" md="4" sm="6">
                             <v-text-field 
                             label="Note" 
                             v-model="getVehicleRepair.note"
                             ></v-text-field>
                           </v-col>
 
-                          <v-col cols="6">
+                          <v-col cols="12" md="4" sm="6">
                             <v-text-field 
                             label="Total fix price" 
                             v-model.number="getVehicleRepair.fixPrice"
@@ -33,7 +33,7 @@
                             ></v-text-field>
                           </v-col>
 
-                          <v-col cols="6">
+                          <v-col cols="12" md="4" sm="6">
                             <v-text-field 
                             label="Price" 
                             v-model.number="getVehicleRepair.price"
@@ -41,7 +41,7 @@
                             ></v-text-field>
                           </v-col>
 
-                           <v-col cols="6">
+                           <v-col cols="12" md="4" sm="6">
                             <v-menu
                               ref="startDate1"
                               :close-on-content-click="false"
@@ -65,7 +65,7 @@
                           </v-col>
 
 
-                          <v-col cols="6">
+                          <v-col cols="12" md="4" sm="6">
                             <v-menu
                               ref="startDate2"
                               :close-on-content-click="false"
@@ -88,7 +88,7 @@
                             </v-menu>
                           </v-col>
 
-                          <v-col cols="6">
+                          <v-col cols="12" md="4" sm="6">
                             <v-switch 
                             label="Approve Fixed" 
                             v-model="approveFlg"
@@ -96,7 +96,7 @@
                             </v-switch>
                           </v-col>
 
-                          <v-col cols="6">
+                          <v-col cols="12" md="4" sm="6">
                             <v-card flat tile>
                               <v-img 
                               aspect-ratio="2"

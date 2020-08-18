@@ -34,7 +34,7 @@
 		  	>
 		  		<template v-slot:activator="{ on: activeMenu }" >
 		  			<v-avatar v-on="activeMenu">
-		  				<img  src="https://cdn.vuetifyjs.com/images/john.jpg" alt="Avatar">
+		  				<img  :src="userInfo.avatar" alt="Avatar">
 		  			</v-avatar>
 		  		</template>
 		  		<v-list >
@@ -89,6 +89,7 @@ export default {
 	},
 
 	mounted(){
+		console.log(this.userInfo)
 		this.$vuetify.theme.dark = this.getTheme()
 	},
 
