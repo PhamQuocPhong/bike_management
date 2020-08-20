@@ -19,56 +19,75 @@
 		       		 	<p class="text-center title">Customer Info</p> 
 		       		</v-flex>
 		       	</v-row>	
+		       	<v-row>
+			       	<v-col cols="12" md="12" sm="6">
+				        <v-text-field
+				            v-model="newCustomer.name"
+				            :rules="[
+				               $validation.required(newCustomer.phoneNumber, 'Customer name'), 
+		                    ]"
+				            label="Full Name"
+				            required
+				        ></v-text-field>
+				    </v-col>
+				</v-row>
 
-		        <v-text-field
-		            v-model="newCustomer.name"
-		            :rules="[
-		               $validation.required(newCustomer.phoneNumber, 'Customer name'), 
-                    ]"
-		            label="Full Name"
-		            required
-		        ></v-text-field>
+				<v-row>
+				   	<v-col cols="12" md="12" sm="6">
+				        <v-text-field
+				            v-model="newCustomer.phoneNumber"
+				            :counter="10"
+				            :rules="[
+				               $validation.required(newCustomer.phoneNumber, 'Phone number'), 
+		                       $validation.phoneNumber(newCustomer.phoneNumber), 
+		                    ]"
+				            label="Phone Number"
+				            required
+				        ></v-text-field>
+				    </v-col>
+				</v-row>
 
-		        <v-text-field
-		            v-model="newCustomer.phoneNumber"
-		            :counter="10"
-		            :rules="[
-		               $validation.required(newCustomer.phoneNumber, 'Phone number'), 
-                       $validation.phoneNumber(newCustomer.phoneNumber), 
-                    ]"
-		            label="Phone Number"
-		            required
-		        ></v-text-field>
+				<v-row>
+				    <v-col cols="12" md="12" sm="6">
+				        <v-text-field
+				            v-model="newCustomer.email"
+				            :rules="[
+		                       $validation.required(newCustomer.email, 'Email'), 
+		                       $validation.email(newCustomer.email), 
+		                    ]"
+				            label="Email"
+				            required
+				        ></v-text-field>
+				    </v-col>
+				</v-row>
 
-		        <v-text-field
-		            v-model="newCustomer.email"
-		            :rules="[
-                       $validation.required(newCustomer.email, 'Email'), 
-                       $validation.email(newCustomer.email), 
-                    ]"
-		            label="Email"
-		            required
-		        ></v-text-field>
+				<v-row>
+				    <v-col cols="12" md="12" sm="6">
+				        <v-text-field
+				            v-model="newCustomer.address"
+				            label="Address"
+				            required
+				        ></v-text-field>
+				    </v-col>
+				</v-row>
 
-		        <v-text-field
-		            v-model="newCustomer.address"
-		            label="Address"
-		            required
-		        ></v-text-field>
-
-		        <employee-dropdown 
-		        	:employee.sync="employeeTest" 
-		        	:positionId.sync="technicalTestPosition"
-		        	label="Technical test"
-		        	:employeeRules="[
-                       $validation.required(technicalTestPosition, 'Technical test'), 
-                    ]"
-		        > 
-		        </employee-dropdown>
+				<v-row>
+				    <v-col cols="12" md="12" sm="6">
+				        <employee-dropdown 
+				        	:employee.sync="employeeTest" 
+				        	:positionId.sync="technicalTestPosition"
+				        	label="Technical test"
+				        	:employeeRules="[
+		                       $validation.required(technicalTestPosition, 'Technical test'), 
+		                    ]"
+				        > 
+				        </employee-dropdown>
+				    </v-col>
+				</v-row>
 
 
-			    <v-row class="mb-6">
-			    	<v-col cols="12" sm="12" md="6" :key="index" v-for="(item, index) in vehicleTestArray">
+			    <v-row class="mb-6" v-if="vehicleTestArray.length">
+			    	<v-col cols="12" sm="12" md="12" :key="index" v-for="(item, index) in vehicleTestArray">
 			    		<v-hover
 					        v-slot:default="{ hover }"
 					        open-delay="200"
@@ -118,13 +137,14 @@
 			    	</v-col>
 				</v-row> 
 
-				<div class="d-flex">
+				<div :class="isMobile ? 'd-block' : 'd-flex'">
 
 					<v-btn 
 					color="success"
-					class="mr-4"
+					class="mr-4 mb-4"
 					@click="addVehicleBlock"
 					:small="isMobile"
+
 					>
 						Add vehicle
 					</v-btn>
@@ -137,6 +157,7 @@
 			        >
 			            Save
 			        </v-btn>
+
 			        <v-btn
 			            color="warning"
 			            @click="reset"
@@ -177,8 +198,12 @@ import HTTP from '@/services/http'
 import Modal from '@/store/models/modal'
 
 
+//mixin 
+import isMobile from '@/mixin/is_mobile'
 
 export default {
+
+	mixins: [isMobile],
 
 	components: {
 		'customer-sell': CustomerSellComponent,

@@ -1,5 +1,8 @@
 <template>
-    <v-layout row justify-center>
+    <v-layout 
+    row justify-center
+    
+    >
       <v-dialog v-model="manageVehicleRepairEdit" persistent max-width="900" v-if="getVehicleRepair">
         <v-card>
             <v-card-title class="headline d-flex pb-4"> Edit Vehicle Repair </v-card-title>
@@ -13,7 +16,7 @@
                         <v-row v-if="getVehicleRepair">
                           <v-col cols="12" md="4" sm="6">
                             <v-text-field 
-                            label="Customer name" 
+                            label="Vehicle purchase name" 
                             v-model="getVehicleRepair.vehiclePurchase.name"
                             ></v-text-field>
                           </v-col>

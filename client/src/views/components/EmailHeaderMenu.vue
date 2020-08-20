@@ -122,9 +122,9 @@ export default {
 			if(!val){
 				UserNotification.deleteAll()
 				this.resetData()
-
+			}else{
+				this.retrieveData()
 			}
-			this.retrieveData()
 		}
 	},
 
