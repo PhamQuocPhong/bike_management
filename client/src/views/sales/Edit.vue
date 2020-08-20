@@ -15,14 +15,14 @@
               >
                 <v-container>
                       <v-row>
-                        <v-col cols="6">
+                        <v-col md="4" sm="6" cols="12">
                           <v-text-field 
                           label="Name"
                           v-model="getSales.salesCustomerBuy.customer.name"
                           ></v-text-field>
                         </v-col>
 
-                        <v-col cols="6">
+                        <v-col md="4" sm="6" cols="12">
                           <v-text-field 
                           label="Phone number" 
                           type="text" 
@@ -35,7 +35,7 @@
                         flex 
                         :align="alignment"
                       >
-                          <v-col cols="3"> 
+                          <v-col md="3" sm="6" cols="12"> 
                             <v-select
                               label="Vehicle Type"
                               :items="vehicleTypes"
@@ -46,7 +46,7 @@
                             ></v-select>    
                           </v-col>
 
-                          <v-col cols="4"> 
+                          <v-col md="4" sm="6" cols="12"> 
                             <v-select
                               :items="vehicles"
                               label="Vehicle"
@@ -60,7 +60,7 @@
                           </v-col>
 
                           <v-col 
-                            cols="3"
+                            md="4" sm="6" cols="12"
                             class="text-center" 
                           >
                             <v-btn 

@@ -7,6 +7,7 @@
         <v-layout
           align-center
           justify-center
+          v-resize="onResize"
         >
             <v-flex
               xs12
@@ -64,16 +65,16 @@
                     </v-card-text>
 
                     <div class="text-center pb-8">
-                         <v-btn class="mx-2 text-capitalize"  dark  color="red darken-4" v-on:click="loginGoogle">
+    
+                        <v-btn :class="{'mx-2': !isMobile}"  dark  color="red darken-4" v-on:click="loginGoogle">
                           <v-icon dark>mdi-google-plus</v-icon>
                             <span class="pl-3">With Google</span> 
                         </v-btn>
 
-                        <v-btn class="mx-2 text-capitalize"  dark  color="primary" @click.sync="loginFacebook">
+                        <v-btn :class="{'mx-2': !isMobile}"  dark  color="primary" @click.sync="loginFacebook">
                           <v-icon dark>mdi-facebook</v-icon>
                             <span class="pl-3">With Facebook</span> 
                         </v-btn>
-
 
                     </div>
 
@@ -101,8 +102,12 @@ import User from '@/store/models/user'
 import Auth from '@/services/auth'
 import SocialAuth from '@/services/social_auth'
 
+//mixin 
+import IsMobile from '@/mixin/is_mobile'
 
 export default {
+
+  mixins: [IsMobile],
 
   beforeRouteEnter (to, from, next) {
       const tokenUser = $cookies.get('accessToken')

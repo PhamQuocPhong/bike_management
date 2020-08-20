@@ -13,13 +13,13 @@
                 >
                   <v-container>
                         <v-row v-if="receptionCustomerSell.customer">
-                          <v-col cols="6">
+                          <v-col cols="12" md="6" sm="6">
                             <v-text-field 
                             label="Customer name" 
                             v-model="receptionCustomerSell.customer.name"
                             ></v-text-field>
                           </v-col>
-                          <v-col cols="6">
+                          <v-col cols="12" md="6" sm="6">
                             <v-text-field 
                             label="Customer phone" 
                             type="text" 
@@ -150,16 +150,19 @@ import Modal from '@/store/models/modal'
 import ReceptionCustomerSell from '@/store/models/reception_customer_sell'
 import VehicleType from '@/store/models/vehicle_type' 
 
+// mixin
+import isMobile from '@/mixin/is_mobile'
 
 export default {
+
+    mixins: [isMobile],
 
     props: [ 'receptionCustomerSell'],
     components: {'transaction': TransactionComponent, 'vehicle-test': VehicleTestComponent},
 
     data(){
       return {
-        right: 10,
-        top: 10,
+
         valid: true,
         lazy: false,
         // rule form
