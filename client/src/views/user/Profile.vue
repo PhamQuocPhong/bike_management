@@ -196,8 +196,6 @@ export default {
     onResize() {
       if (window.innerWidth < 769) this.isMobile = true;
       else this.isMobile = false;
-
-      console.log(this.isMobile);
     }
   }
 };
