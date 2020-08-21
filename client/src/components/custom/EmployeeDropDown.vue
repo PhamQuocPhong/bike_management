@@ -1,42 +1,38 @@
 <template>
-	<v-select
-		:items="employees"
-		:label="label"
-		item-text="fullName"
-		return-object
-		v-model="getEmployee"
-		:rules="employeeRules"
-	></v-select>
+  <v-select
+    :items="employees"
+    :label="label"
+    item-text="fullName"
+    return-object
+    v-model="getEmployee"
+    :rules="employeeRules"
+  ></v-select>
 </template>
 
 <script type="text/javascript">
-import Employee from '@/store/models/employee'  
+import Employee from "@/store/models/employee";
 
 export default {
+  props: ["positionId", "employee", "label", "employeeRules"],
 
-	props: ['positionId', 'employee', 'label', "employeeRules"],
+  data() {
+    return {
+      employees: [],
+      getEmployee: this.employee
+    };
+  },
 
-	data(){
-		return {
-			employees: [],
-			getEmployee: this.employee
-		}
-	},
+  async created() {
+    const res = await Employee.api().getByPostion(this.positionId);
+    if (res.response.status === 200) {
+      this.employees = res.response.data.data;
+    }
+  },
 
-	async created(){
-		const res = await Employee.api().getByPostion(this.positionId)
-		if(res.response.status === 200){
-			this.employees = res.response.data.data
-
-		}
-	},
-
-	watch: {
-		getEmployee(val){
-			this.$emit('update:employee', this.getEmployee)
-		}
-	},
-
-
-}
+  watch: {
+    getEmployee() {
+      this.$emit("update:employee", this.getEmployee);
+    }
+  }
+};
 </script>

@@ -1,10 +1,10 @@
-import { Model } from '@vuex-orm/core'
-import Vehicle from './vehicle'
-import Transaction from './transaction'
+import { Model } from "@vuex-orm/core";
+import Vehicle from "./vehicle";
+import Transaction from "./transaction";
 export default class TransactionDetailSell extends Model {
-  static entity = 'transactionDetailSell'
+  static entity = "transactionDetailSell";
 
-  static fields () {
+  static fields() {
     return {
       id: this.attr(null),
       unitPrice: this.attr(null),
@@ -12,15 +12,12 @@ export default class TransactionDetailSell extends Model {
       totalPrice: this.attr(null),
       vehicleId: this.attr(null),
       transactionId: this.attr(null),
-      vehicle: this.belongsTo(Vehicle, 'vehicleId'),
-      transaction: this.belongsTo(Transaction, 'transactionId')
-    }
+      vehicle: this.belongsTo(Vehicle, "vehicleId"),
+      transaction: this.belongsTo(Transaction, "transactionId")
+    };
   }
 
   static apiConfig = {
-    actions: {
-   
-    }
-  }
+    actions: {}
+  };
 }
-

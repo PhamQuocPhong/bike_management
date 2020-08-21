@@ -1,43 +1,34 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import VuexORM from '@vuex-orm/core'
-import VuexORMAxios from '@vuex-orm/plugin-axios'
-import database from './database/index'
-import axios from 'axios'
-import ModalModules from './modules/modal'
+import Vue from "vue";
+import Vuex from "vuex";
+import VuexORM from "@vuex-orm/core";
+import VuexORMAxios from "@vuex-orm/plugin-axios";
+import database from "./database/index";
+import axios from "axios";
+import ModalModules from "./modules/modal";
 
-
-
-Vue.use(Vuex)
-
+Vue.use(Vuex);
 
 const store = new Vuex.Store({
+  state: {},
+  mutations: {
+    SOCKET_REMOVE_USER() {}
+  },
+  actions: {
+    SOCKET_REMOVE_USER() {
+      $cookies.remove("accessToken");
+      $cookies.remove("dataUser");
+    }
+  },
 
-    state: {},
-    mutations: {
-        SOCKET_REMOVE_USER() {
-
-        }
-    },
-    actions: {
-        SOCKET_REMOVE_USER() {
-            $cookies.remove('accessToken')
-            $cookies.remove('dataUser')
-        }
-    },
-
-	plugins: [VuexORM.install(database)]
-})
-
-
+  plugins: [VuexORM.install(database)]
+});
 
 VuexORM.use(VuexORMAxios, {
   axios,
-  headers: { 
-    'X-Requested-With': 'XMLHttpRequest',
+  headers: {
+    "X-Requested-With": "XMLHttpRequest"
   },
-  baseURL: process.env.VUE_APP_ROOT_API || 'http://localhost:3000/api'
-})
+  baseURL: process.env.VUE_APP_ROOT_API || "http://localhost:3000/api"
+});
 
-export default store
-
+export default store;

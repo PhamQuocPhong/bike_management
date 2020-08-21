@@ -1,14 +1,11 @@
-  
-import { Model } from '@vuex-orm/core'
+import { Model } from "@vuex-orm/core";
 
 export default class Modal extends Model {
-  static entity = 'modal'
+  static entity = "modal";
 
-  static fields () {
+  static fields() {
     return {
-      id: this.attr(null),
-
-    }
+      id: this.attr(null)
+    };
   }
-
 }

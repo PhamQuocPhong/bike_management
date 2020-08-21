@@ -1,44 +1,42 @@
 // import HTTP from '../../http'
 
 export default {
-  namespaced: true, 		
+  namespaced: true,
 
   state: {
-  	  vehicleTestArray: [],
-  },	
+    vehicleTestArray: []
+  },
 
   actions: {
-  	add({commit}, data){
-  		commit('add', data)
-  	},
-    remove({commit}, index){
-      commit('remove', index)
+    add({ commit }, data) {
+      commit("add", data);
     },
-    clear({commit}){
-      commit('clear')
+    remove({ commit }, index) {
+      commit("remove", index);
+    },
+    clear({ commit }) {
+      commit("clear");
     }
   },
 
   mutations: {
     add(state, payload) {
-      var index = payload.index
-      var item = payload.item
-      if(index == null){
-        state.vehicleTestArray.push(item)
+      var index = payload.index;
+      var item = payload.item;
+      if (index == null) {
+        state.vehicleTestArray.push(item);
+      } else {
+        state.vehicleTestArray[index] = item;
       }
-      else{
-        state.vehicleTestArray[index] = item
-      }
-      
     },
-    remove(state, index){
-      var vehicleTestArray = state.vehicleTestArray
-      vehicleTestArray.splice(index, 1)
-      state.vehicleTestArray = vehicleTestArray
+    remove(state, index) {
+      var vehicleTestArray = state.vehicleTestArray;
+      vehicleTestArray.splice(index, 1);
+      state.vehicleTestArray = vehicleTestArray;
     },
 
-    clear(state){
-      state.vehicleTestArray = []
+    clear(state) {
+      state.vehicleTestArray = [];
     }
   }
-}
+};

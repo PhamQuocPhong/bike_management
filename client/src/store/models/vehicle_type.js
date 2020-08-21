@@ -1,28 +1,27 @@
-import { Model } from '@vuex-orm/core'
+import { Model } from "@vuex-orm/core";
 
 export default class VehicleType extends Model {
-  static entity = 'vehicleType'
+  static entity = "vehicleType";
 
-  static fields () {
+  static fields() {
     return {
       id: this.attr(null),
-      name: this.attr(null),
-    }
+      name: this.attr(null)
+    };
   }
 
   static apiConfig = {
     actions: {
-      async fetchAll(){
+      async fetchAll() {
         try {
           return await this.get(`/vehicle-type/`, {
             save: false,
-            headers: {'x-access-token': $cookies.get('accessToken')},
-          })
-        } catch(error) {
-          return error.response
+            headers: { "x-access-token": $cookies.get("accessToken") }
+          });
+        } catch (error) {
+          return error.response;
         }
       }
     }
-  }
-
+  };
 }

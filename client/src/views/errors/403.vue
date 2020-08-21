@@ -5,7 +5,7 @@
         <h1>403</h1>
         <h5>Forbidden!</h5>
         <router-link class="btn btn-lg bg-yellow" to="/">
-          <i class="icon-fa icon-fa-arrow-left"/> Go Home
+          <i class="icon-fa icon-fa-arrow-left" /> Go Home
         </router-link>
       </div>
     </div>
@@ -13,6 +13,5 @@
 </template>
 
 <script>
-export default {
-}
+export default {};
 </script>

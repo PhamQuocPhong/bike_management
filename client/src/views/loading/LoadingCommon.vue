@@ -1,30 +1,27 @@
 <template>
-	<v-progress-circular
-      indeterminate
-      color="primary"
-      v-show="show"
-    ></v-progress-circular>
+  <v-progress-circular
+    indeterminate
+    color="primary"
+    v-show="show"
+  ></v-progress-circular>
 </template>
 
 <script>
-
 export default {
-	data(){
-		return{
-			show: false
-		}
-	},
+  data() {
+    return {
+      show: false
+    };
+  },
 
-	methods: {
+  methods: {
+    show() {
+      this.show = true;
+    },
 
-		show(){
-			this.show = true
-		},
-
-		hide(){
-			this.show = false
-		}
-	}
-}
-	
+    hide() {
+      this.show = false;
+    }
+  }
+};
 </script>
