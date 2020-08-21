@@ -1,31 +1,29 @@
-  
-import { Model } from '@vuex-orm/core'
+import { Model } from "@vuex-orm/core";
 
 export default class Customer extends Model {
-  static entity = 'cusomter'
+  static entity = "cusomter";
 
-  static fields () {
+  static fields() {
     return {
       id: this.attr(null),
       name: this.attr(null),
       email: this.attr(null),
       phoneNumber: this.attr(null),
-      address: this.attr(null),
-
-    }
+      address: this.attr(null)
+    };
   }
 
   static apiConfig = {
     actions: {
       fetchAll: {
-        method: 'get',
-        url: '/customer/list',
-        dataTransformer: (response) => {
-          return response.data
+        method: "get",
+        url: "/customer/list",
+        dataTransformer: response => {
+          return response.data;
         }
       }
     }
-  }
+  };
 
   // static fechAll(){
   //   const baseURL = 'http://localhost:3000/api/'
@@ -35,6 +33,4 @@ export default class Customer extends Model {
   //       }
   //     })
   // }
-
 }
-

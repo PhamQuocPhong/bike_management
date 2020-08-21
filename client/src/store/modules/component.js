@@ -1,30 +1,29 @@
 export default {
-  namespaced: true,      
+  namespaced: true,
 
   getters: {
     headerProgress: state => state.headerProgress
-  },      		
+  },
 
   state: {
-    headerProgress: false 
-  },	
+    headerProgress: false
+  },
 
   actions: {
-    // reception 
-    loadingProgress({commit}, data){
-      commit('loadingProgress', data)
-    },
-  
+    // reception
+    loadingProgress({ commit }, data) {
+      commit("loadingProgress", data);
+    }
   },
 
   mutations: {
-    loadingProgress(state, payload){
-      var option = payload.option
-      if(option === 'show'){
-        state.headerProgress = true
-        return
+    loadingProgress(state, payload) {
+      var option = payload.option;
+      if (option === "show") {
+        state.headerProgress = true;
+        return;
       }
-      state.headerProgress = false
-    },
+      state.headerProgress = false;
+    }
   }
-}
+};

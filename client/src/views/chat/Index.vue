@@ -1,174 +1,159 @@
 <template>
-	<v-container>
-		<v-row>
-			<label-table
-			title="Warehouse"
-			>
-			</label-table>
-		</v-row>
-		<v-row>
-			<v-flex :class="{'pa-4': !isMobile}">
-		    	<v-card flat>
-			    	<v-row no-gutters>
-						<v-spacer></v-spacer>
-		    			<v-col md="4" sm="6" cols="12">
-		    				<v-text-field
-					        v-model="search"
-					        append-icon="mdi-magnify"
-					        label="Search"
-					        single-line
-					        hide-details
-					      ></v-text-field>
-					    </v-col>
+  <v-container>
+    <v-row>
+      <label-table title="Warehouse"> </label-table>
+    </v-row>
+    <v-row>
+      <v-flex :class="{ 'pa-4': !isMobile }">
+        <v-card flat>
+          <v-row no-gutters>
+            <v-spacer></v-spacer>
+            <v-col md="4" sm="6" cols="12">
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Search"
+                single-line
+                hide-details
+              ></v-text-field>
+            </v-col>
+          </v-row>
 
-		    		</v-row>
+          <v-row class="mt-4">
+            <v-col
+              cols="12"
+              md="4"
+              v-for="(item, index) in rooms"
+              :key="item.id"
+            >
+              <v-card max-width="344">
+                <v-list-item>
+                  <v-list-item-avatar color="grey"></v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title class="headline">{{
+                      item.name
+                    }}</v-list-item-title>
+                    <v-list-item-subtitle>{{
+                      item.user.employee.fullName
+                    }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
 
-		    		<v-row class="mt-4">
-	    				<v-col cols="12" md="4" v-for="(item, index) in rooms" :key="item.id">
-	    					<v-card
-						    max-width="344"
-							>
-							    <v-list-item>
-							      <v-list-item-avatar color="grey"></v-list-item-avatar>
-							      <v-list-item-content>
-							        <v-list-item-title class="headline">{{item.name}}</v-list-item-title>
-							        <v-list-item-subtitle>{{item.user.employee.fullName}}</v-list-item-subtitle>
-							      </v-list-item-content>
-							    </v-list-item>
+                <v-img
+                  src="https://cdn.vuetifyjs.com/images/cards/mountain.jpg"
+                  height="194"
+                ></v-img>
 
-							    <v-img
-							      src="https://cdn.vuetifyjs.com/images/cards/mountain.jpg"
-							      height="194"
-							    ></v-img>
+                <v-card-text>
+                  Visit ten places on our planet that are undergoing the biggest
+                  changes today.
+                </v-card-text>
 
-							    <v-card-text>
-							      Visit ten places on our planet that are undergoing the biggest changes today.
-							    </v-card-text>
+                <v-card-actions class="justify-end">
+                  <v-btn
+                    @click="joinRoom(item.id)"
+                    outlined
+                    text
+                    color="white"
+                    class="primary"
+                  >
+                    <v-icon>mdi-plus</v-icon>
+                    Join
+                  </v-btn>
 
-							    <v-card-actions class="justify-end">
-							      <v-btn
-							      	@click="joinRoom(item.id)"
-							      	outlined
-							        text
-							        color="white"
-							        class="primary"
-							      >
-							      	<v-icon>mdi-plus</v-icon>
-							        Join
-							      </v-btn>
-
-							      <v-btn 
-							      text  
-							      color="white"
-							      class="primary">
-							      	50
-							        <v-icon>mdi-account</v-icon>
-							      </v-btn>
-							    </v-card-actions>
-						 	</v-card>
-	    				</v-col>			
-					</v-row>
-			    </v-card> 	 
-   			</v-flex>
-   		</v-row> 
-   	<pin-dialog 
-      :pin.sync="pin" 
+                  <v-btn text color="white" class="primary">
+                    50
+                    <v-icon>mdi-account</v-icon>
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-flex>
+    </v-row>
+    <pin-dialog
+      :pin.sync="pin"
       :showPinDialog.sync="showPinDialog"
       title="Pin"
       v-if="showPinDialog"
-     >
-    </pin-dialog>	
-
-	</v-container>	
+    >
+    </pin-dialog>
+  </v-container>
 </template>
 
-
 <script>
+import Room from "@/store/models/room";
 
+export default {
+  data() {
+    return {
+      page: 1,
+      itemsPerPage: 5,
+      search: "",
+      pageCounts: 1,
+      offset: 0,
+      currentPage: 1,
 
-import Modal from '@/store/models/modal'
-import Room from '@/store/models/room'
+      isMobile: false,
+      rooms: [],
+      pin: "",
+      showPinDialog: false,
+      roomSelected: ""
+    };
+  },
 
-export default{
+  async created() {
+    var progress = this.$Progress;
+    progress.start();
+    await this.retrieveData();
+    progress.finish();
+  },
 
+  methods: {
+    nextPage() {},
 
-	data(){
-		return {
-			page: 1,
-	        itemsPerPage: 5,
-	        search: '',
-	        pageCounts: 1,
-      		offset: 0,
-      		currentPage: 1,
+    async retrieveData() {
+      const res = await Room.api().fetchPaging(this.page, this.itemsPerPage);
+      if (res.response.status === 200) {
+        this.rooms = res.response.data.data;
+      }
+    },
 
-      		isMobile: false,
-      		rooms: [],
-      		pin: '',
-      		showPinDialog: false,
-      		roomSelected: '',
-		}
-	},
+    joinRoom(id) {
+      this.roomSelected = id;
+      this.showPinDialog = true;
+    }
+  },
 
+  watch: {
+    pin(val) {
+      var payload = { pin: val };
+      var loader = this.$loading.show();
 
-	async created(){
-		var progress =  this.$Progress
-    	progress.start()
-			await this.retrieveData()
-		progress.finish()
-	},
+      Room.api()
+        .joinRoom(this.roomSelected, payload)
+        .then(res => {
+          setTimeout(() => {
+            if (res.response.status === 200 && res.response.data.data) {
+              this.$socket.emit("USER_JOIN_ROOM", {
+                roomId: this.roomSelected
+              });
+              this.$router.push("/chat/room/" + this.roomSelected);
+            } else {
+              this.$toastr.error("Pin does not matched", "Error!", {
+                timeOut: 1000
+              });
+            }
 
+            loader.hide();
+          }, 500);
+        });
+    }
+  },
 
-	methods: {
+  computed: {},
 
-	    nextPage(page){
-
-	    },
-
-	    async retrieveData(){
-
-	    	const res = await Room.api().fetchPaging(this.page, this.itemsPerPage)
-	    	if(res.response.status === 200){
-	    		this.rooms = res.response.data.data
-	    	}
-	    },
-
-	    joinRoom(id){
-	    	this.roomSelected = id
-	    	this.showPinDialog = true
-
-	    }
-	},
-
-	watch: {
-		pin(val){
-			var payload = { pin: val }
-			var loader = this.$loading.show()
-
-			Room.api().joinRoom(this.roomSelected, payload).then(res => {
-
-				setTimeout(() => {
-
-					if(res.response.status === 200 && res.response.data.data){
-						this.$socket.emit('USER_JOIN_ROOM', {roomId: this.roomSelected})
-						this.$router.push('/chat/room/' + this.roomSelected)
-					}else{
-						toastr.error('Pin does not matched', 'Error!', {timeOut: 1000})
-					}
-
-				loader.hide()
-				}, 500)
-			})
-
-		}
-	},
-
-	computed: {
-
-	},
-
-	destroyed() {
-
-	}
-
-}
+  destroyed() {}
+};
 </script>

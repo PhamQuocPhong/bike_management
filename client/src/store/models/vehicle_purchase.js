@@ -1,12 +1,12 @@
-import { Model } from '@vuex-orm/core'
-import Vehicle from './vehicle'
-import ReceptionCustomerSell from './reception_customer_sell'
-import VehicleRepair from './vehicle_repair'
-import VehicleType from './vehicle_type'
+import { Model } from "@vuex-orm/core";
+import Vehicle from "./vehicle";
+import ReceptionCustomerSell from "./reception_customer_sell";
+import VehicleRepair from "./vehicle_repair";
+import VehicleType from "./vehicle_type";
 export default class VehiclePurchase extends Model {
-  static entity = 'vehiclePurchase'
+  static entity = "vehiclePurchase";
 
-  static fields () {
+  static fields() {
     return {
       id: this.attr(null),
       name: this.attr(null),
@@ -18,58 +18,57 @@ export default class VehiclePurchase extends Model {
       image: this.attr(null),
       receptionCustomerSellId: this.attr(null),
       vehicleTypeId: this.attr(null),
-      receptionCustomerSell: this.belongsTo(ReceptionCustomerSell, 'receptionCustomerSellId'),
-      vehicleRepair: this.hasOne(VehicleRepair, 'vehiclePurchaseId'),
-      VehicleType: this.belongsTo(VehicleType, 'vehicleTypeId'),
-    }
+      receptionCustomerSell: this.belongsTo(
+        ReceptionCustomerSell,
+        "receptionCustomerSellId"
+      ),
+      vehicleRepair: this.hasOne(VehicleRepair, "vehiclePurchaseId"),
+      VehicleType: this.belongsTo(VehicleType, "vehicleTypeId")
+    };
   }
 
   static apiConfig = {
     actions: {
-      fetchAll(){
+      fetchAll() {},
 
-      },
-
-      fetchPaging(page, itemPerPage = null){
-        try {    
-          return this.get('/vehicle/purchase/page/' +  page,{
+      fetchPaging(page, itemPerPage = null) {
+        try {
+          return this.get("/vehicle/purchase/page/" + page, {
             params: {
               itemPerPage: itemPerPage
             },
             save: false,
-            headers: {'x-access-token': $cookies.get('accessToken')}
-          })
-        } catch(error) {
-          return error.response
+            headers: { "x-access-token": $cookies.get("accessToken") }
+          });
+        } catch (error) {
+          return error.response;
         }
       },
 
-
-      fetchByType(vehicleTypeId){
+      fetchByType(vehicleTypeId) {
         try {
-          return this.get('/vehicle', {
+          return this.get("/vehicle", {
             save: false,
-            headers: {'x-access-token': $cookies.get('accessToken')},
+            headers: { "x-access-token": $cookies.get("accessToken") },
             params: {
               vehicleTypeId: vehicleTypeId
             }
-          })
-        } catch(e) {
-          return e.response
+          });
+        } catch (e) {
+          return e.response;
         }
       },
 
-      update(id, payload){
+      update(id, payload) {
         try {
-          return this.post('/vehicle/purchase/update/' + id, payload, {
+          return this.post("/vehicle/purchase/update/" + id, payload, {
             save: false,
-            headers: {'x-access-token': $cookies.get('accessToken')}
-          })
-        } catch(e) {
-          return e.response
+            headers: { "x-access-token": $cookies.get("accessToken") }
+          });
+        } catch (e) {
+          return e.response;
         }
-      }   
+      }
     }
-  }
+  };
 }
-

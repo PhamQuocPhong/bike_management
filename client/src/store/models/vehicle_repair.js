@@ -1,11 +1,11 @@
-import { Model } from '@vuex-orm/core'
-import VehiclePurchase from './vehicle_purchase'
-import Vehicle from './vehicle'
-import TechnicalRepair from './technical_repair'
+import { Model } from "@vuex-orm/core";
+import VehiclePurchase from "./vehicle_purchase";
+import Vehicle from "./vehicle";
+import TechnicalRepair from "./technical_repair";
 export default class VehicleRepair extends Model {
-  static entity = 'vehicleRepair'
+  static entity = "vehicleRepair";
 
-  static fields () {
+  static fields() {
     return {
       id: this.attr(null),
       note: this.attr(null),
@@ -17,80 +17,76 @@ export default class VehicleRepair extends Model {
       price: this.attr(null),
       fixPrice: this.attr(null),
       vehiclePurchaseId: this.attr(null),
-      vehiclePurchase: this.belongsTo(VehiclePurchase, 'vehiclePurchaseId'),
-      technicalRepairs: this.hasMany(TechnicalRepair, 'vehicleRepairId'),
-      selected: this.attr(null),
-    }
+      vehiclePurchase: this.belongsTo(VehiclePurchase, "vehiclePurchaseId"),
+      technicalRepairs: this.hasMany(TechnicalRepair, "vehicleRepairId"),
+      selected: this.attr(null)
+    };
   }
 
   static apiConfig = {
     actions: {
-      fetchAll(){
+      fetchAll() {},
 
-      },
-
-      fetchPaging(page, itemPerPage = null){
-        try {    
-          return this.get('/vehicle/repair/page/' +  page,{
+      fetchPaging(page, itemPerPage = null) {
+        try {
+          return this.get("/vehicle/repair/page/" + page, {
             params: {
               itemPerPage: itemPerPage
             },
-             save: false,
-            headers: {'x-access-token': $cookies.get('accessToken')},
-          })
-        } catch(error) {
-          return error.response
+            save: false,
+            headers: { "x-access-token": $cookies.get("accessToken") }
+          });
+        } catch (error) {
+          return error.response;
         }
       },
 
-      fetchByType(vehicleTypeId){
+      fetchByType(vehicleTypeId) {
         try {
-          return this.get('/vehicle', {
-             save: false,
-            headers: {'x-access-token': $cookies.get('accessToken')},
+          return this.get("/vehicle", {
+            save: false,
+            headers: { "x-access-token": $cookies.get("accessToken") },
             params: {
               vehicleTypeId: vehicleTypeId
             }
-          })
-        } catch(e) {
-          return e.response
+          });
+        } catch (e) {
+          return e.response;
         }
       },
 
-      create(payload){
+      create(payload) {
         try {
-          return this.post('vehicle/repair/create', payload, {
-             save: false,
-            headers: {'x-access-token': $cookies.get('accessToken')},
-          })
-        } catch(e) {
-          return e.response
-        }
-      },
-
-      update(id, payload){
-        try {
-          return this.post('vehicle/repair/update/' + id , payload, {
+          return this.post("vehicle/repair/create", payload, {
             save: false,
-            headers: {'x-access-token': $cookies.get('accessToken')},
-          })
-        } catch(e) {
-          return e.response
+            headers: { "x-access-token": $cookies.get("accessToken") }
+          });
+        } catch (e) {
+          return e.response;
         }
       },
 
-      publish(id, payload){
+      update(id, payload) {
         try {
-          return this.post('vehicle/repair/publish/' + id , payload, {
-             save: false,
-            headers: {'x-access-token': $cookies.get('accessToken')},
-          })
-        } catch(e) {
-          return e.response
+          return this.post("vehicle/repair/update/" + id, payload, {
+            save: false,
+            headers: { "x-access-token": $cookies.get("accessToken") }
+          });
+        } catch (e) {
+          return e.response;
+        }
+      },
+
+      publish(id, payload) {
+        try {
+          return this.post("vehicle/repair/publish/" + id, payload, {
+            save: false,
+            headers: { "x-access-token": $cookies.get("accessToken") }
+          });
+        } catch (e) {
+          return e.response;
         }
       }
-
     }
-  }
+  };
 }
-

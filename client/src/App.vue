@@ -1,35 +1,28 @@
 <template>
-    <v-app>
-    	<progress-bar></progress-bar>
-    	<!-- <vue-progress-bar></vue-progress-bar> -->
-    	<router-view></router-view>
-  	</v-app>
+  <v-app>
+    <progress-bar></progress-bar>
+    <!-- <vue-progress-bar></vue-progress-bar> -->
+    <router-view></router-view>
+  </v-app>
 </template>
 
-
-
 <style lang="scss">
-@import '@/styles/index'
-
+@import "@/styles/index";
 </style>
 
-
 <script>
-import ProgressBar from './components/custom/HeaderProgress.vue'
+import ProgressBar from "./components/custom/HeaderProgress.vue";
 export default {
+  components: {
+    "progress-bar": ProgressBar
+  },
 
-	components: {
-		'progress-bar': ProgressBar
-	},
+  data() {
+    return {
+      userInfo: this.$cookies.get("dataUser")
+    };
+  },
 
-	data(){
-		return {
-			userInfo: this.$cookies.get('dataUser')
-		}
-	},
-
-	mounted(){
-
-	}
-}
+  mounted() {}
+};
 </script>

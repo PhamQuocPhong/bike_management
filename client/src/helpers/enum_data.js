@@ -1,23 +1,12 @@
 export default {
-	"progressTransaction": {
+  progressTransaction: {
+    default: "waiting",
+    list: ["waiting", "confirm", "completed", "cancel"]
+  },
 
-		"default": "waiting",
-		"list": [
-			"waiting", 
-			"confirm",
-			"completed",
-			"cancel"
-		]
-	},
+  progressVehicleBuy: {
+    default: null,
 
-	"progressVehicleBuy": {
-		"default": null,
-
-		"list": [
-			"new",
-			"normal",
-			"old",
-			"waiting",
-		]
-	}
-}
+    list: ["new", "normal", "old", "waiting"]
+  }
+};

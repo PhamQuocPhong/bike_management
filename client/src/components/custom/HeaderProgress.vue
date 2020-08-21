@@ -9,13 +9,13 @@
 </template>
 
 <style scoped>
-.v-progress-linear{
-  z-index: 1000
-}  
+.v-progress-linear {
+  z-index: 1000;
+}
 </style>
 
 <script>
-import Component from '@/store/models/component'
+import Component from "@/store/models/component";
 
 export default {
   props: {
@@ -24,21 +24,18 @@ export default {
       default: true
     },
 
-
     show: {
       type: Boolean,
       default: false
     }
   },
 
-  mounted(){
-
-  },
+  mounted() {},
 
   computed: {
-    isLoading(){
-      return Component.getters('headerProgress')
+    isLoading() {
+      return Component.getters("headerProgress");
     }
   }
-}
+};
 </script>
