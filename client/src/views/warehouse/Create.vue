@@ -11,13 +11,13 @@
             <v-form ref="form" v-model="valid" :lazy-validation="lazy">
               <v-container>
                 <v-row v-if="newVehicle">
-                  <v-col md="4" sm="6" cols="12">
+                  <v-col md="6" sm="6" cols="12">
                     <v-text-field
                       label="Name"
                       v-model="newVehicle.name"
                     ></v-text-field>
                   </v-col>
-                  <v-col md="4" sm="6" cols="12">
+                  <v-col md="6" sm="6" cols="12">
                     <v-select
                       :items="vehicleTypes"
                       v-model="newVehicle.vehicleType"
@@ -27,7 +27,7 @@
                     ></v-select>
                   </v-col>
 
-                  <v-col md="4" sm="6" cols="12">
+                  <v-col md="6" sm="6" cols="12">
                     <v-text-field
                       label="Color"
                       type="text"
@@ -35,7 +35,7 @@
                     ></v-text-field>
                   </v-col>
 
-                  <v-col md="4" sm="6" cols="12">
+                  <v-col md="6" sm="6" cols="12">
                     <v-text-field
                       label="Registration plate"
                       type="text"
@@ -43,7 +43,7 @@
                     ></v-text-field>
                   </v-col>
 
-                  <v-col md="4" sm="6" cols="12">
+                  <v-col md="6" sm="6" cols="12">
                     <v-text-field
                       label="Buy price"
                       type="number"
@@ -51,7 +51,7 @@
                     ></v-text-field>
                   </v-col>
 
-                  <v-col md="4" sm="6" cols="12">
+                  <v-col md="6" sm="6" cols="12">
                     <v-text-field
                       label="Price"
                       type="number"
@@ -71,12 +71,23 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" outlined text @click="save()"
-              >Save</v-btn
+              <btn-custom 
+              :outlined="true"
+              title="Save"
+              v-on:action="save()"
+              color="blue darken-1"
+              type="save"
             >
-            <v-btn color="blue darken-1" outlined text @click="close()"
-              >Close</v-btn
+            </btn-custom>
+            
+            <btn-custom 
+              :outlined="true"
+              title="Close"
+              v-on:action="close()"
+              color="blue darken-1"
+              type="close"
             >
+            </btn-custom>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -89,7 +100,7 @@ import VehicleType from "@/store/models/vehicle_type";
 import Vehicle from "@/store/models/vehicle";
 import Modal from "@/store/models/modal";
 
-import UploadFileComponent from "@/components/custom/UploadFile.vue";
+import UploadFileComponent from "@/components/custom/DropZone.vue";
 
 export default {
   props: ["createDialog"],

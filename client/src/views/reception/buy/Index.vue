@@ -118,7 +118,7 @@ export default {
           ReceptionCustomerBuy.insert({
             data: res.response.data.data
           });
-          this.$toastr.success(res.response.data.message, "Success!", {
+          toastr.success(res.response.data.message, "Success!", {
             timeOut: 1000
           });
           this.$refs.form.reset();

@@ -231,7 +231,7 @@ export default {
     },
 
     async stop() {
-      this.$toastr.warning("This vehicle must be fixed!", "Warning!", {
+      toastr.warning("This vehicle must be fixed!", "Warning!", {
         timeOut: 1000
       });
     },
@@ -248,7 +248,7 @@ export default {
           id: res.response.data.id,
           data: res.response.data.data
         });
-        this.$toastr.success("Contact customer success", "Success!", {
+        toastr.success("Contact customer success", "Success!", {
           timeOut: 1000
         });
       }

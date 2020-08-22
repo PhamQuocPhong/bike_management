@@ -168,9 +168,15 @@
               <span>Completed transaction</span>
             </v-tooltip>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" outlined text @click="close()"
-              >Close</v-btn
+            
+            <btn-custom 
+              :outlined="true"
+              title="Close"
+              v-on:action="close()"
+              color="blue darken-1"
+              type="close"
             >
+            </btn-custom>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -262,7 +268,7 @@ export default {
       );
       delete this.sales.salesCustomerBuy.vehicleSuggests;
       if (this.vehiclesTransaction.length <= 0) {
-        this.$toastr.warning("Please choose vehicle to payment", "Warning!", {
+        toastr.warning("Please choose vehicle to payment", "Warning!", {
           timeOut: 1000
         });
         return;
@@ -285,7 +291,7 @@ export default {
         });
 
         this.sales.salesCustomerBuy.status = sales.salesCustomerBuy.status;
-        this.$toastr.success(res.response.data.message, "Success!", {
+        toastr.success(res.response.data.message, "Success!", {
           timeOut: 1000
         });
       }

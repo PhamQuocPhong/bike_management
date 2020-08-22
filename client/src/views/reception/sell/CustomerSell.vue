@@ -1,6 +1,6 @@
 <template>
   <v-flex :class="{ 'pa-4': !isMobile }">
-    <v-card flat>
+    <v-card flat v-if="receptionCustomerSells.length">
       <v-row no-gutters>
         <v-spacer></v-spacer>
         <v-col md="4" sm="6" cols="12">

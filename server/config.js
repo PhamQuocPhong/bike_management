@@ -1,4 +1,24 @@
 module.exports = {
+
+	BASE_URL: 'http://localhost',
+	DATABASE_URL: process.env.DATABASE_URL,
+	SECRETKEY: process.env.SECRETKEY,
+
+
+	ACCESS_TOKEN_LIFE    :  process.env.ACCESS_TOKEN_LIFE,
+	ACCESS_TOKEN_SECRET  :  process.env.ACCESS_TOKEN_SECRET,
+	REFRESH_TOKEN_LIFE   :  process.env.REFRESH_TOKEN_LIFE,
+	REFRESH_TOKEN_SECRET :  process.env.REFRESH_TOKEN_SECRET,
+
+	BUCKET :  process.env.BUCKET,
+	REGION :  process.env.REGION,
+	AWS_ACCESS_KEY :  process.env.AWS_ACCESS_KEY,
+	AWS_SECRET_KEY :  process.env.AWS_SECRET_KEY,
+
+	PUBLIC_VAPID_KEY: process.env.PUBLIC_VAPID_KEY,
+	PRIVATE_VAPID_KEY: process.env.PRIVATE_VAPID_KEY,
+
+
 	userRole: {
 		ADMIN: 1,
 		EMPLOYEE: 2,
@@ -31,5 +51,7 @@ module.exports = {
 		OLD: "old",
 		NEW: "new",
 		DEFAULT: "waiting",
-	}
+	},
+
+
 }
