@@ -141,7 +141,7 @@ export default {
               });
               this.$router.push("/chat/room/" + this.roomSelected);
             } else {
-              this.$toastr.error("Pin does not matched", "Error!", {
+              toastr.error("Pin does not matched", "Error!", {
                 timeOut: 1000
               });
             }

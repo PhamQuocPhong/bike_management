@@ -29,10 +29,13 @@ export default {
 
   mounted() {
     // remove user in socket
-    this.$socket.emit("removeUser", {
-      userId: this.userInfo.id
-    });
 
+    if(this.userInfo){
+        this.$socket.emit("removeUser", {
+          userId: this.userInfo.id
+        });
+
+    }
     // clear user in cookies
     this.$cookies.remove("accessToken");
     this.$cookies.remove("dataUser");

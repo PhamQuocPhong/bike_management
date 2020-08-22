@@ -104,16 +104,16 @@ export default {
         var data = { ...this.newUser, ...this.newEmployee };
         Auth.register(data).then(res => {
           if (res.status === 200) {
-            this.$toastr.success(
+            toastr.success(
               "<p> A message be sent to your email</p> <p>Verify your account to login!</p>",
               "Register Success!",
               { timeOut: false }
             );
             this.$refs.form.reset();
           } else if (res.status === 401) {
-            this.$toastr.error(res.data.message, "Error", { timeOut: 1000 });
+            toastr.error(res.data.message, "Error", { timeOut: 1000 });
           } else if (res.status === 500) {
-            this.$toastr.error("Internal Server Error", "Error", {
+            toastr.error("Internal Server Error", "Error", {
               timeOut: 1000
             });
           }

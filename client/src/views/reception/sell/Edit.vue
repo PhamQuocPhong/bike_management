@@ -137,12 +137,24 @@
               <span>Completed transaction</span>
             </v-tooltip>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" outlined text @click="save()"
-              >Save</v-btn
+            
+            <btn-custom 
+              :outlined="true"
+              title="Save"
+              v-on:action="save()"
+              color="blue darken-1"
+              type="save"
             >
-            <v-btn color="blue darken-1" outlined text @click="close()"
-              >Close</v-btn
+            </btn-custom>
+            
+            <btn-custom 
+              :outlined="true"
+              title="Close"
+              v-on:action="close()"
+              color="blue darken-1"
+              type="close"
             >
+            </btn-custom>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -221,7 +233,7 @@ export default {
         item => item.selected === true
       );
       if (vehicleTestSelected.length <= 0) {
-        this.$toastr.warning("Please choose vehicle to payment", "Warning!", {
+        toastr.warning("Please choose vehicle to payment", "Warning!", {
           timeOut: 1000
         });
         return;

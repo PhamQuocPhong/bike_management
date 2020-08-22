@@ -160,7 +160,7 @@ export default {
             where: vehicleTestId,
             data: this.getVehicleTest
           });
-          this.$toastr.success(res.response.data.message, "Success!", {
+          toastr.success(res.response.data.message, "Success!", {
             timeOut: 1000
           });
           Modal.dispatch("technicalTestEdit", { option: "hide" });

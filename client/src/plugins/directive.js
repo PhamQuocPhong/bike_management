@@ -1,4 +1,5 @@
 import Vue from "vue";
+import config from "@/config/config";
 
 Vue.directive("can", {
   inserted(el, binding) {
@@ -11,6 +12,8 @@ Vue.directive("can", {
 
 Vue.directive("check-position", {
   inserted(el, binding) {
+
+
     var currentUser = $cookies.get("dataUser");
     var employeeInfo = currentUser.employee;
 
@@ -18,7 +21,7 @@ Vue.directive("check-position", {
       return;
     }
 
-    if (employeeInfo.positionId === 1) {
+    if (currentUser.roleId === config.roles.GUEST || currentUser.roleId === config.roles.SUPER_ADMIN) {
       return;
     }
 

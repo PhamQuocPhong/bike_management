@@ -245,7 +245,7 @@ export default {
           data: res.response.data.data
         });
 
-        this.$toastr.success(res.response.data.message, "Success!", {
+        toastr.success(res.response.data.message, "Success!", {
           timeOut: 1000
         });
 

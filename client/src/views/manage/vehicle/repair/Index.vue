@@ -301,11 +301,11 @@ export default {
 
     async stop(item) {
       if (item.pushlishFlg === 1) {
-        this.$toastr.warning("This vehicle must be fixed!", "Warning!", {
+        toastr.warning("This vehicle must be fixed!", "Warning!", {
           timeOut: 1000
         });
       } else if (!item.price) {
-        this.$toastr.warning("Please approve price for vehicle!", "Warning!", {
+        toastr.warning("Please approve price for vehicle!", "Warning!", {
           timeOut: 1000
         });
       }
@@ -320,7 +320,7 @@ export default {
           where: vehicleRepairId,
           data: res.response.data.data
         });
-        this.$toastr.success(res.response.data.message, "Success!", {
+        toastr.success(res.response.data.message, "Success!", {
           timeOut: 1000
         });
       }

@@ -7,9 +7,14 @@
       <v-flex class="pa-4">
         <v-card flat>
           <v-row no-gutters>
-            <v-btn class="mr-4" small color="primary" @click="create()"
-              >Create</v-btn
+
+            <btn-custom 
+            title="Create"
+            :classProp="`primary mr-4`"
+            v-on:action="create()"
+            type="create"
             >
+            </btn-custom>
 
             <v-spacer></v-spacer>
             <v-col md="4" sm="6" cols="12">
@@ -91,17 +96,21 @@
                     </td>
 
                     <td class="text-center">
-                      <v-btn
-                        color="white"
-                        small
-                        class="primary mr-4"
-                        @click="edit(item)"
+                      
+                      <btn-custom 
+                        icon="mdi-square-edit-outline"
+                        :classProp="`primary mr-4`"
+                        v-on:action="edit(item)"
+                        type="edit"
+                        >
+                      </btn-custom>
+
+                      <btn-custom 
+                        icon="mdi-delete-outline"
+                        :classProp="`warning`"
+                        type="delete"
                       >
-                        <v-icon>mdi-square-edit-outline</v-icon>
-                      </v-btn>
-                      <v-btn color="white" small class="warning">
-                        <v-icon>mdi-delete-outline</v-icon>
-                      </v-btn>
+                      </btn-custom>
                     </td>
                   </tr>
                 </tbody>
@@ -145,17 +154,21 @@
                       </li>
 
                       <li class="flex-item" data-label="Action">
-                        <v-btn
-                          color="white"
-                          small
-                          class="primary mr-4"
-                          @click="edit(item)"
+
+                        <btn-custom 
+                        icon="mdi-square-edit-outline"
+                        :classProp="`primary mr-4`"
+                        v-on:action="edit(item)"
+                        type="edit"
                         >
-                          <v-icon>mdi-square-edit-outline</v-icon>
-                        </v-btn>
-                        <v-btn color="white" small class="warning">
-                          <v-icon>mdi-delete-outline</v-icon>
-                        </v-btn>
+                      </btn-custom>
+
+                       <btn-custom 
+                        icon="mdi-delete-outline"
+                        :classProp="`warning`"
+                        type="delete"
+                      >
+                      </btn-custom>
                       </li>
                     </ul>
                   </td>

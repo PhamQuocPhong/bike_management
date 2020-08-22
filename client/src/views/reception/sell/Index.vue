@@ -25,9 +25,8 @@
                   required
                 ></v-text-field>
               </v-col>
-            </v-row>
 
-            <v-row>
+
               <v-col cols="12" md="12" sm="6">
                 <v-text-field
                   v-model="newCustomer.phoneNumber"
@@ -43,9 +42,8 @@
                   required
                 ></v-text-field>
               </v-col>
-            </v-row>
 
-            <v-row>
+
               <v-col cols="12" md="12" sm="6">
                 <v-text-field
                   v-model="newCustomer.email"
@@ -57,9 +55,8 @@
                   required
                 ></v-text-field>
               </v-col>
-            </v-row>
 
-            <v-row>
+
               <v-col cols="12" md="12" sm="6">
                 <v-text-field
                   v-model="newCustomer.address"
@@ -67,9 +64,8 @@
                   required
                 ></v-text-field>
               </v-col>
-            </v-row>
 
-            <v-row>
+
               <v-col cols="12" md="12" sm="6">
                 <employee-dropdown
                   :employee.sync="employeeTest"
@@ -133,7 +129,7 @@
               <v-btn
                 color="success"
                 class="mr-4 mb-4"
-                @click="addVehicleBlock"
+                @click="addVehicleBlock()"
                 :small="isMobile"
               >
                 Add vehicle
@@ -252,7 +248,7 @@ export default {
         });
 
         if (checkEmptyVehicle || this.vehicleTestArray.length <= 0) {
-          this.$toastr.warning("<p>Please add vehilce info!</p>", "Warning", {
+          toastr.warning("<p>Please add vehilce info!</p>", "Warning", {
             timeOut: 500
           });
           return;
@@ -276,23 +272,23 @@ export default {
           }
         });
         if (res.status === 400) {
-          this.$toastr.error("<p>Error!</p>", "Not yet added vehicles", {
+          toastr.error("<p>Error!</p>", "Not yet added vehicles", {
             timeOut: 500
           });
         } else if (res.status === 200) {
           await ReceptionCustomerSell.insert({
             data: res.data.data
           });
-          this.$toastr.success("<p>Create success!</p>", "Success", {
+          toastr.success("<p>Create success!</p>", "Success", {
             timeOut: 500
           });
           this.$store.dispatch("entities/vehicleTest/clear");
           this.$refs.form.reset();
         } else {
-          this.$toastr.error("<p>Lỗi!</p>", "Lỗi hệ thống", { timeOut: 500 });
+          toastr.error("<p>Lỗi!</p>", "Lỗi hệ thống", { timeOut: 500 });
         }
       } else {
-        this.$toastr.warning("<p>Please fill out this form!</p>", "Warning", {
+        toastr.warning("<p>Please fill out this form!</p>", "Warning", {
           timeOut: 500
         });
       }

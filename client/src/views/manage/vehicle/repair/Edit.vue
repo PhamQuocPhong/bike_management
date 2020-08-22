@@ -276,7 +276,7 @@ export default {
             where: vehicleRepairId,
             data: res.response.data.data
           });
-          this.$toastr.success(res.response.data.message, "Success!", {
+          toastr.success(res.response.data.message, "Success!", {
             timeOut: 1000
           });
           Modal.dispatch("manageVehicleRepairEdit", { option: "hide" });

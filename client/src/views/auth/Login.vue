@@ -147,7 +147,7 @@ export default {
           } else {
             setTimeout(() => {
               loader.hide();
-              this.$toastr.error(res.data.message, "Error", { timeOut: 1000 });
+              toastr.error(res.data.message, "Error", { timeOut: 1000 });
             }, 1500);
           }
         });

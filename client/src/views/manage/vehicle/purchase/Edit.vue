@@ -136,7 +136,7 @@ export default {
           vehiclePurchaseUpdate.response.status === 200 &&
           this.checkVehicleRepairExist()
         ) {
-          this.$toastr.success("<p>Update success!</p>", "Success", {
+          toastr.success("<p>Update success!</p>", "Success", {
             timeOut: 500
           });
           this.$emit("update:dialogEdit", false);
@@ -153,7 +153,7 @@ export default {
           const res = await VehicleRepair.api().create(dataVehicleRepairStore);
           if (res.response.status === 200) {
             await VehicleRepair.insert({ data: res.response.data.data });
-            this.$toastr.success("<p>Change success!</p>", "Success", {
+            toastr.success("<p>Change success!</p>", "Success", {
               timeOut: 500
             });
             this.$emit("update:dialogEdit", false);

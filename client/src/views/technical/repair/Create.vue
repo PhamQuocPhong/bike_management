@@ -125,7 +125,7 @@ export default {
         const res = await TechnicalRepair.api().create(dataStore);
         if (res.response.status === 200) {
           TechnicalRepair.insert({ data: res.response.data.data });
-          this.$toastr.success(res.response.data.message, "Success!", {
+          toastr.success(res.response.data.message, "Success!", {
             timeOut: 1000
           });
         }
