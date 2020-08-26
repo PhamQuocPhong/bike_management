@@ -6,7 +6,7 @@
 
     <v-row>
       <v-flex :class="{ 'pa-4': !isMobile }">
-        <v-card flat v-if="pageCounts > 0">
+        <v-card flat >
           <v-row no-gutters>
             <v-spacer></v-spacer>
             <v-col md="4" sm="6" cols="12">
@@ -60,7 +60,7 @@
                     <td>{{ item.accessory }}</td>
                     <td>{{ $helper.formatDate(item.startDate) }}</td>
                     <td>{{ $helper.formatDate(item.endDate) }}</td>
-                    <td>{{ item.price }}</td>
+                    <td>{{ item.price | toCurrency }}</td>
                     <td>
                       <v-chip
                         small
@@ -108,7 +108,7 @@
                         {{ $helper.formatDate(item.endDate) }}
                       </li>
                       <li class="flex-item" data-label="Price">
-                        {{ item.price }}
+                        {{ item.price | toCurrency }}
                       </li>
                       <li class="flex-item" data-label="Fisnish">
                         <v-chip
@@ -153,11 +153,6 @@
           </v-row>
         </v-card>
 
-        <v-card flat v-else>
-          <v-card-title primary-title>
-            Don't have data
-          </v-card-title>
-        </v-card>
       </v-flex>
     </v-row>
     <technical-repair-edit

@@ -104,8 +104,7 @@ export default {
 
   data() {
     return {
-      right: 10,
-      top: 10,
+
       valid: true,
       lazy: false,
       // rule form
@@ -114,7 +113,6 @@ export default {
       itemsPerPage: 10,
       search: "",
       itemsPerPageList: [5, 10, 15],
-      dialogVehicleTest: false,
       role: "reception",
       getReceptionCustomerBuy: null
     };

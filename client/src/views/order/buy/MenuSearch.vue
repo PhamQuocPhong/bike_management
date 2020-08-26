@@ -2,13 +2,15 @@
   <div>
     <v-row no-gutters>
       <v-col md="12" class="d-flex">
-        <v-btn
-          class="mr-4"
-          small
-          color="warning"
-          @click="reportTransactionSells()"
-          >Report all</v-btn
+
+        <btn-custom 
+          title="Report all"
+          :classProp="`warning mr-4`"
+          v-on:action="reportTransactionBuys()"
+          type="export"
         >
+        </btn-custom>
+
         <v-spacer></v-spacer>
         <v-btn class="mr-4" small color="primary" @click="filterSellEvent()"
           >Filter</v-btn

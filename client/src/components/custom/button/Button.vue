@@ -71,6 +71,7 @@ export default {
 			emitClick(){
 
 				switch(this.type) {
+					case "export":
 					case "save":
 					case "create":
 					case "delete": 

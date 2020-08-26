@@ -38,11 +38,11 @@ const VehicleTest = db.define('vehicleTest', {
   },
 
   minPrice :{
-      type: Sequelize.STRING,
+     type: Sequelize.DOUBLE,
       allowNull: true
   },
   maxPrice :{
-      type: Sequelize.STRING,
+    type: Sequelize.DOUBLE,
       allowNull: true
   },
 })

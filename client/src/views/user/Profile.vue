@@ -14,10 +14,10 @@
                 src="https://cdn.vuetifyjs.com/images/cards/server-room.jpg"
               >
                 <v-row align="end" class="fill-height">
-                  <v-col align-self="start" class="pa-0" cols="12">
-                    <v-avatar class="profile" color="grey" size="164" tile>
+                  <v-col align-self="start" class="pt-0" cols="12">
+                    <v-avatar class="profile" color="white" size="180" tile>
                       <v-img
-                        src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"
+                        :src="userInfo.avatar"
                       ></v-img>
                     </v-avatar>
                   </v-col>
@@ -76,7 +76,7 @@
                       <v-text-field
                         :disabled="!edit"
                         class="font-weight-bold"
-                        value="Pham Quoc Phong"
+                        :value="employeeInfo.fullName"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -91,8 +91,7 @@
                       <v-text-field
                         :disabled="!edit"
                         class="font-weight-bold"
-                        value="quocphong.fit"
-                        suffix="@gmail.com"
+                        :value="userInfo.email"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -107,7 +106,7 @@
                       <v-text-field
                         :disabled="!edit"
                         class="font-weight-bold"
-                        value="04125125"
+                        :value="employeeInfo.phoneNumber"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -119,14 +118,12 @@
                       >
                     </v-col>
                     <v-col cols="8">
-                      <v-textarea
-                        rows="3"
-                        :no-resize="true"
-                        value="861/18/28 Trần Xuân Soạn, phường Tân Hưng, quận 7, Tp. HCM"
+                      <v-text-field
+                        :value="employeeInfo.address"
                         :disabled="!edit"
                         class="font-weight-bold"
                       >
-                      </v-textarea>
+                      </v-text-field>
                     </v-col>
                   </v-row>
 
@@ -140,7 +137,7 @@
                       <v-text-field
                         :disabled="!edit"
                         class="font-weight-bold"
-                        value="Giám đốc"
+                        :value="employeeInfo.position.name"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -180,7 +177,16 @@
 </template>
 
 <script>
+// store
+import User from '@/store/models/user'
+import UploadAvatarComponent from "@/components/custom/DropZone.vue";
+
 export default {
+
+  components: {
+    'upload-avatar': UploadAvatarComponent
+  },
+
   data() {
     return {
       items: [
@@ -188,15 +194,26 @@ export default {
         { text: "Notify", icon: "mdi-account" }
       ],
       edit: false,
-      isMobile: false
+      isMobile: false,
+
+      userInfo: this.$cookies.get('dataUser')
+
     };
   },
 
   methods: {
     onResize() {
-      if (window.innerWidth < 769) this.isMobile = true;
+      if (window.innerWidth < 769)
+       this.isMobile = true;
       else this.isMobile = false;
-    }
+    },
+  },
+
+  computed: {
+    employeeInfo(){
+      return this.userInfo.employee
+    },
   }
+  
 };
 </script>

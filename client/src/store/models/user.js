@@ -11,4 +11,20 @@ export default class User extends Model {
       avatar: this.attr(null)
     };
   }
+
+  static apiConfig = {
+  	actions: {
+  		async getInfo(id){
+  			try {
+          return await this.get(`/user/${id}`, {
+            save: false,
+            headers: { "x-access-token": $cookies.get("accessToken") }
+          });
+        } catch (error) {
+          return error.response;
+        }
+  		}
+  	}
+  }
+
 }

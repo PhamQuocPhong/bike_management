@@ -4,7 +4,7 @@ import config from "@/config/config";
 Vue.directive("can", {
   inserted(el, binding) {
     var currentUser = $cookies.get("dataUser");
-    if (currentUser.roleId === 3 && currentUser.roleId === binding.value) {
+    if (currentUser.roleId === 4 && currentUser.roleId === binding.value) {
       el.parentNode.removeChild(el);
     }
   }
@@ -12,7 +12,6 @@ Vue.directive("can", {
 
 Vue.directive("check-position", {
   inserted(el, binding) {
-
 
     var currentUser = $cookies.get("dataUser");
     var employeeInfo = currentUser.employee;

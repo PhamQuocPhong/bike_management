@@ -71,7 +71,7 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-              <btn-custom 
+            <btn-custom 
               :outlined="true"
               title="Save"
               v-on:action="save()"

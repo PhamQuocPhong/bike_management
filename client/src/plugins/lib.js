@@ -6,6 +6,10 @@ import colors from "vuetify/lib/util/colors";
 import "vue-loading-overlay/dist/vue-loading.css";
 import VueChatScroll from "vue-chat-scroll";
 
+import VueCropper from 'vue-cropperjs';
+import 'cropperjs/dist/cropper.css';
+
+
 // component
 import ConfirmDialog from "@/components/custom/dialog/Confirm.vue";
 import PinDialog from "@/components/custom/dialog/Pin.vue";
@@ -14,7 +18,7 @@ import LabelTable from "@/components/custom/LabelTable";
 
 import Button from '@/components/custom/button/Button';
 
-
+Vue.component(VueCropper);
 Vue.component("confirm-dialog", ConfirmDialog);
 Vue.component("breadcrumbs", BreadCrumbs);
 Vue.component("label-table", LabelTable);
