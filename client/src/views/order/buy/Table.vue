@@ -45,20 +45,21 @@
               <td>{{ item.date }}</td>
 
               <td class="text-center">
-                <v-btn
-                  color="white"
-                  small
-                  class="primary mr-4"
-                  @click="edit(item)"
-                  >View</v-btn
-                >
-                <v-btn
-                  color="white"
-                  small
-                  class="success"
-                  @click="reportTransactionBuy(item.id)"
-                  >Report</v-btn
-                >
+                <btn-custom 
+                  icon="mdi-square-edit-outline"
+                  :classProp="`primary mr-4`"
+                  v-on:action="edit(item)"
+                  type="edit"
+                  >
+                  </btn-custom>
+
+                  <btn-custom 
+                  icon="mdi-file-export-outline"
+                  :classProp="`success`"
+                  v-on:action="reportTransactionBuy(item.id)"
+                  type="export"
+                  >
+                  </btn-custom>
               </td>
             </tr>
           </tbody>
@@ -96,20 +97,21 @@
                 <li class="flex-item" data-label="Action">{{ item.date }}</li>
 
                 <li class="flex-item" data-label="Action">
-                  <v-btn
-                    color="white"
-                    small
-                    class="primary mr-4"
-                    @click="edit(item)"
-                    >View</v-btn
+                      <btn-custom 
+                  icon="mdi-square-edit-outline"
+                  :classProp="`primary mr-4`"
+                  v-on:action="edit(item)"
+                  type="edit"
                   >
-                  <v-btn
-                    color="white"
-                    small
-                    class="success"
-                    @click="reportTransactionBuy(item.id)"
-                    >Report</v-btn
+                  </btn-custom>
+
+                  <btn-custom 
+                  icon="mdi-file-export-outline"
+                  :classProp="`success`"
+                  v-on:action="reportTransactionBuy(item.id)"
+                  type="export"
                   >
+                  </btn-custom>
                 </li>
               </ul>
             </td>

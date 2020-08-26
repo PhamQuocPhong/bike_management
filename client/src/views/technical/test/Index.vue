@@ -91,7 +91,7 @@
                     </td>
                     <td>
                       <div v-if="item.minPrice">
-                        {{ item.minPrice }} - {{ item.maxPrice }} $
+                        {{ item.minPrice | toCurrency  }} - {{ item.maxPrice | toCurrency  }} 
                       </div>
                     </td>
                     <td class="text-center">

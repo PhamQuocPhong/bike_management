@@ -15,7 +15,7 @@
           <v-form ref="form" v-model="valid" :lazy-validation="lazy">
             <v-container>
               <v-row v-if="getVehicleTest">
-                <v-col cols="12" md="4" sm="6">
+                <v-col cols="12" md="6" sm="6">
                   <v-select
                     :items="vehicleTypes"
                     v-model="getVehicleTest.vehicleType"
@@ -27,7 +27,7 @@
                   ></v-select>
                 </v-col>
 
-                <v-col cols="12" md="4" sm="6">
+                <v-col cols="12" md="6" sm="6">
                   <v-text-field
                     label="Bike Code"
                     type="text"
@@ -37,7 +37,7 @@
                   ></v-text-field>
                 </v-col>
 
-                <v-col cols="12" md="4" sm="6">
+                <v-col cols="12" md="6" sm="6">
                   <v-text-field
                     label="Registration Plate"
                     type="text"
@@ -47,7 +47,7 @@
                   ></v-text-field>
                 </v-col>
 
-                <v-col cols="12" md="4" sm="6">
+                <v-col cols="12" md="6" sm="6">
                   <v-select
                     :items="statusBikes"
                     v-model="getVehicleTest.bikeStatus"
@@ -64,7 +64,7 @@
                   ></v-select>
                 </v-col>
 
-                <v-col cols="12" md="4" sm="6">
+                <v-col cols="12" md="6" sm="6">
                   <v-text-field
                     label="Min price"
                     type="number"
@@ -83,7 +83,7 @@
                   ></v-text-field>
                 </v-col>
 
-                <v-col cols="12" md="4" sm="6">
+                <v-col cols="12" md="6" sm="6">
                   <v-text-field
                     label="Max price"
                     type="number"
@@ -108,12 +108,23 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" outlined text @click="save()"
-            >Save</v-btn
-          >
-          <v-btn color="blue darken-1" outlined text @click.native="close()"
-            >Close</v-btn
-          >
+          <btn-custom 
+              :outlined="true"
+              title="Save"
+              v-on:action="save()"
+              color="blue darken-1"
+              type="save"
+            >
+            </btn-custom>
+            
+            <btn-custom 
+              :outlined="true"
+              title="Close"
+              v-on:action="close()"
+              color="blue darken-1"
+              type="close"
+            >
+          </btn-custom>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -175,7 +186,7 @@ export default {
     },
 
     statusBikes() {
-      return this.$enum.progressVehicleBuy.list;
+      return this.$appData.progressVehicleBuy.LIST;
     },
 
     technicalTestEdit() {

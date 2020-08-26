@@ -1,8 +1,10 @@
 import Vue from "vue";
 Vue.filter("toCurrency", function(value) {
-  if (typeof value !== "number") {
-    return value;
-  }
+
+
+  	value = parseInt(value)
+  
+
   var formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",

@@ -162,13 +162,13 @@ export default {
           permission: null,
           position: 1
         },
-        {
-          title: "Setting",
-          link: "/settings",
-          icon: "fa fa-cog",
-          permission: null,
-          position: 1
-        },
+        // {
+        //   title: "Setting",
+        //   link: "/settings",
+        //   icon: "fa fa-cog",
+        //   permission: null,
+        //   position: 1
+        // },
         {
           title: "Chatting",
           link: "/chat",

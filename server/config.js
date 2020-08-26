@@ -20,9 +20,17 @@ module.exports = {
 
 
 	userRole: {
-		ADMIN: 1,
-		EMPLOYEE: 2,
-		GUEST: 3
+		SUPER_ADMIN: 1,
+		ADMIN: 2,
+		EMPLOYEE: 3,
+		GUEST: 4
+	},
+
+	employeePosition: {
+		MANAGE: 1,
+		TECHNICAL: 2,
+		RECEPTION: 3,
+		SALES: 4,
 	},
 
 	vehicle: {

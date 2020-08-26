@@ -74,11 +74,6 @@ export default {
       drawer: false,
       menuInfo: [
         { title: "Profile", icon: "mdi-account-circle", link: "/user/profile" },
-        {
-          title: "My Course",
-          icon: "mdi-folder-multiple",
-          link: "user/notify"
-        },
         { title: "Logout", icon: "mdi-login-variant", link: "/auth/logout" }
       ],
       userInfo: this.$cookies.get("dataUser"),

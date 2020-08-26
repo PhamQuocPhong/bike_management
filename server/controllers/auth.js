@@ -1,6 +1,7 @@
 const jwtHelper = require("../helpers/jwt.helper")
 const User = require('../models/user')
 const Employee = require('../models/employee')
+const Position = require('../models/position')
 const Role = require('../models/role')
 const bcrypt = require('bcrypt')
 const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || "1h"
@@ -32,10 +33,12 @@ let login = async (req, res) => {
       include: [
         {
           model: Employee,
+
+          include: {
+            attributes: ['id', 'name'],
+            model: Position
+          }
         },
-        {
-          model: Role,
-        }
       ]
     })
 
@@ -146,7 +149,12 @@ let loginSocial = async (req, res) => {
         email: userData.email
       },
       include: {
-        model: Employee
+        model: Employee,
+
+        include: {
+            attributes: ['id', 'name'],
+            model: Position
+          }
       },
     })
 
@@ -176,7 +184,7 @@ let loginSocial = async (req, res) => {
         await Employee.create({
           fullName: userData.fullName,
           userId: newUser.id,
-          positionId: 3
+          positionId: config.employeePosition.MANAGE
         })
 
         var findUser = await User.findOne({
@@ -184,7 +192,12 @@ let loginSocial = async (req, res) => {
             id: newUser.id
           },
           include: {
-            model: Employee
+            model: Employee,
+
+            include: {
+              attributes: ['id', 'name'],
+              model: Position
+            }
           },
         })
 

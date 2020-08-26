@@ -1,5 +1,6 @@
 const User = require('../models/user')
 const Employee = require('../models/employee')
+const Position = require('../models/position')
 const UserNotification = require('../models/user_notification')
 const helper = require('../helpers/helper')
 const moment = require('moment')
@@ -89,7 +90,36 @@ let getNotificationUser = async (req, res) => {
 
 }
 
+let getUser = async (req, res) => {
+
+	const userId = req.params.id
+	try {
+		var data = await User.findOne({
+			include: {
+				model: Employee,
+				include: {
+					attributes: ['id', 'name'],
+					model: Position
+				}
+			},
+
+			where: {
+				id: userId
+			}
+		})	
+
+		return res.status(200).json({message: "Retrieve sucess", data: data})
+
+	} catch(error) {
+		// statements
+		return res.status(500).json(error)
+	}
+
+
+}
+
 
 module.exports = {
 	getNotificationUser: getNotificationUser,
+	getUser: getUser
 }
