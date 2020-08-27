@@ -4,11 +4,10 @@ const Employee = require('../models/employee')
 const Position = require('../models/position')
 const Role = require('../models/role')
 const bcrypt = require('bcrypt')
-const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || "1h"
-// Mã secretKey này phải được bảo mật tuyệt đối, các bạn có thể lưu vào biến môi trường hoặc file
-const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "access-token-secret-quocphong@gmail.com"
-const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE || "365d"
-const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || "refresh-token-secret-quocphong@gmail.com"
+const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || "60"
+const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET 
+const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE 
+const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET 
 const sendMailService = require("../services/email")
 const randomString = require('randomstring')
 const config = require('../config')
@@ -46,7 +45,12 @@ let login = async (req, res) => {
       delete findUser.dataValues.password
       const accessToken = await jwtHelper.generateToken(findUser.id, accessTokenSecret, accessTokenLife)
       const refreshToken = await jwtHelper.generateToken(findUser.id, refreshTokenSecret, refreshTokenLife)
-      tokenList[refreshToken] = {accessToken, refreshToken}
+
+      
+      // save refresh token user to DB
+      findUser.update({
+        refreshToken: refreshToken
+      })
 
       return res.status(200).json({accessToken, refreshToken, findUser})
     }else{
@@ -116,10 +120,18 @@ let register = async (req, res) => {
 let refreshToken = async (req, res) => {
 
   const refreshTokenFromClient = req.body.refreshToken
-  
-  if (refreshTokenFromClient && (tokenList[refreshTokenFromClient])) {
-    try {
 
+  var findUser = await User.findOne({
+      where: {
+        refreshToken: refreshTokenFromClient
+      },
+  })
+
+  console.log(findUser)
+
+  if (findUser) {
+    try {
+  
       const decoded = await jwtHelper.verifyToken(refreshTokenFromClient, refreshTokenSecret)
 
       const accessToken = await jwtHelper.generateToken(decoded.userId, accessTokenSecret, accessTokenLife)
@@ -165,7 +177,12 @@ let loginSocial = async (req, res) => {
 
       const accessToken = await jwtHelper.generateToken(findUser.id, accessTokenSecret, accessTokenLife)
       const refreshToken = await jwtHelper.generateToken(findUser.id, refreshTokenSecret, refreshTokenLife)
-      tokenList[refreshToken] = {accessToken, refreshToken}
+
+      
+        // save refresh token user to DB
+        findUser.update({
+          refreshToken: refreshToken
+        })
 
       return res.status(200).json({message: "Login success", data: {
         accessToken: accessToken,
@@ -204,7 +221,11 @@ let loginSocial = async (req, res) => {
         delete findUser.password
         const accessToken = await jwtHelper.generateToken(findUser.id, accessTokenSecret, accessTokenLife)
         const refreshToken = await jwtHelper.generateToken(findUser.id, refreshTokenSecret, refreshTokenLife)
-        tokenList[refreshToken] = {accessToken, refreshToken}
+
+        // save refresh token user to DB
+        findUser.update({
+          refreshToken: refreshToken
+        })
 
 
         return res.status(200).json({message: "Login success", data: {

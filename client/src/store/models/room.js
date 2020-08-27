@@ -27,7 +27,7 @@ export default class Room extends Model {
               itemPerPage: itemPerPage
             },
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (error) {
           return error.response;
@@ -38,7 +38,7 @@ export default class Room extends Model {
         try {
           return await this.post("/room/join/" + id, payload, {
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (error) {
           return error.response;

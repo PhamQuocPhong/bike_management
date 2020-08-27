@@ -11,7 +11,10 @@
 </style>
 
 <script>
+import Auth from '@/services/auth';
 import ProgressBar from "./components/custom/HeaderProgress.vue";
+
+
 export default {
   components: {
     "progress-bar": ProgressBar
@@ -23,6 +26,5 @@ export default {
     };
   },
 
-  mounted() {}
 };
 </script>

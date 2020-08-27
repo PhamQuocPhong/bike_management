@@ -3,11 +3,28 @@ import VueResizeText from "vue-resize-text";
 import VueProgressBar from "vue-progressbar";
 import Loading from "vue-loading-overlay";
 import colors from "vuetify/lib/util/colors";
-import "vue-loading-overlay/dist/vue-loading.css";
 import VueChatScroll from "vue-chat-scroll";
-
 import VueCropper from 'vue-cropperjs';
+
+import "vue-loading-overlay/dist/vue-loading.css";
 import 'cropperjs/dist/cropper.css';
+
+
+global.axios = require("axios");
+global.axios.defaults.headers.common = {
+  "X-Requested-With": "XMLHttpRequest"
+};
+
+
+global.axios.defaults.baseURL = process.env.VUE_APP_ROOT_API || "http://localhost:3000/api/";
+
+
+// toastr 
+global.toastr = require("toastr");
+global.toastr.options.closeButton = true;
+global.toastr.options.closeMethod = "fadeOut";
+global.toastr.options.closeDuration = 500;
+global.toastr.options.closeEasing = "swing";
 
 
 // component

@@ -18,12 +18,18 @@ export default class ReceptionCustomerSell extends Model {
   }
 
   static apiConfig = {
+
+    headers: { 
+      'X-Requested-With': 'XMLHttpRequest',
+      'Authorization': 'Bearer ' + CookieService.get("accessToken"),
+    },
+
     actions: {
       async fetchAll() {
         try {
           return await this.get("/reception/customer-sell", {
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (error) {
           return error.response;
@@ -37,7 +43,7 @@ export default class ReceptionCustomerSell extends Model {
               itemPerPage: itemPerPage
             },
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (error) {
           return error.response;

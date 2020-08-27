@@ -3,6 +3,7 @@ import Customer from "./customer";
 import Sales from "./sales";
 import ReceptionCustomerBuy from "./sales";
 import VehicleSuggest from "./vehicle_suggest";
+
 export default class SalesCustomerBuy extends Model {
   static entity = "salesCustomerBuy";
 

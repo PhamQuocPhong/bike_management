@@ -13,6 +13,12 @@ export default class TechnicalTest extends Model {
   }
 
   static apiConfig = {
+
+    headers: { 
+      'X-Requested-With': 'XMLHttpRequest',
+      'Authorization': 'Bearer ' + CookieService.get("accessToken"),
+    },
+
     actions: {
       async fetchPaging(page, itemPerPage = null) {
         try {
@@ -21,7 +27,7 @@ export default class TechnicalTest extends Model {
               itemPerPage: itemPerPage
             },
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (error) {
           return error.response;

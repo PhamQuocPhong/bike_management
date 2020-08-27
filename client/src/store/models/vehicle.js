@@ -1,5 +1,7 @@
 import { Model } from "@vuex-orm/core";
 import VehicleType from "./vehicle_type";
+import CookieService from '@/services/cookie'
+
 export default class Vehicle extends Model {
   static entity = "vehicle";
 
@@ -24,12 +26,17 @@ export default class Vehicle extends Model {
   }
 
   static apiConfig = {
+
+    headers: { 
+      'X-Requested-With': 'XMLHttpRequest',
+      'Authorization': 'Bearer ' + CookieService.get("accessToken"),
+    },
+
     actions: {
       async create(payload) {
         try {
           return await this.post("/vehicle/create", payload, {
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
           });
         } catch (error) {
           return error.response;
@@ -37,13 +44,13 @@ export default class Vehicle extends Model {
       },
 
       async fetchPaging(page, itemPerPage = null) {
+          console.log(CookieService.get("accessToken"))
         try {
           return await this.get("/vehicle/page/" + page, {
             params: {
               itemPerPage: itemPerPage
             },
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
           });
         } catch (error) {
           return error.response;
@@ -54,7 +61,6 @@ export default class Vehicle extends Model {
         try {
           return await this.get("/vehicle", {
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") },
             params: {
               vehicleTypeId: vehicleTypeId
             }

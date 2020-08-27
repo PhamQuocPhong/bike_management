@@ -9,14 +9,16 @@ import vueMoment from "vue-moment";
 import helper from "./helpers/common";
 import config from "@/config/config";
 import validation from "./helpers/validation";
-import store from "./store/index.js";
+
 import VueSocketIO from "vue-socket.io";
 import SocketIO from "socket.io-client";
-import VueCookies from "vue-cookies";
 
-Vue.use(VueCookies);
+
 Vue.config.productionTip = false;
-Vue.$cookies.config(60 * 60, "");
+
+
+import store from "./store/index.js";
+
 
 Vue.use(
   new VueSocketIO({
@@ -30,6 +32,7 @@ Vue.use(
     // options: { path: "/my-app/" } //Optional options
   })
 );
+
 
 
 require("moment/locale/es");
@@ -57,18 +60,6 @@ require("./plugins/directive");
 require("./plugins/filter");
 
 
-global.axios = require("axios");
-global.axios.defaults.headers.common = {
-  "X-Requested-With": "XMLHttpRequest"
-};
-
-global.axios.defaults.baseURL =
-  process.env.VUE_APP_ROOT_API || "http://localhost:3000/api/";
-global.toastr = require("toastr");
-global.toastr.options.closeButton = true;
-global.toastr.options.closeMethod = "fadeOut";
-global.toastr.options.closeDuration = 500;
-global.toastr.options.closeEasing = "swing";
 
 new Vue({
   router,

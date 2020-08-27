@@ -34,6 +34,10 @@ const User = db.define('user', {
     type: Sequelize.INTEGER,
     defaultValue: 0,
     allowNull: true,
+  },
+  refreshToken: {
+    type: Sequelize.INTEGER,
+    allowNull: true,
   }
 });
 

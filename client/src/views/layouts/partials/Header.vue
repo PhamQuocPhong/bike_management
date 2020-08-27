@@ -82,6 +82,7 @@ export default {
   },
 
   mounted() {
+
     this.$vuetify.theme.dark = this.getTheme();
   },
 
