@@ -13,12 +13,18 @@ export default class User extends Model {
   }
 
   static apiConfig = {
+
+    headers: { 
+      'X-Requested-With': 'XMLHttpRequest',
+      'Authorization': 'Bearer ' + CookieService.get("accessToken"),
+    },
+
   	actions: {
   		async getInfo(id){
   			try {
           return await this.get(`/user/${id}`, {
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (error) {
           return error.response;

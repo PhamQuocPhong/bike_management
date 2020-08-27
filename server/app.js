@@ -50,7 +50,7 @@ const userRouter = require('./routes/user')
 const roomRouter = require('./routes/room')
 
 app.use('/api/auth/', authRouter)
-app.use('/api/dashboard/', dasboardRouter)
+app.use('/api/dashboard/', auth.isAuth,  dasboardRouter)
 app.use('/api/customer/',  auth.isAuth, customerRouter)
 app.use('/api/employee/',  auth.isAuth, emplyoeeRouter)
 app.use('/api/reception/', auth.isAuth, receptionRouter)

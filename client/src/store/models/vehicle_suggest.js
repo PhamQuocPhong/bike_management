@@ -16,6 +16,12 @@ export default class VehicleSuggest extends Model {
   }
 
   static apiConfig = {
+
+    headers: { 
+      'X-Requested-With': 'XMLHttpRequest',
+      'Authorization': 'Bearer ' + CookieService.get("accessToken"),
+    },
+
     actions: {
       fetchAll() {},
 
@@ -23,7 +29,7 @@ export default class VehicleSuggest extends Model {
         try {
           return this.get("/vehicle", {
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") },
+            
             params: {
               vehicleTypeId: vehicleTypeId
             }

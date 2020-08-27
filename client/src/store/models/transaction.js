@@ -31,12 +31,18 @@ export default class Transaction extends Model {
   }
 
   static apiConfig = {
+
+    headers: { 
+      'X-Requested-With': 'XMLHttpRequest',
+      'Authorization': 'Bearer ' + CookieService.get("accessToken"),
+    },
+
     actions: {
       async create(data) {
         try {
           return await this.post("/transaction/create", data, {
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (e) {
           return e.response;
@@ -58,7 +64,7 @@ export default class Transaction extends Model {
               month: month
             },
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (error) {
           return error.response;
@@ -81,7 +87,7 @@ export default class Transaction extends Model {
               month: month
             },
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (error) {
           return error.response;

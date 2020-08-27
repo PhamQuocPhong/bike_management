@@ -24,6 +24,12 @@ export default class VehicleRepair extends Model {
   }
 
   static apiConfig = {
+
+    headers: { 
+      'X-Requested-With': 'XMLHttpRequest',
+      'Authorization': 'Bearer ' + CookieService.get("accessToken"),
+    },
+
     actions: {
       fetchAll() {},
 
@@ -34,7 +40,7 @@ export default class VehicleRepair extends Model {
               itemPerPage: itemPerPage
             },
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (error) {
           return error.response;
@@ -45,7 +51,7 @@ export default class VehicleRepair extends Model {
         try {
           return this.get("/vehicle", {
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") },
+            
             params: {
               vehicleTypeId: vehicleTypeId
             }
@@ -59,7 +65,7 @@ export default class VehicleRepair extends Model {
         try {
           return this.post("vehicle/repair/create", payload, {
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (e) {
           return e.response;
@@ -70,7 +76,7 @@ export default class VehicleRepair extends Model {
         try {
           return this.post("vehicle/repair/update/" + id, payload, {
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (e) {
           return e.response;
@@ -81,7 +87,7 @@ export default class VehicleRepair extends Model {
         try {
           return this.post("vehicle/repair/publish/" + id, payload, {
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (e) {
           return e.response;

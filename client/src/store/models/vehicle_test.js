@@ -26,12 +26,18 @@ export default class VehicleTest extends Model {
   }
 
   static apiConfig = {
+
+    headers: { 
+      'X-Requested-With': 'XMLHttpRequest',
+      'Authorization': 'Bearer ' + CookieService.get("accessToken"),
+    },
+
     actions: {
       async update(id, data) {
         try {
           return await this.post(`/technical/vehicle-test/${id}`, data, {
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (error) {
           return error.response;
@@ -42,7 +48,7 @@ export default class VehicleTest extends Model {
         try {
           return await this.get("/technical/vehicle-test/", {
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (error) {
           return error.response;

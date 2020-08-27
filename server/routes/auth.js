@@ -10,6 +10,6 @@ router.post('/facebook', authController.loginSocial)
 
 router.post('/register', authController.register)
 
-router.post('/refresh-token', authController.refreshToken)
+router.post('/token/refresh_token', authController.refreshToken)
 
 module.exports = router

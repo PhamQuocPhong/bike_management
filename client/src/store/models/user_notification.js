@@ -15,6 +15,12 @@ export default class UserNotification extends Model {
   }
 
   static apiConfig = {
+
+    headers: { 
+      'X-Requested-With': 'XMLHttpRequest',
+      'Authorization': 'Bearer ' + CookieService.get("accessToken"),
+    },
+
     actions: {
       async fetchPaging(userId, type, page, itemPerPage = null) {
         try {
@@ -25,7 +31,7 @@ export default class UserNotification extends Model {
               type: type
             },
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (error) {
           return error.response;

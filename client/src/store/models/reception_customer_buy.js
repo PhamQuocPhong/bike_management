@@ -14,12 +14,18 @@ export default class ReceptionCustomerBuy extends Model {
   }
 
   static apiConfig = {
+
+    headers: { 
+      'X-Requested-With': 'XMLHttpRequest',
+      'Authorization': 'Bearer ' + CookieService.get("accessToken"),
+    },
+
     actions: {
       async fetchAll() {
         try {
           return await this.get("/reception/customer-buy", {
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (error) {
           return error.response;
@@ -33,7 +39,7 @@ export default class ReceptionCustomerBuy extends Model {
               itemPerPage: itemPerPage
             },
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (error) {
           return error.response;
@@ -43,7 +49,7 @@ export default class ReceptionCustomerBuy extends Model {
         try {
           return this.post("/reception/customer-buy/create", payload, {
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (error) {
           return error.response;
@@ -54,7 +60,7 @@ export default class ReceptionCustomerBuy extends Model {
         try {
           return this.post("/reception/customer-buy/update/" + id, payload, {
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (error) {
           return error.response;

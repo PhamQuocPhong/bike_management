@@ -22,7 +22,7 @@ export default class Employee extends Model {
         try {
           return this.get("/employee/position/" + positionId, {
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (error) {
           return error.response;

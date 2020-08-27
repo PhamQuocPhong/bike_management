@@ -20,12 +20,18 @@ export default class TechnicalRepair extends Model {
   }
 
   static apiConfig = {
+
+    headers: { 
+      'X-Requested-With': 'XMLHttpRequest',
+      'Authorization': 'Bearer ' + CookieService.get("accessToken"),
+    },
+
     actions: {
       async create(payload) {
         try {
           return await this.post("/technical/repair/create", payload, {
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (error) {
           return error.response;
@@ -36,7 +42,7 @@ export default class TechnicalRepair extends Model {
         try {
           return await this.post("/technical/repair/update/" + id, payload, {
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (error) {
           return error.response;
@@ -50,7 +56,7 @@ export default class TechnicalRepair extends Model {
               itemPerPage: itemPerPage
             },
             save: false,
-            headers: { "x-access-token": $cookies.get("accessToken") }
+            
           });
         } catch (error) {
           return error.response;
@@ -63,7 +69,7 @@ export default class TechnicalRepair extends Model {
             "/technical/vehicle-repair/" + vehicleRepairId,
             {
               save: false,
-              headers: { "x-access-token": $cookies.get("accessToken") }
+              
             }
           );
         } catch (error) {

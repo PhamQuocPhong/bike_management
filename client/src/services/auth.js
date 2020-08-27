@@ -1,5 +1,4 @@
-import Ls from "./ls";
-import User from "@/store/models/user";
+
 import Router from "../router";
 import Vue from "vue";
 export default {
@@ -10,7 +9,6 @@ export default {
         return res;
       }
     } catch (error) {
-      console.log(error);
       return error.response;
     }
   },
@@ -20,6 +18,15 @@ export default {
       const res = await axios.post("auth/register", data);
       return res;
     } catch (error) {
+      return error.response;
+    }
+  },
+
+  refreshToken: async data => {
+    try {
+      const res = await axios.post("auth/refresh-token", data);
+      return res;
+    } catch(error) {
       return error.response;
     }
   },
