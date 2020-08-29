@@ -135,6 +135,11 @@ export default {
               title: "Vehicle Repair",
               link: "/manage/vehicle-repair",
               icon: "mdi-moped"
+            },
+            {
+              title: "Room",
+              link: "/manage/room",
+              icon: "mdi-account-group"
             }
           ]
         }

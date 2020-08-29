@@ -25,14 +25,10 @@ const VehiclePurchase = db.define('vehiclePurchase', {
     allowNull: false
   },
 
-  code: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-
   price: { 
     type: Sequelize.DOUBLE,
-    allowNull: true
+    allowNull: true,
+    defaultValue: 0
   },
 
   status: {

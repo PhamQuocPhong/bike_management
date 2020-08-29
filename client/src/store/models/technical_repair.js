@@ -1,4 +1,5 @@
 import { Model } from "@vuex-orm/core";
+import CookieService from '@/services/cookie';
 import VehicleRepair from "./vehicle_repair";
 import Employee from "./employee";
 export default class TechnicalRepair extends Model {
@@ -21,10 +22,10 @@ export default class TechnicalRepair extends Model {
 
   static apiConfig = {
 
-    headers: { 
-      'X-Requested-With': 'XMLHttpRequest',
-      'Authorization': 'Bearer ' + CookieService.get("accessToken"),
-    },
+    // headers: { 
+    //   'X-Requested-With': 'XMLHttpRequest',
+    //   'Authorization': 'Bearer ' + CookieService.get("accessToken"),
+    // },
 
     actions: {
       async create(payload) {

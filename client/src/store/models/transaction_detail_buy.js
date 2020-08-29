@@ -1,4 +1,5 @@
 import { Model } from "@vuex-orm/core";
+import CookieService from '@/services/cookie';
 import VehiclePurchase from "./vehicle_purchase";
 import Transaction from "./transaction";
 export default class TransactionDetailBuy extends Model {

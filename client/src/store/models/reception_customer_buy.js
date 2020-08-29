@@ -1,4 +1,5 @@
 import { Model } from "@vuex-orm/core";
+import CookieService from '@/services/cookie';
 import Employee from "./employee";
 import SalesCustomerBuy from "./sales_customer_buy";
 export default class ReceptionCustomerBuy extends Model {
@@ -15,17 +16,17 @@ export default class ReceptionCustomerBuy extends Model {
 
   static apiConfig = {
 
-    headers: { 
-      'X-Requested-With': 'XMLHttpRequest',
-      'Authorization': 'Bearer ' + CookieService.get("accessToken"),
-    },
+    
+    // headers: { 
+    //   'X-Requested-With': 'XMLHttpRequest',
+    //   'Authorization': 'Bearer ' + CookieService.get("accessToken"),
+    // },
 
     actions: {
       async fetchAll() {
         try {
           return await this.get("/reception/customer-buy", {
             save: false,
-            
           });
         } catch (error) {
           return error.response;
@@ -45,9 +46,9 @@ export default class ReceptionCustomerBuy extends Model {
           return error.response;
         }
       },
-      create(payload) {
+      async create(payload) {
         try {
-          return this.post("/reception/customer-buy/create", payload, {
+          return await this.post("/reception/customer-buy/create", payload, {
             save: false,
             
           });
@@ -56,9 +57,9 @@ export default class ReceptionCustomerBuy extends Model {
         }
       },
 
-      update(id, payload) {
+      async update(id, payload) {
         try {
-          return this.post("/reception/customer-buy/update/" + id, payload, {
+          return await this.post("/reception/customer-buy/update/" + id, payload, {
             save: false,
             
           });

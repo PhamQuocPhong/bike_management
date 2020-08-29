@@ -22,10 +22,6 @@ const VehicleTest = db.define('vehicleTest', {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  bikeCode:{
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
   bikeStatus:{
     type: Sequelize.ENUM,
     values: ['new', 'normal', 'old', 'waiting'],

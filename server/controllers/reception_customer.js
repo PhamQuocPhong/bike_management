@@ -11,9 +11,8 @@ const Sales = require('../models/sales')
 const AwsService = require('../services/aws')
 const helperFunctions = require('../helpers/function')
 const config = require('../config')
-
-const POSITION_MANAGE_ID = 1
 const { Op } = require("sequelize")
+const sequelize = require("../database/db")
 
 let getReceptionCustomerSellPaging = async(req, res) => {
 
@@ -31,7 +30,7 @@ let getReceptionCustomerSellPaging = async(req, res) => {
 		offset = ((page - 1) * itemPerPage) 
 	}
 
-	if(employeeInfo.positionId != POSITION_MANAGE_ID){
+	if(employeeInfo.positionId != config.employeePosition.MANAGE){
 		conditionGetData = {
 			[Op.or]: [
 				{employeeId: employeeInfo.id}, 
@@ -39,8 +38,8 @@ let getReceptionCustomerSellPaging = async(req, res) => {
 		}
 	}
 
-	try {
 
+	try {
 		const receptionCustomerSellData = await ReceptionCustomerSell.findAll({
 			offset: offset, 
 			limit: itemPerPage, 
@@ -88,6 +87,7 @@ let createReceptionCustomerSell = async (req, res) => {
 		}
 	})
 
+	const t = await sequelize.transaction();
 	try{
 		if(vehicleTestData.length > 0)
 		{
@@ -97,7 +97,7 @@ let createReceptionCustomerSell = async (req, res) => {
 					phoneNumber: customerData.phoneNumber,
 					email: customerData.email,
 					address: customerData.address,
-				})
+				}, { transaction: t })
 					customerId = newCustomer.id
 				}else{
 					customerId = findCustomer.id
@@ -106,11 +106,11 @@ let createReceptionCustomerSell = async (req, res) => {
 				var newReceptionCustomerSell = await ReceptionCustomerSell.create({
 					employeeId: userId,
 					customerId: customerId
-				})
+				}, { transaction: t })
 		
 				var newTechnicalTest = await TechnicalTest.create({
 					employeeId: employeeTest.id
-				})
+				}, { transaction: t })
 		
 				
 				if(vehicleTestData.length > 0){
@@ -124,19 +124,17 @@ let createReceptionCustomerSell = async (req, res) => {
 							name: vehicleTestData[i].name,
 							color: vehicleTestData[i].color,
 							registrationPlate: vehicleTestData[i].registrationPlate,
-							bikeCode: vehicleTestData[i].bikeCode,
-							bikeStatus: vehicleTestData[i].bikeStatus,
 							minPrice: vehicleTestData[i].minPrice,
 							maxPrice: vehicleTestData[i].maxPrice,
 							technicalTestId: newTechnicalTest.id,
 							receptionCustomerSellId: newReceptionCustomerSell.id,
 							vehicleTypeId:  vehicleTestData[i].vehicleTypeId
-						})
+						}, { transaction: t })
 					}
 				}
-				
-		
-		
+
+				await t.commit();
+			
 				const receptionCustomerSellData = await ReceptionCustomerSell.findOne({
 					where: {
 						id: newReceptionCustomerSell.id
@@ -166,8 +164,8 @@ let createReceptionCustomerSell = async (req, res) => {
 			return res.status(400).json({message: "Not yet added vehicles"});
 		}
 		
-
 	}catch(error){
+		await t.rollback();
 		return res.status(500).json(error)
 	}
 }
@@ -184,7 +182,7 @@ let createReceptionCustomerBuy = async (req, res) => {
 			phoneNumber: data.phoneNumber
 		}
 	})
-
+	const t = await sequelize.transaction();
 
 	try{
 		if(!findCustomer){
@@ -193,7 +191,7 @@ let createReceptionCustomerBuy = async (req, res) => {
 				phoneNumber: data.phoneNumber,
 				email: data.email,
 				address: data.address,
-			})
+			}, { transaction: t })
 			customerId = newCustomer.id
 		}else{
 			customerId = findCustomer.id
@@ -201,16 +199,21 @@ let createReceptionCustomerBuy = async (req, res) => {
 
 		var newReceptionCustomerBuy = await ReceptionCustomerBuy.create({
 			employeeId: userId,
-		})
+		}, { transaction: t })
 
-		var newSales = await Sales.create()
+		var newSales = await Sales.create({
+			employeeId: null
+		}, { transaction: t })
+
 		var newSalesCustomerBuy = await SalesCustomerBuy.create({
 			customerRequire: data.customerRequire,
 			status: progressTransaction.default,
 			customerId: customerId,
 			saleId: newSales.id,
 			receptionCustomerBuyId: newReceptionCustomerBuy.id
-		})
+		}, { transaction: t })
+
+		await t.commit();
 
 		var returnRecord = await ReceptionCustomerBuy.findOne({
 			where: {
@@ -228,11 +231,11 @@ let createReceptionCustomerBuy = async (req, res) => {
 			]
 		})
 
-		if(newReceptionCustomerBuy){
-			return res.status(200).json({message: 'Create Success!', data: returnRecord})
-		}
+		return res.status(200).json({message: 'Create Success!', data: returnRecord})
+		
 
 	}catch(error){
+		await t.rollback();
 		return res.status(500).json(error)
 	}
 
@@ -254,7 +257,7 @@ let getReceptionCustomerBuyPaging = async (req, res) => {
 		offset = ((page - 1) * itemPerPage) 
 	}
 
-	if(employeeInfo.positionId != POSITION_MANAGE_ID){
+	if(employeeInfo.positionId != config.employeePosition.MANAGE){
 		conditionGetData = {
 			[Op.or]: [
 				{employeeId: employeeInfo.id}, 

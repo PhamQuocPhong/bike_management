@@ -1,4 +1,5 @@
 import { Model } from "@vuex-orm/core";
+import CookieService from '@/services/cookie';
 import Vehicle from "./vehicle";
 import ReceptionCustomerSell from "./reception_customer_sell";
 import VehicleRepair from "./vehicle_repair";
@@ -11,7 +12,6 @@ export default class VehiclePurchase extends Model {
       id: this.attr(null),
       name: this.attr(null),
       color: this.attr(null),
-      code: this.attr(null),
       registrationPlate: this.attr(null),
       price: this.attr(null),
       status: this.attr(null),
@@ -29,10 +29,11 @@ export default class VehiclePurchase extends Model {
 
   static apiConfig = {
 
-    headers: { 
-      'X-Requested-With': 'XMLHttpRequest',
-      'Authorization': 'Bearer ' + CookieService.get("accessToken"),
-    },
+    
+    // headers: { 
+    //   'X-Requested-With': 'XMLHttpRequest',
+    //   'Authorization': 'Bearer ' + CookieService.get("accessToken"),
+    // },
 
     actions: {
       fetchAll() {},

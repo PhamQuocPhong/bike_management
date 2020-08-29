@@ -1,4 +1,5 @@
 import { Model } from "@vuex-orm/core";
+import CookieService from '@/services/cookie';
 import TransactionDetailBuy from "./transaction_detail_buy";
 import TransactionDetailSell from "./transaction_detail_sell";
 
@@ -32,10 +33,11 @@ export default class Transaction extends Model {
 
   static apiConfig = {
 
-    headers: { 
-      'X-Requested-With': 'XMLHttpRequest',
-      'Authorization': 'Bearer ' + CookieService.get("accessToken"),
-    },
+    
+    // headers: { 
+    //   'X-Requested-With': 'XMLHttpRequest',
+    //   'Authorization': 'Bearer ' + CookieService.get("accessToken"),
+    // },
 
     actions: {
       async create(data) {

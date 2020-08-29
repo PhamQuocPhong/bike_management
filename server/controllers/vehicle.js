@@ -9,6 +9,7 @@ const helperFunctions = require('../helpers/function')
 const helper = require('../helpers/helper')
 const AwsService = require('../services/aws')
 const config = require('../config')
+const sequelize = require("../database/db")
 
 let createVehicle = async(req, res) => {
 
@@ -24,6 +25,7 @@ let createVehicle = async(req, res) => {
 
 	var newCode = helper.addCode(lastBike.code, vehicleType)
 
+	const t = await sequelize.transaction();
 	try {
 
 		var urlImage = '';
@@ -45,10 +47,14 @@ let createVehicle = async(req, res) => {
 			buyPrice: data.price,
 			vehicleTypeId: data.vehicleTypeId,
 			valid: config.vehicle.VALID,
-		})
+		}, { transaction: t })
+
+		await t.commit();
+
 		return res.status(200).json({message: "Create success", data: newVehicle })
 
 	} catch(e) {
+		await t.rollback();
 		return res.status(500).json({message: 'Network Error'})
 	}
 
@@ -227,12 +233,13 @@ let publishVehicleRepair = async (req, res) => {
 		return res.status(401).json({message: 'Update failed!'})
 	}
 
+	const t = await sequelize.transaction();
 	try{
 		await VehicleRepair.update(vehicleRepair, {
 			where: {
 				id: vehicleRepairId
 			}
-		}).then(async (response) => {
+		}, { transaction: t }).then(async (response) => {
 
 
 			await Vehicle.create({
@@ -247,19 +254,23 @@ let publishVehicleRepair = async (req, res) => {
 				buyPrice: vehiclePurchase.price,
 				vehicleTypeId: vehiclePurchase.vehicleTypeId,
 				valid: config.vehicle.VALID,
-			})
+			}, { transaction: t })
 		
+
+			await t.commit();
 
 			var returnRecord = await VehicleRepair.findOne({
 				where: {
 					id: vehicleRepairId
 				},	
 			})
+
 			return res.status(200).json({message: 'Update success!', data: returnRecord})
 			
 		})
 
 	}catch(error){
+		await t.rollback();
 		return res.status(500).json(error)
 	}
 

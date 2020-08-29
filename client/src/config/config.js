@@ -9,6 +9,17 @@ export default {
   	ADMIN: 2,
   	MEMBER: 3,
   	GUEST: 4,
+  },
+
+  aspectRatio: {
+  	table: 16/5
+  },
+
+  pagination: {
+  	CURENT_PAGE: 1,
+  	ITEMS_PER_PAGE: 7,
+  	ITEMS_PER_PAGE_LIST: [5, 10, 15],
+  	PAGE_COUNTS_DEFAULT: 0,
   }
 };
 

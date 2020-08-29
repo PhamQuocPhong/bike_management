@@ -1,4 +1,5 @@
 import { Model } from "@vuex-orm/core";
+import CookieService from '@/services/cookie';
 import Customer from "./customer";
 import Employee from "./employee";
 import VehicleTest from "./vehicle_test";
@@ -19,10 +20,11 @@ export default class ReceptionCustomerSell extends Model {
 
   static apiConfig = {
 
-    headers: { 
-      'X-Requested-With': 'XMLHttpRequest',
-      'Authorization': 'Bearer ' + CookieService.get("accessToken"),
-    },
+    
+    // headers: { 
+    //   'X-Requested-With': 'XMLHttpRequest',
+    //   'Authorization': 'Bearer ' + CookieService.get("accessToken"),
+    // },
 
     actions: {
       async fetchAll() {

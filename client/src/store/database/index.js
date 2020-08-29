@@ -21,14 +21,18 @@ import UserNotification from "../models/user_notification";
 import Room from "../models/room";
 import Modal from "../models/modal";
 import Component from "../models/component";
+import Cookie from "../models/cookie";
+
 
 // modules
 import VehicleTestModules from "../modules/vehicle_test";
 import ModalModules from "../modules/modal";
 import ComponentModules from "../modules/component";
+import CookieModules from "../modules/cookie";
+
 
 const database = new Database();
-
+database.register(Cookie, CookieModules);
 database.register(Emyployee);
 database.register(Customer);
 database.register(User);
@@ -53,4 +57,6 @@ database.register(Room);
 
 database.register(Modal, ModalModules);
 database.register(Component, ComponentModules);
+
+
 export default database;

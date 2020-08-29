@@ -29,99 +29,53 @@
         class="table"
         :class="{ 'mt-4': isMobile }"
       >
-        <v-simple-table :class="{ mobile: isMobile }">
-          <template v-slot:default v-if="!isMobile">
-            <thead>
-              <tr>
-                <th>No.</th>
-                <th>Customer name</th>
-                <th>Email</th>
-                <th>Customer phone</th>
-                <th>Require</th>
-                <th>Progess</th>
-                <th class="text-center">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="item in receptionCustomerBuys"
-                :key="item.id"
-                v-if="loadData"
-              >
-                <td>
-                  {{ $helper.indexColumn(item, receptionCustomerBuys) }}
-                </td>
+        <v-responsive :aspect-ratio="$appConfig.aspectRatio.table">
+          <v-simple-table :class="{ mobile: isMobile }">
+            <template v-slot:default v-if="!isMobile">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Customer name</th>
+                  <th>Email</th>
+                  <th>Customer phone</th>
+                  <th>Require</th>
+                  <th>Progess</th>
+                  <th class="text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody>
 
-                <td>
-                  {{ item.salesCustomerBuy.customer.name }}
-                </td>
+                <tr v-if="!loadData">
+                    <td colspan="100%">
+                      <skeleton-custom></skeleton-custom>
+                    </td>
+                </tr>
 
-                <td>
-                  {{ item.salesCustomerBuy.customer.email }}
-                </td>
+                <tr
+                  v-for="(item, index) in receptionCustomerBuys"
+                  :key="item.id"
+                  v-else
+                >
+                  <td>
+                    {{ $helper.showIndex(index, currentPage, itemsPerPage) }}
+                  </td>
 
-                <td>
-                  {{ item.salesCustomerBuy.customer.phoneNumber }}
-                </td>
-
-                <td>
-                  {{ item.salesCustomerBuy.customerRequire }}
-                </td>
-                <td>
-                  <v-chip
-                    small
-                    :color="
-                      $helper.colorStatusTransaction(item.salesCustomerBuy)
-                    "
-                    dark
-                  >
-                    {{ item.salesCustomerBuy.status }}
-                  </v-chip>
-                </td>
-                <td class="text-center">
-                  <v-btn
-                    color="white"
-                    small
-                    class="primary mr-4"
-                    @click="edit(item)"
-                  >
-                    <v-icon>mdi-square-edit-outline</v-icon>
-                  </v-btn>
-                  <v-btn color="white" small class="warning">
-                    <v-icon>mdi-delete-outline</v-icon>
-                  </v-btn>
-                </td>
-              </tr>
-            </tbody>
-          </template>
-
-          <template v-slot:default v-else>
-            <tr
-              v-for="(item, index) in receptionCustomerBuys"
-              :key="item.id"
-              v-if="loadData"
-            >
-              <td>
-                <ul class="flex-content">
-                  <li class="flex-item" data-label="No.">
-                    {{ $helper.indexColumn(item, receptionCustomerBuys) }}
-                  </li>
-                  <li class="flex-item" data-label="Customer name">
+                  <td>
                     {{ item.salesCustomerBuy.customer.name }}
-                  </li>
+                  </td>
 
-                  <li class="flex-item" data-label="Email">
+                  <td>
                     {{ item.salesCustomerBuy.customer.email }}
-                  </li>
+                  </td>
 
-                  <li class="flex-item" data-label="Customer phone">
+                  <td>
                     {{ item.salesCustomerBuy.customer.phoneNumber }}
-                  </li>
+                  </td>
 
-                  <li class="flex-item" data-label="Require">
+                  <td>
                     {{ item.salesCustomerBuy.customerRequire }}
-                  </li>
-                  <li class="flex-item" data-label="Progess">
+                  </td>
+                  <td>
                     <v-chip
                       small
                       :color="
@@ -131,8 +85,8 @@
                     >
                       {{ item.salesCustomerBuy.status }}
                     </v-chip>
-                  </li>
-                  <li class="flex-item" data-label="Action">
+                  </td>
+                  <td class="text-center">
                     <v-btn
                       color="white"
                       small
@@ -144,12 +98,73 @@
                     <v-btn color="white" small class="warning">
                       <v-icon>mdi-delete-outline</v-icon>
                     </v-btn>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-          </template>
-        </v-simple-table>
+                  </td>
+                </tr>
+              </tbody>
+            </template>
+
+            <template v-slot:default v-else>
+              <tr v-if="!loadData">
+                  <td colspan="100%">
+                     <skeleton-custom></skeleton-custom>
+                  </td>
+              </tr>
+
+              <tr
+                v-for="(item, index) in receptionCustomerBuys"
+                :key="item.id"
+                v-else
+              >
+                <td>
+                  <ul class="flex-content">
+                    <li class="flex-item" data-label="No.">
+                      {{ $helper.showIndex(index, currentPage, itemsPerPage) }}
+                    </li>
+                    <li class="flex-item" data-label="Customer name">
+                      {{ item.salesCustomerBuy.customer.name }}
+                    </li>
+
+                    <li class="flex-item" data-label="Email">
+                      {{ item.salesCustomerBuy.customer.email }}
+                    </li>
+
+                    <li class="flex-item" data-label="Customer phone">
+                      {{ item.salesCustomerBuy.customer.phoneNumber }}
+                    </li>
+
+                    <li class="flex-item" data-label="Require">
+                      {{ item.salesCustomerBuy.customerRequire }}
+                    </li>
+                    <li class="flex-item" data-label="Progess">
+                      <v-chip
+                        small
+                        :color="
+                          $helper.colorStatusTransaction(item.salesCustomerBuy)
+                        "
+                        dark
+                      >
+                        {{ item.salesCustomerBuy.status }}
+                      </v-chip>
+                    </li>
+                    <li class="flex-item" data-label="Action">
+                      <v-btn
+                        color="white"
+                        small
+                        class="primary mr-4"
+                        @click="edit(item)"
+                      >
+                        <v-icon>mdi-square-edit-outline</v-icon>
+                      </v-btn>
+                      <v-btn color="white" small class="warning">
+                        <v-icon>mdi-delete-outline</v-icon>
+                      </v-btn>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </template>
+          </v-simple-table>
+        </v-responsive>
       </v-layout>
 
       <v-row justify="center">
@@ -197,20 +212,21 @@ export default {
 
   data() {
     return {
-      currentPage: 1,
-      itemsPerPage: 5,
-      search: "",
-      itemsPerPageList: [5, 10, 15],
-      pageCounts: 0,
+      currentPage: this.$appConfig.pagination.CURENT_PAGE,
+      itemsPerPage: this.$appConfig.pagination.ITEMS_PER_PAGE,
+      itemsPerPageList: this.$appConfig.pagination.ITEMS_PER_PAGE_LIST,
+      pageCounts:  this.$appConfig.pagination.PAGE_COUNTS_DEFAULT,
 
+      search: null,
       receptionCustomerBuy: "",
-
       isMobile: false,
       loadData: false
     };
   },
 
-  mounted() {},
+  mounted() {
+
+  },
 
   methods: {
     edit(item) {
@@ -229,26 +245,32 @@ export default {
     },
 
     async retrieveData() {
-      const res = await ReceptionCustomerBuy.api().fetchPaging(
-        this.currentPage,
-        this.itemsPerPage
-      );
-      if (res.response.status === 200) {
-        this.loadData = true;
-        ReceptionCustomerBuy.insert({ data: res.response.data.data });
-        ComponentStore.dispatch("loadingProgress", { option: "hide" });
-      } else {
-        ComponentStore.dispatch("loadingProgress", { option: "hide" });
-      }
+      this.loadData = false
+      setTimeout(async () => {
+        const res = await ReceptionCustomerBuy.api().fetchPaging(
+          this.currentPage,
+          this.itemsPerPage
+        );
+        if (res.response.status === 200) {
+          this.loadData = true;
+          ReceptionCustomerBuy.insert({ data: res.response.data.data });
+          this.pageCounts = res.response.data.pageCounts
+        }
+      }, 500)
     }
   },
 
   computed: {
     receptionCustomerBuys() {
+      var itemsPerPage = this.itemsPerPage;
+      var offset = this.$helper.calcPagination(this.currentPage, itemsPerPage)
+
       return ReceptionCustomerBuy.query()
         .with("salesCustomerBuy", query => {
           query.with("customer");
         })
+        .offset(offset)
+        .limit(itemsPerPage)
         .get();
     },
     receptionBuyEdit() {

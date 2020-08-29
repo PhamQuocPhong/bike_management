@@ -6,118 +6,122 @@
       class="table"
       :class="{ 'mt-4': isMobile }"
     >
-      <v-simple-table :class="{ mobile: isMobile }">
-        <template v-slot:default v-if="!isMobile">
-          <thead>
-            <tr>
-              <th>No.</th>
-              <th>Employee</th>
-              <th>Customer</th>
-              <th>Total item</th>
-              <th>Sub total price</th>
-              <th>Tax price</th>
-              <th>Total price</th>
-              <th>Date</th>
-              <th class="text-center">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-if="!loadData">
-              <td colspan="100%">
-                <v-skeleton-loader
-                  ref="skeleton"
-                  :type="type"
-                  class="mx-auto"
-                ></v-skeleton-loader>
-              </td>
-            </tr>
+      <v-responsive :aspect-ratio="$appConfig.aspectRatio.table">
+        <v-simple-table :class="{ mobile: isMobile }">
+          <template v-slot:default v-if="!isMobile">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Employee</th>
+                <th>Customer</th>
+                <th>Total item</th>
+                <th>Sub total price</th>
+                <th>Tax price</th>
+                <th>Total price</th>
+                <th>Date</th>
+                <th class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="!loadData">
+                <td colspan="100%">
+                 <skeleton-custom></skeleton-custom>
+                </td>
+              </tr>
 
-            <tr v-for="item in transactionSells" :key="item.id" v-else>
-              <td>
-                {{ $helper.indexColumn(item, transactionSells) }}
-              </td>
-              <td>{{ item.employee.fullName }}</td>
-              <td>{{ item.customer.name }}</td>
-              <td>{{ item.totalItem }}</td>
-              <td>{{ item.subTotalPrice }}</td>
-              <td>{{ item.taxPrice }}</td>
-              <td>{{ item.totalPrice }}</td>
-              <td>{{ item.date }}</td>
-
-              <td class="text-center">
-                <btn-custom 
-                  icon="mdi-square-edit-outline"
-                  :classProp="`primary mr-4`"
-                  v-on:action="edit(item)"
-                  type="edit"
-                  >
-                  </btn-custom>
-
-                  <btn-custom 
-                  icon="mdi-file-export-outline"
-                  :classProp="`success`"
-                  v-on:action="reportTransactionSell(item.id)"
-                  type="export"
-                  >
-                  </btn-custom>
-              </td>
-            </tr>
-          </tbody>
-        </template>
-
-        <template v-slot:default v-else>
-          <tr
-            v-for="(item, index) in transactionSells"
-            :key="item.id"
-            v-if="loadData"
-          >
-            <td>
-              <ul class="flex-content">
-                <li class="flex-item" data-label="Action">
+              <tr v-for="item in transactionSells" :key="item.id" v-else>
+                <td>
                   {{ $helper.indexColumn(item, transactionSells) }}
-                </li>
-                <li class="flex-item" data-label="Action">
-                  {{ item.employee.fullName }}
-                </li>
-                <li class="flex-item" data-label="Action">
-                  {{ item.customer.name }}
-                </li>
-                <li class="flex-item" data-label="Action">
-                  {{ item.totalItem }}
-                </li>
-                <li class="flex-item" data-label="Action">
-                  {{ item.subTotalPrice }}
-                </li>
-                <li class="flex-item" data-label="Action">
-                  {{ item.taxPrice }}
-                </li>
-                <li class="flex-item" data-label="Action">
-                  {{ item.totalPrice }}
-                </li>
-                <li class="flex-item" data-label="Action">{{ item.date }}</li>
+                </td>
+                <td>{{ item.employee.fullName }}</td>
+                <td>{{ item.customer.name }}</td>
+                <td>{{ item.totalItem }}</td>
+                <td>{{ item.subTotalPrice }}</td>
+                <td>{{ item.taxPrice }}</td>
+                <td>{{ item.totalPrice }}</td>
+                <td>{{ item.date }}</td>
 
-                <li class="flex-item" data-label="Action">
+                <td class="text-center">
                   <btn-custom 
-                  icon="mdi-square-edit-outline"
-                  :classProp="`primary mr-4`"
-                  v-on:action="edit(item)"
-                  type="edit"
-                  >
-                  </btn-custom>
+                    icon="mdi-square-edit-outline"
+                    :classProp="`primary mr-4`"
+                    v-on:action="edit(item)"
+                    type="edit"
+                    >
+                    </btn-custom>
 
-                  <btn-custom 
-                  icon="mdi-file-export-outline"
-                  :classProp="`success`"
-                  v-on:action="reportTransactionSell(item.id)"
-                  type="export"
-                  >
-                  </btn-custom>
-                </li>
-              </ul>
-            </td>
-          </tr>
-        </template>
-      </v-simple-table>
+                    <btn-custom 
+                    icon="mdi-file-export-outline"
+                    :classProp="`success`"
+                    v-on:action="reportTransactionSell(item.id)"
+                    type="export"
+                    >
+                    </btn-custom>
+                </td>
+              </tr>
+            </tbody>
+          </template>
+
+          <template v-slot:default v-else>
+            <tr v-if="!loadData">
+                <td colspan="100%">
+                   <skeleton-custom></skeleton-custom>
+                </td>
+            </tr>
+
+            <tr
+              v-for="(item, index) in transactionSells"
+              :key="item.id"
+              v-if="loadData"
+            >
+              <td>
+                <ul class="flex-content">
+                  <li class="flex-item" data-label="Action">
+                    {{ $helper.indexColumn(item, transactionSells) }}
+                  </li>
+                  <li class="flex-item" data-label="Action">
+                    {{ item.employee.fullName }}
+                  </li>
+                  <li class="flex-item" data-label="Action">
+                    {{ item.customer.name }}
+                  </li>
+                  <li class="flex-item" data-label="Action">
+                    {{ item.totalItem }}
+                  </li>
+                  <li class="flex-item" data-label="Action">
+                    {{ item.subTotalPrice }}
+                  </li>
+                  <li class="flex-item" data-label="Action">
+                    {{ item.taxPrice }}
+                  </li>
+                  <li class="flex-item" data-label="Action">
+                    {{ item.totalPrice }}
+                  </li>
+                  <li class="flex-item" data-label="Action">{{ item.date }}</li>
+
+                  <li class="flex-item" data-label="Action">
+                    <btn-custom 
+                    icon="mdi-square-edit-outline"
+                    :classProp="`primary mr-4`"
+                    v-on:action="edit(item)"
+                    type="edit"
+                    >
+                    </btn-custom>
+
+                    <btn-custom 
+                    icon="mdi-file-export-outline"
+                    :classProp="`success`"
+                    v-on:action="reportTransactionSell(item.id)"
+                    type="export"
+                    >
+                    </btn-custom>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </template>
+        </v-simple-table>
+      </v-responsive>
     </v-layout>
 
     <v-row justify="center">
@@ -141,10 +145,12 @@
 </template>
 
 <script>
+// component
 import EditSellComponent from "./Edit.vue";
+import ComponentStore from "@/store/models/component";
 
+// store
 import Transaction from "@/store/models/transaction";
-
 import Modal from "@/store/models/modal";
 import HTTP from "@/services/http";
 
@@ -154,22 +160,24 @@ export default {
   },
 
   async created() {
-    this.retrieveData();
+    ComponentStore.dispatch("loadingProgress", { option: "show" });
+    setTimeout(async () => {
+      await this.retrieveData();
+      ComponentStore.dispatch("loadingProgress", { option: "hide" });
+    }, 500);
   },
 
   data() {
     return {
-      currentPage: 1,
-      itemsPerPage: 5,
+      currentPage: this.$appConfig.pagination.CURENT_PAGE,
+      itemsPerPage: this.$appConfig.pagination.ITEMS_PER_PAGE,
+      itemsPerPageList: this.$appConfig.pagination.ITEMS_PER_PAGE_LIST,
+      pageCounts:  this.$appConfig.pagination.PAGE_COUNTS_DEFAULT,
+
       search: "",
-      itemsPerPageList: [5, 10, 15],
-      pageCounts: 0,
-
-      receptionCustomerBuy: "",
-
       isMobile: false,
       loadData: false,
-      type: "table-tbody"
+      
     };
   },
 
@@ -183,6 +191,7 @@ export default {
 
     nextPage(page) {
       this.currentPage = page;
+      this.loadData = false;
       this.retrieveData();
     },
 
@@ -232,6 +241,9 @@ export default {
     },
 
     transactionSells() {
+      var itemsPerPage = this.itemsPerPage;
+      var offset = this.$helper.calcPagination(this.currentPage, itemsPerPage)
+
       var data = Transaction.query()
         .with("transactionDetailSells", query => {
           query.with("vehicle");

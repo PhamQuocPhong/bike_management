@@ -34,107 +34,55 @@
             class="table"
             :class="{ 'mt-4': isMobile }"
           >
-            <v-simple-table :class="{ mobile: isMobile }">
-              <template v-slot:default v-if="!isMobile">
-                <thead>
-                  <tr>
-                    <th>No.</th>
-                    <th>Customer name</th>
-                    <th>Customer phone</th>
-                    <th>Require</th>
-                    <th>Contact</th>
-                    <th>Progess</th>
-                    <th class="text-center">Action</th>
-                  </tr>
-                </thead>
+            <v-responsive :aspect-ratio="$appConfig.aspectRatio.table">
+              <v-simple-table :class="{ mobile: isMobile }">
+                <template v-slot:default v-if="!isMobile">
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>Customer name</th>
+                      <th>Customer phone</th>
+                      <th>Require</th>
+                      <th>Contact</th>
+                      <th>Progess</th>
+                      <th class="text-center">Action</th>
+                    </tr>
+                  </thead>
 
-                <tbody>
-                  <tr v-for="(item, index) in Sales" :key="item.id">
-                    <td>
-                      {{ $helper.indexColumn(item, Sales) }}
-                    </td>
-                    <td>{{ item.salesCustomerBuy.customer.name }}</td>
-                    <td>{{ item.salesCustomerBuy.customer.phoneNumber }}</td>
-                    <td>{{ item.salesCustomerBuy.customerRequire }}</td>
-                    <td>
-                      <v-switch
-                        v-model="item.salesCustomerBuy.contactFlg"
-                        @change="contactCustomer(item)"
-                        :disabled="item.salesCustomerBuy.contactFlg === 1"
-                      >
-                      </v-switch>
-                    </td>
-                    <td>
-                      <v-chip
-                        small
-                        :color="
-                          $helper.colorStatusTransaction(item.salesCustomerBuy)
-                        "
-                        dark
-                      >
-                        {{ item.salesCustomerBuy.status }}
-                      </v-chip>
-                    </td>
-                    <td class="text-center">
-                      <v-btn
-                        color="white"
-                        small
-                        class="primary mr-4"
-                        @click="edit(item)"
-                      >
-                        <v-icon>mdi-square-edit-outline</v-icon>
-                      </v-btn>
-                      <v-btn color="white" small class="warning">
-                        <v-icon>mdi-delete-outline</v-icon>
-                      </v-btn>
-                    </td>
-                  </tr>
-                </tbody>
-              </template>
+                  <tbody>
+                    <tr v-if="!loadData">
+                        <td colspan="100%">
+                          <skeleton-custom></skeleton-custom>
+                        </td>
+                    </tr>
 
-              <template v-slot:default v-else>
-                <tr
-                  v-for="(item, index) in Sales"
-                  :key="item.id"
-                  v-if="loadData"
-                >
-                  <td>
-                    <ul class="flex-content">
-                      <li class="flex-item" data-label="No.">
-                        {{ $helper.indexColumn(item, Sales) }}
-                      </li>
-                      <li class="flex-item" data-label="Customer name">
-                        {{ item.salesCustomerBuy.customer.name }}
-                      </li>
-                      <li class="flex-item" data-label="Customer phone">
-                        {{ item.salesCustomerBuy.customer.phoneNumber }}
-                      </li>
-                      <li class="flex-item" data-label="Require">
-                        {{ item.salesCustomerBuy.customerRequire }}
-                      </li>
-                      <li class="flex-item" data-label="Contact">
+                    <tr v-else v-for="(item, index) in Sales" :key="item.id">
+                      <td>
+                        {{ $helper.showIndex(index, currentPage, itemsPerPage) }}
+                      </td>
+                      <td>{{ item.salesCustomerBuy.customer.name }}</td>
+                      <td>{{ item.salesCustomerBuy.customer.phoneNumber }}</td>
+                      <td>{{ item.salesCustomerBuy.customerRequire }}</td>
+                      <td>
                         <v-switch
                           v-model="item.salesCustomerBuy.contactFlg"
                           @change="contactCustomer(item)"
                           :disabled="item.salesCustomerBuy.contactFlg === 1"
-                          class="ma-0"
                         >
                         </v-switch>
-                      </li>
-                      <li class="flex-item" data-label="Progess">
+                      </td>
+                      <td>
                         <v-chip
                           small
                           :color="
-                            $helper.colorStatusTransaction(
-                              item.salesCustomerBuy
-                            )
+                            $helper.colorStatusTransaction(item.salesCustomerBuy)
                           "
                           dark
                         >
                           {{ item.salesCustomerBuy.status }}
                         </v-chip>
-                      </li>
-                      <li class="flex-item" data-label="Action">
+                      </td>
+                      <td class="text-center">
                         <v-btn
                           color="white"
                           small
@@ -146,12 +94,78 @@
                         <v-btn color="white" small class="warning">
                           <v-icon>mdi-delete-outline</v-icon>
                         </v-btn>
-                      </li>
-                    </ul>
-                  </td>
-                </tr>
-              </template>
-            </v-simple-table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </template>
+
+                <template v-slot:default v-else>
+                  <tr v-if="!loadData">
+                      <td colspan="100%">
+                         <skeleton-custom></skeleton-custom>
+                      </td>
+                  </tr>
+
+                  <tr
+                    v-for="(item, index) in Sales"
+                    :key="item.id"
+                    v-else
+                  >
+                    <td>
+                      <ul class="flex-content">
+                        <li class="flex-item" data-label="No.">
+                          {{ $helper.showIndex(index, currentPage, itemsPerPage) }}
+                        </li>
+                        <li class="flex-item" data-label="Customer name">
+                          {{ item.salesCustomerBuy.customer.name }}
+                        </li>
+                        <li class="flex-item" data-label="Customer phone">
+                          {{ item.salesCustomerBuy.customer.phoneNumber }}
+                        </li>
+                        <li class="flex-item" data-label="Require">
+                          {{ item.salesCustomerBuy.customerRequire }}
+                        </li>
+                        <li class="flex-item" data-label="Contact">
+                          <v-switch
+                            v-model="item.salesCustomerBuy.contactFlg"
+                            @change="contactCustomer(item)"
+                            :disabled="item.salesCustomerBuy.contactFlg === 1"
+                            class="ma-0"
+                          >
+                          </v-switch>
+                        </li>
+                        <li class="flex-item" data-label="Progess">
+                          <v-chip
+                            small
+                            :color="
+                              $helper.colorStatusTransaction(
+                                item.salesCustomerBuy
+                              )
+                            "
+                            dark
+                          >
+                            {{ item.salesCustomerBuy.status }}
+                          </v-chip>
+                        </li>
+                        <li class="flex-item" data-label="Action">
+                          <v-btn
+                            color="white"
+                            small
+                            class="primary mr-4"
+                            @click="edit(item)"
+                          >
+                            <v-icon>mdi-square-edit-outline</v-icon>
+                          </v-btn>
+                          <v-btn color="white" small class="warning">
+                            <v-icon>mdi-delete-outline</v-icon>
+                          </v-btn>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </template>
+              </v-simple-table>
+            </v-responsive>
           </v-layout>
           <v-row justify="center">
             <v-col cols="8">
@@ -174,6 +188,7 @@
 
 <script>
 import SalesEditComponent from "./Edit.vue";
+import ComponentStore from "@/store/models/component";
 
 import Sales from "@/store/models/sales";
 import SalesCustomerBuy from "@/store/models/sales_customer_buy";
@@ -185,20 +200,24 @@ export default {
   },
 
   async created() {
-    this.retrieveData();
+    ComponentStore.dispatch("loadingProgress", { option: "show" });
+    setTimeout(async () => {
+      await this.retrieveData();
+      ComponentStore.dispatch("loadingProgress", { option: "hide" });
+    }, 500);
   },
 
   data() {
     return {
-      currentPage: 1,
-      itemsPerPage: 5,
+      currentPage: this.$appConfig.pagination.CURENT_PAGE,
+      itemsPerPage: this.$appConfig.pagination.ITEMS_PER_PAGE,
+      itemsPerPageList: this.$appConfig.pagination.ITEMS_PER_PAGE_LIST,
+      pageCounts:  this.$appConfig.pagination.PAGE_COUNTS_DEFAULT,
       search: "",
-      itemsPerPageList: [5, 10, 15],
       sales: "",
-      pageCounts: 1,
-      offset: 0,
       isMobile: false,
-      loadData: false
+      loadData: false,
+       
     };
   },
 
@@ -214,20 +233,18 @@ export default {
       this.retrieveData();
     },
     async retrieveData() {
-      var progress = this.$Progress;
-      progress.start();
-      const res = await Sales.api().fetchPaging(
-        this.currentPage,
-        this.itemsPerPage
-      );
-      if (res.response.status === 200) {
-        this.loadData = true;
-        Sales.insert({ data: res.response.data.data });
-        this.pageCounts = res.response.data.pageCounts;
-        progress.finish();
-      } else {
-        progress.fail();
-      }
+      this.loadData = false;
+      setTimeout(async () => {
+        const res = await Sales.api().fetchPaging(
+          this.currentPage,
+          this.itemsPerPage
+        );
+        if (res.response.status === 200) {
+          Sales.insert({ data: res.response.data.data });
+          this.loadData = true;
+          this.pageCounts = res.response.data.pageCounts;
+        }
+      }, 500);
     },
 
     async stop() {
@@ -263,19 +280,15 @@ export default {
   computed: {
     Sales() {
       var itemsPerPage = this.itemsPerPage;
-      var page = this.currentPage;
-      if (page == 1) {
-        this.offset = 0;
-      } else {
-        this.offset = (page - 1) * itemsPerPage;
-      }
+      var offset = this.$helper.calcPagination(this.currentPage, itemsPerPage)
+
       return Sales.query()
         .with("salesCustomerBuy", query => {
           query.with("customer").with("vehicleSuggests", query => {
             query.with("vehicle");
           });
         })
-        .offset(this.offset)
+        .offset(offset)
         .limit(itemsPerPage)
         .get();
     },

@@ -14,6 +14,9 @@
                     <v-text-field
                       label="Accessory name"
                       v-model="accessory"
+                      :rules="[
+                         $validation.required(accessory, 'Accessory name')
+                      ]"
                     ></v-text-field>
                   </v-col>
 
@@ -24,6 +27,9 @@
                       item-text="fullName"
                       return-object
                       label="Technical test"
+                      :rules="[
+                         $validation.required(employee, 'Employee test')
+                      ]"
                     ></v-select>
                   </v-col>
 
@@ -132,7 +138,7 @@ export default {
           toastr.success(res.response.data.message, "Success!", {
             timeOut: 1000
           });
-          vm.$emit("update:dialogAddFixDetail", false);
+          Modal.dispatch("manageVehicleRepairAddFixDetail", { option: "hide" });
         }
       }
     },

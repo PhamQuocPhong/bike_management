@@ -39,6 +39,7 @@ import MenuSearchBuyComponent from "./buy/MenuSearch.vue";
 import Transaction from "@/store/models/transaction";
 import TransactionDetailSell from "@/store/models/transaction_detail_sell";
 import TransactionDetailbuy from "@/store/models/transaction_detail_buy";
+import Vehicle from "@/store/models/vehicle";
 
 export default {
   components: {
@@ -55,48 +56,9 @@ export default {
 
   mounted() {},
 
-  methods: {
-    async filterSellEvent() {
-      await Transaction.delete(transaction => {
-        return transaction.mode === "sell";
-      });
-      var filterSell = this.filter.sell;
-      const res = await Transaction.api().fetchSellPaging(
-        this.currentPage,
-        this.itemsPerPage,
-        filterSell.startDate,
-        filterSell.endDate,
-        filterSell.month
-      );
-      if (res.response.status === 200) {
-        Transaction.insert({ data: res.response.data.data });
-        this.pagination.sell.pageCounts = res.response.data.pageCounts;
-      }
-    },
-
-    async filterBuyEvent() {
-      await Transaction.delete(transaction => {
-        return transaction.mode === "buy";
-      });
-      var filterBuy = this.filter.buy;
-      const res = await Transaction.api().fetchBuyPaging(
-        this.currentPage,
-        this.itemsPerPage,
-        filterBuy.startDate,
-        filterBuy.endDate,
-        filterBuy.month
-      );
-
-      if (res.response.status === 200) {
-        Transaction.insert({ data: res.response.data.data });
-        this.pagination.buy.pageCounts = res.response.data.pageCounts;
-      }
-    }
+  beforeDestroy() {
+       Vehicle.deleteAll();
   },
-
-  watch: {},
-
-  computed: {},
 
   destroyed() {
     Transaction.deleteAll();

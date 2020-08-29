@@ -114,6 +114,14 @@ export default {
       if (this.$refs.form.validate()) {
         var data = { ...this.newReceptionCustomerBuy, ...this.newCustomer };
         var res = await ReceptionCustomerBuy.api().create(data);
+
+        if(res.status === 500){
+           toastr.error(res.statusText, "Error!", {
+            timeOut: 1000
+          });
+          return;
+        }
+
         if (res.response.status === 200) {
           ReceptionCustomerBuy.insert({
             data: res.response.data.data
@@ -123,7 +131,6 @@ export default {
           });
           this.$refs.form.reset();
         }
-      } else {
       }
     }
   },

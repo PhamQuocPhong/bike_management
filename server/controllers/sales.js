@@ -7,6 +7,7 @@ const Sales = require('../models/sales')
 const Vehicle = require('../models/vehicle')
 const sendMailService = require("../services/email")
 const config = require('../config')
+const sequelize = require("../database/db")
 
 let getAllSales = async (req, res) => {
 
@@ -70,58 +71,71 @@ let suggestVehiclesForCustomer = async (req, res) => {
 	var salesCustomerBuy = sales.salesCustomerBuy
 	var vehicleSelected = req.body.vehicleSelected
 
+	const t = await sequelize.transaction();
+	try {
 
-	await Sales.update({
-		employeeId: userId
-	}, 
-	{	where: {
-			id: sales.id
-		}
-	})
-
-	var salesCustomerBuyUpdate = await SalesCustomerBuy.update({
-		customerRequire: salesCustomerBuy.customerRequire,
-		contactFlg: config.sales.CONTACTED_FLG,
-		status: 'confirm'
-	}, 
-	{	where: {
-			id: salesCustomerBuy.id
-		},
-	})
-
-
-
-	for(var i = 0; i < vehicleSelected.length; i ++){
-		var vehicleSuggestStore = await VehicleSuggest.findOrCreate({
-			defaults: { 
-				vehicleId: vehicleSelected[i].id,
-				salesCustomerBuyId: salesCustomerBuy.id
+		await Sales.update(
+			{
+				employeeId: userId
+			}, 
+			{	where: {
+					id: sales.id
+				}
+			}, 
+			{ 
+				transaction: t 
+			}
+		)
+			
+		var salesCustomerBuyUpdate = await SalesCustomerBuy.update({
+			customerRequire: salesCustomerBuy.customerRequire,
+			contactFlg: config.sales.CONTACTED_FLG,
+			status: 'confirm'
+		}, 
+		{	where: {
+				id: salesCustomerBuy.id
 			},
-  			where: { 
-  				salesCustomerBuyId: salesCustomerBuy.id,
-  				vehicleId: vehicleSelected[i].id
-  			}
-		})	
+		}, { transaction: t })
+
+
+		for(var i = 0; i < vehicleSelected.length; i ++){
+			var vehicleSuggestStore = await VehicleSuggest.findOrCreate({
+				defaults: { 
+					vehicleId: vehicleSelected[i].id,
+					salesCustomerBuyId: salesCustomerBuy.id
+				},
+	  			where: { 
+	  				salesCustomerBuyId: salesCustomerBuy.id,
+	  				vehicleId: vehicleSelected[i].id
+	  			}
+			}, { transaction: t })	
+		}
+
+		await t.commit();
+
+		var returnSales = await Sales.findOne({
+			where: {
+				id: sales.id
+			},
+			include: {
+				model: SalesCustomerBuy, 
+					include: {
+						model: VehicleSuggest,
+						include: {
+							model: Vehicle
+						}
+					}
+				
+			}
+		})
+
+		return res.json({message: "Sucess!", data: returnSales})
+
+	} catch(error) {
+		await t.rollback();
+		return res.status(500).json(error)
 	}
 
-
-	var returnSales = await Sales.findOne({
-		where: {
-			id: sales.id
-		},
-		include: {
-			model: SalesCustomerBuy, 
-				include: {
-					model: VehicleSuggest,
-					include: {
-						model: Vehicle
-					}
-				}
-			
-		}
-	})
-
-	return res.json({message: "Sucess!", data: returnSales})
 }
 
 let contactCustomer = async (req, res) => {
@@ -130,6 +144,7 @@ let contactCustomer = async (req, res) => {
 	var id = req.params.id
 
 	try{
+
 		const record = await SalesCustomerBuy.update({contactFlg}, {
 			where: {
 				saleId: id
@@ -142,11 +157,10 @@ let contactCustomer = async (req, res) => {
 			var from = 'zipzizza20@gmail.com'
 			var mailTo = customer.email
 			var subject = 'Confirm Requirement'
-			await sendMailService.sendMailContactCustomer(from, mailTo, subject)
+			await sendMailService.sendMailContactCustomer(from, mailTo, subject, customer)
 			return res.json({message: "Sucess!", data: record[1]})
 		}
 
-		
 	}catch(error){
 		return res.status(500).json(error)
 	}

@@ -83,17 +83,17 @@
 </template>
 
 <script>
+// store
 import Room from "@/store/models/room";
-
+import ComponentStore from "@/store/models/component";
 export default {
   data() {
     return {
-      page: 1,
-      itemsPerPage: 5,
+      currentPage: this.$appConfig.pagination.CURENT_PAGE,
+      itemsPerPage: this.$appConfig.pagination.ITEMS_PER_PAGE,
+      itemsPerPageList: this.$appConfig.pagination.ITEMS_PER_PAGE_LIST,
+      pageCounts:  this.$appConfig.pagination.PAGE_COUNTS_DEFAULT,
       search: "",
-      pageCounts: 1,
-      offset: 0,
-      currentPage: 1,
 
       isMobile: false,
       rooms: [],
@@ -104,20 +104,23 @@ export default {
   },
 
   async created() {
-    var progress = this.$Progress;
-    progress.start();
-    await this.retrieveData();
-    progress.finish();
+    ComponentStore.dispatch("loadingProgress", { option: "show" });
+    setTimeout(async () => {
+      await this.retrieveData();
+      ComponentStore.dispatch("loadingProgress", { option: "hide" });
+    }, 500);
   },
 
   methods: {
     nextPage() {},
 
     async retrieveData() {
-      const res = await Room.api().fetchPaging(this.page, this.itemsPerPage);
-      if (res.response.status === 200) {
-        this.rooms = res.response.data.data;
-      }
+      setTimeout(async () => {
+        const res = await Room.api().fetchPaging(this.currentPage, this.itemsPerPage);
+        if (res.response.status === 200) {
+          this.rooms = res.response.data.data;
+        }
+      }, 500)
     },
 
     joinRoom(id) {

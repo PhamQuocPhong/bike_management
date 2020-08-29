@@ -37,6 +37,7 @@ import SalesIndex from "./views/sales/Index";
 import Manage from "./views/manage/Manage";
 import VehiclePurchaseManage from "./views/manage/vehicle/purchase/Index";
 import VehicleRepairManage from "./views/manage/vehicle/repair/Index";
+import RoomManage from "./views/manage/room/Index";
 
 // dashboard
 import Dashboard from "./views/dashboard/Dashboard";
@@ -221,6 +222,15 @@ const routes = [
             name: "vehicleRepair",
             meta: {
               breadCrumb: "Vehicle Repair"
+            }
+          },
+
+          {
+            path: "room",
+            component: RoomManage,
+            name: "roomManage",
+            meta: {
+              breadCrumb: "Room"
             }
           }
         ]
