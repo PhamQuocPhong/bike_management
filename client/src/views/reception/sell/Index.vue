@@ -86,7 +86,7 @@
               <v-col
                 cols="12"
                 sm="12"
-                md="12"
+                md="6"
                 :key="index"
                 v-for="(item, index) in vehicleTestArray"
               >

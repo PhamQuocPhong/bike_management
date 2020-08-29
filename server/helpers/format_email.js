@@ -9,11 +9,11 @@ let formatRegister = (code) => {
 	return html
 }
 
-let formatContactCustomer = (data) => {
+let formatContactCustomer = (customer) => {
 
 	var html = ''
 		html += '<div>'
-		html += '<h3><b>Hello '+ data.username +'!</b></h3>'
+		html += '<h3><b>Hello '+ customer.name +'!</b></h3>'
 		html += '<p>Our store has the cars as you desire. You can go to our store to make a transaction</p>'
 		html += '</div>'
 

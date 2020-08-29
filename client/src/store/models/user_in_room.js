@@ -1,4 +1,5 @@
 import { Model } from "@vuex-orm/core";
+import CookieService from '@/services/cookie';
 
 export default class UserInRoom extends Model {
   static entity = "userInRoom";

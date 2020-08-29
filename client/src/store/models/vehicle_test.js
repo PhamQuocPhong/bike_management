@@ -1,4 +1,5 @@
 import { Model } from "@vuex-orm/core";
+import CookieService from '@/services/cookie';
 import VehicleType from "./vehicle_type";
 import TechnicalTest from "./technical_test";
 export default class VehicleTest extends Model {
@@ -10,7 +11,6 @@ export default class VehicleTest extends Model {
       name: this.attr(null),
       color: this.attr(null),
       registrationPlate: this.attr(null),
-      bikeCode: this.attr(null),
       bikeStatus: this.attr(null),
       image: this.attr(null),
       minPrice: this.attr(null),
@@ -27,10 +27,11 @@ export default class VehicleTest extends Model {
 
   static apiConfig = {
 
-    headers: { 
-      'X-Requested-With': 'XMLHttpRequest',
-      'Authorization': 'Bearer ' + CookieService.get("accessToken"),
-    },
+    
+    // headers: { 
+    //   'X-Requested-With': 'XMLHttpRequest',
+    //   'Authorization': 'Bearer ' + CookieService.get("accessToken"),
+    // },
 
     actions: {
       async update(id, data) {

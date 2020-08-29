@@ -34,132 +34,59 @@
             class="table"
             :class="{ 'mt-4': isMobile }"
           >
-            <v-simple-table :class="{ mobile: isMobile }">
-              <template v-slot:default v-if="!isMobile">
-                <thead>
-                  <tr>
-                    <th>No.</th>
-                    <th>Vehicle name</th>
-                    <th>Image</th>
-                    <th>Start date</th>
-                    <th>End date</th>
-                    <th>Total fix price</th>
-                    <th>Buy price</th>
-                    <th>Aprrove price</th>
-                    <th>Fix status</th>
-                    <th>Publish</th>
-                    <th>Note</th>
-                    <th class="text-center">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="item in vehicleRepairs" :key="item.id">
-                    <td>
-                      {{ $helper.indexColumn(item, vehicleRepairs) }}
-                    </td>
-                    <td>{{ item.vehiclePurchase.name }}</td>
-                    <td>
-                      <v-img
-                        height="50"
-                        width="100"
-                        contain
-                        :src="item.vehiclePurchase.image"
-                      ></v-img>
-                    </td>
-                    <td>{{ item.startDate }}</td>
-                    <td>{{ item.endDate }}</td>
-                    <td class="text-center">
-                      {{ item.fixPrice | toCurrency }}
-                    </td>
-                    <td class="text-center">
-                      {{ item.vehiclePurchase.price | toCurrency }}
-                    </td>
-                    <td class="text-center font-weight-bold">
-                      {{ item.price | toCurrency }}
-                    </td>
-                    <td>
-                      <v-chip
-                        small
-                        dark
-                        :color="$helper.colorStatusFixing(item.fixFlg)"
-                      >
-                        {{ item.fixFlg === 1 ? "Finished" : "Fixing" }}
-                      </v-chip>
-                    </td>
+            <v-responsive :aspect-ratio="$appConfig.aspectRatio.table">
+              <v-simple-table :class="{ mobile: isMobile }">
+                <template v-slot:default v-if="!isMobile">
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>Vehicle name</th>
+                      <th>Image</th>
+                      <th>Start date</th>
+                      <th>End date</th>
+                      <th>Total fix price</th>
+                      <th>Buy price</th>
+                      <th>Aprrove price</th>
+                      <th>Fix status</th>
+                      <th>Publish</th>
+                      <th>Note</th>
+                      <th class="text-center">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
 
-                    <td>
-                      <v-switch
-                        v-if="item.fixFlg === 1 && item.price"
-                        v-model="item.pushlishFlg"
-                        @change="publishVehicleRepair(item)"
-                        :disabled="item.pushlishFlg === 1"
-                      >
-                      </v-switch>
 
-                      <v-switch
-                        v-else
-                        v-model="item.pushlishFlg"
-                        @click.stop="stop(item)"
-                        :disabled="!item.price"
-                      >
-                      </v-switch>
-                    </td>
-                    <td>{{ item.note }}</td>
-                    <td class="text-center">
-                      <v-btn
-                        color="white"
-                        small
-                        class="primary mr-4"
-                        @click="edit(item)"
-                        >View</v-btn
-                      >
-                      <v-btn color="white" small class="warning">Cancel</v-btn>
-                    </td>
-                  </tr>
-                </tbody>
-              </template>
+                    <tr v-if="!loadData">
+                        <td colspan="100%">
+                          <skeleton-custom></skeleton-custom>
+                        </td>
+                    </tr>
 
-              <template v-slot:default v-else>
-                <tr
-                  v-for="(item, index) in vehicleRepairs"
-                  :key="item.id"
-                  v-if="loadData"
-                >
-                  <td>
-                    <ul class="flex-content">
-                      <li class="flex-item" data-label="No.">
-                        {{ $helper.indexColumn(item, vehicleRepairs) }}
-                      </li>
-                      <li class="flex-item" data-label="Vehicle name">
-                        {{ item.vehiclePurchase.name }}
-                      </li>
-                      <li class="flex-item" data-label="Image">
+                    <tr v-else v-for="(item, index) in vehicleRepairs" :key="item.id">
+                      <td>
+                        {{ $helper.showIndex(index, currentPage, itemsPerPage) }}
+                      </td>
+                      <td>{{ item.vehiclePurchase.name }}</td>
+                      <td>
                         <v-img
                           height="50"
-                          width="70"
+                          width="100"
                           contain
                           :src="item.vehiclePurchase.image"
                         ></v-img>
-                      </li>
-                      <li class="flex-item" data-label="Start date">
-                        {{ item.startDate }}
-                      </li>
-                      <li class="flex-item" data-label="End date">
-                        {{ item.endDate }}
-                      </li>
-                      <li class="flex-item" data-label="Total fix price">
+                      </td>
+                      <td>{{ item.startDate }}</td>
+                      <td>{{ item.endDate }}</td>
+                      <td class="text-center">
                         {{ item.fixPrice | toCurrency }}
-                      </li>
-                      <li class="flex-item" data-label="Buy price">
+                      </td>
+                      <td class="text-center">
                         {{ item.vehiclePurchase.price | toCurrency }}
-                      </li>
-                      <li
-                        class="flex-item font-weight-bold"
-                        data-label="Aprrove price"
-                      >
+                      </td>
+                      <td class="text-center font-weight-bold">
                         {{ item.price | toCurrency }}
-                      </li>
-                      <li class="flex-item" data-label="Fix status">
+                      </td>
+                      <td>
                         <v-chip
                           small
                           dark
@@ -167,11 +94,10 @@
                         >
                           {{ item.fixFlg === 1 ? "Finished" : "Fixing" }}
                         </v-chip>
-                      </li>
+                      </td>
 
-                      <li class="flex-item" data-label="Publish">
+                      <td>
                         <v-switch
-                          class="mt-0"
                           v-if="item.fixFlg === 1 && item.price"
                           v-model="item.pushlishFlg"
                           @change="publishVehicleRepair(item)"
@@ -180,36 +106,126 @@
                         </v-switch>
 
                         <v-switch
-                          class="mt-0"
                           v-else
                           v-model="item.pushlishFlg"
                           @click.stop="stop(item)"
                           :disabled="!item.price"
                         >
                         </v-switch>
-                      </li>
-                      <li class="flex-item" data-label="Note">
-                        {{ item.note }}
-                      </li>
-
-                      <li class="flex-item" data-label="Action">
+                      </td>
+                      <td>{{ item.note }}</td>
+                      <td class="text-center">
                         <v-btn
                           color="white"
                           small
                           class="primary mr-4"
                           @click="edit(item)"
+                          >View</v-btn
                         >
-                          <v-icon>mdi-square-edit-outline</v-icon>
-                        </v-btn>
-                        <v-btn color="white" small class="warning">
-                          <v-icon>mdi-delete-outline</v-icon>
-                        </v-btn>
-                      </li>
-                    </ul>
-                  </td>
-                </tr>
-              </template>
-            </v-simple-table>
+                        <v-btn color="white" small class="warning">Cancel</v-btn>
+                      </td>
+                    </tr>
+                  </tbody>
+                </template>
+
+                      <template v-slot:default v-else>
+                  <tr v-if="!loadData">
+                      <td colspan="100%">
+                         <skeleton-custom></skeleton-custom>
+                      </td>
+                  </tr>
+
+                  <tr
+                    v-for="(item, index) in vehicleRepairs"
+                    :key="item.id"
+                    v-if="loadData"
+                  >
+                    <td>
+                      <ul class="flex-content">
+                        <li class="flex-item" data-label="No.">
+                          {{ $helper.showIndex(index, currentPage, itemsPerPage) }}
+                        </li>
+                        <li class="flex-item" data-label="Vehicle name">
+                          {{ item.vehiclePurchase.name }}
+                        </li>
+                        <li class="flex-item" data-label="Image">
+                          <v-img
+                            height="50"
+                            width="70"
+                            contain
+                            :src="item.vehiclePurchase.image"
+                          ></v-img>
+                        </li>
+                        <li class="flex-item" data-label="Start date">
+                          {{ item.startDate }}
+                        </li>
+                        <li class="flex-item" data-label="End date">
+                          {{ item.endDate }}
+                        </li>
+                        <li class="flex-item" data-label="Total fix price">
+                          {{ item.fixPrice | toCurrency }}
+                        </li>
+                        <li class="flex-item" data-label="Buy price">
+                          {{ item.vehiclePurchase.price | toCurrency }}
+                        </li>
+                        <li
+                          class="flex-item font-weight-bold"
+                          data-label="Aprrove price"
+                        >
+                          {{ item.price | toCurrency }}
+                        </li>
+                        <li class="flex-item" data-label="Fix status">
+                          <v-chip
+                            small
+                            dark
+                            :color="$helper.colorStatusFixing(item.fixFlg)"
+                          >
+                            {{ item.fixFlg === 1 ? "Finished" : "Fixing" }}
+                          </v-chip>
+                        </li>
+
+                        <li class="flex-item" data-label="Publish">
+                          <v-switch
+                            class="mt-0"
+                            v-if="item.fixFlg === 1 && item.price"
+                            v-model="item.pushlishFlg"
+                            @change="publishVehicleRepair(item)"
+                            :disabled="item.pushlishFlg === 1"
+                          >
+                          </v-switch>
+
+                          <v-switch
+                            class="mt-0"
+                            v-else
+                            v-model="item.pushlishFlg"
+                            @click.stop="stop(item)"
+                            :disabled="!item.price"
+                          >
+                          </v-switch>
+                        </li>
+                        <li class="flex-item" data-label="Note">
+                          {{ item.note }}
+                        </li>
+
+                        <li class="flex-item" data-label="Action">
+                          <v-btn
+                            color="white"
+                            small
+                            class="primary mr-4"
+                            @click="edit(item)"
+                          >
+                            <v-icon>mdi-square-edit-outline</v-icon>
+                          </v-btn>
+                          <v-btn color="white" small class="warning">
+                            <v-icon>mdi-delete-outline</v-icon>
+                          </v-btn>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </template>
+              </v-simple-table>
+            </v-responsive>
           </v-layout>
 
           <v-row justify="center">
@@ -238,37 +254,35 @@
 <script>
 // component
 import VehicleRepairEdit from "./Edit";
+import ComponentStore from "@/store/models/component";
 
 // store
-
 import VehicleRepair from "@/store/models/vehicle_repair";
 import Modal from "@/store/models/modal";
 
-import HelperCommon from "@/helpers/common";
 export default {
   components: {
     "vehicle-repair": VehicleRepairEdit
   },
 
   async created() {
-    this.retrieveData();
+    ComponentStore.dispatch("loadingProgress", { option: "show" });
+    setTimeout(async () => {
+      await this.retrieveData();
+      ComponentStore.dispatch("loadingProgress", { option: "hide" });
+    }, 500);
   },
 
   data() {
     return {
-      page: 1,
-      pageCount: 0,
-      itemsPerPage: 10,
-      search: "",
-      itemsPerPageList: [5, 10, 15],
-      dialogVehicleTest: false,
-      vehicleTest: "",
-      role: "technical",
-      currentPage: 1,
-      editDialog: false,
-      pageCounts: 0,
-      vehicleRepair: null,
+      currentPage: this.$appConfig.pagination.CURENT_PAGE,
+      itemsPerPage: this.$appConfig.pagination.ITEMS_PER_PAGE,
+      itemsPerPageList: this.$appConfig.pagination.ITEMS_PER_PAGE_LIST,
+      pageCounts:  this.$appConfig.pagination.PAGE_COUNTS_DEFAULT,
 
+      search: "",
+      role: "technical",
+      vehicleRepair: null,
       isMobile: false,
       loadData: false
     };
@@ -283,20 +297,18 @@ export default {
     },
 
     async retrieveData() {
-      var progress = this.$Progress;
-      progress.start();
-      const res = await VehicleRepair.api().fetchPaging(
-        this.currentPage,
-        this.itemsPerPage
-      );
-      if (res.response.status === 200) {
-        this.loadData = true;
-        VehicleRepair.insert({ data: res.response.data.data });
-        this.pageCounts = res.response.data.pageCounts;
-        progress.finish();
-      } else {
-        progress.fail();
-      }
+
+      setTimeout(async () => {
+        const res = await VehicleRepair.api().fetchPaging(
+          this.currentPage,
+          this.itemsPerPage
+        );
+        if (res.response.status === 200) {
+          this.loadData = true;
+          VehicleRepair.insert({ data: res.response.data.data });
+          this.pageCounts = res.response.data.pageCounts;
+        }
+      }, 500)
     },
 
     async stop(item) {

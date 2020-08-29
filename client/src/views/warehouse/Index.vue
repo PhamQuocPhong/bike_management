@@ -44,106 +44,44 @@
             class="table"
             :class="{ 'mt-4': isMobile }"
           >
-            <v-simple-table :class="{ mobile: isMobile }">
-              <template v-slot:default v-if="!isMobile">
-                <thead>
-                  <tr>
-                    <th>No.</th>
-                    <th>Name</th>
-                    <th>Color</th>
-                    <th>Image</th>
-                    <th>Type</th>
-                    <th>Price</th>
-                    <th>Status</th>
-                    <th class="text-center">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-if="!loadData">
-                    <td colspan="100%">
-                      <v-skeleton-loader
-                        ref="skeleton"
-                        :type="type"
-                        class="mx-auto"
-                      ></v-skeleton-loader>
-                    </td>
-                  </tr>
-
-                  <tr v-for="item in vehicles" :key="item.id" v-else>
-                    <td>
-                      {{ $helper.indexColumn(item, vehicles) }}
-                    </td>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.color }}</td>
-                    <td>
-                      <v-img
-                        height="50"
-                        width="100"
-                        contain
-                        :src="item.image"
-                      ></v-img>
-                    </td>
-                    <td>{{ item.vehicleType.name }}</td>
-                    <td>{{ item.price }}</td>
-                    <td>
-                      <v-chip
-                        small
-                        :color="$helper.colorStatusVehicle(item.valid)"
-                        dark
-                      >
-                        {{ item.valid === 0 ? "Sold" : "Waiting" }}
-                      </v-chip>
-                    </td>
-
-                    <td class="text-center">
-                      
-                      <btn-custom 
-                        icon="mdi-square-edit-outline"
-                        :classProp="`primary mr-4`"
-                        v-on:action="edit(item)"
-                        type="edit"
-                        >
-                      </btn-custom>
-
-                      <btn-custom 
-                        icon="mdi-delete-outline"
-                        :classProp="`warning`"
-                        type="delete"
-                      >
-                      </btn-custom>
-                    </td>
-                  </tr>
-                </tbody>
-              </template>
-
-              <template v-slot:default v-else>
-                <tr v-for="(item, index) in vehicles" :key="item.id">
-                  <td>
-                    <ul class="flex-content">
-                      <li class="flex-item" data-label="No.">
-                        {{ $helper.indexColumn(item, vehicles) }}
-                      </li>
-                      <li class="flex-item" data-label="Name">
-                        {{ item.name }}
-                      </li>
-                      <li class="flex-item" data-label="Color">
-                        {{ item.color }}
-                      </li>
-                      <li class="flex-item" data-label="Image">
+            <v-responsive :aspect-ratio="$appConfig.aspectRatio.table">
+              <v-simple-table :class="{ mobile: isMobile }">
+                <template v-slot:default v-if="!isMobile">
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>Name</th>
+                      <th>Color</th>
+                      <th>Image</th>
+                      <th>Type</th>
+                      <th>Price</th>
+                      <th>Status</th>
+                      <th class="text-center">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-if="!loadData">
+                        <td colspan="100%">
+                           <skeleton-custom></skeleton-custom>
+                        </td>
+                    </tr>
+                    <tr v-else v-for="(item, index) in vehicles" :key="item.id">
+                      <td>
+                         {{ $helper.showIndex(index, currentPage, itemsPerPage) }}
+                      </td>
+                      <td>{{ item.name }}</td>
+                      <td>{{ item.color }}</td>
+                      <td>
                         <v-img
                           height="50"
                           width="100"
                           contain
                           :src="item.image"
                         ></v-img>
-                      </li>
-                      <li class="flex-item" data-label="Vehicle type">
-                        {{ item.vehicleType.name }}
-                      </li>
-                      <li class="flex-item" data-label="Price">
-                        {{ item.price }}
-                      </li>
-                      <li class="flex-item" data-label="Status">
+                      </td>
+                      <td>{{ item.vehicleType.name }}</td>
+                      <td>{{ item.price }}</td>
+                      <td>
                         <v-chip
                           small
                           :color="$helper.colorStatusVehicle(item.valid)"
@@ -151,34 +89,99 @@
                         >
                           {{ item.valid === 0 ? "Sold" : "Waiting" }}
                         </v-chip>
-                      </li>
+                      </td>
 
-                      <li class="flex-item" data-label="Action">
+                      <td class="text-center">
+                        
+                        <btn-custom 
+                          icon="mdi-square-edit-outline"
+                          :classProp="`primary mr-4`"
+                          v-on:action="edit(item)"
+                          type="edit"
+                          >
+                        </btn-custom>
 
                         <btn-custom 
-                        icon="mdi-square-edit-outline"
-                        :classProp="`primary mr-4`"
-                        v-on:action="edit(item)"
-                        type="edit"
+                          icon="mdi-delete-outline"
+                          :classProp="`warning`"
+                          type="delete"
                         >
-                      </btn-custom>
+                        </btn-custom>
+                      </td>
+                    </tr>
+                  </tbody>
+                </template>
 
-                       <btn-custom 
-                        icon="mdi-delete-outline"
-                        :classProp="`warning`"
-                        type="delete"
-                      >
-                      </btn-custom>
-                      </li>
-                    </ul>
-                  </td>
-                </tr>
-              </template>
-            </v-simple-table>
+               <template v-slot:default v-else>
+                  <tr v-if="!loadData">
+                      <td colspan="100%">
+                         <skeleton-custom></skeleton-custom>
+                      </td>
+                  </tr>
+
+                  <tr v-else v-for="(item, index) in vehicles" :key="item.id">
+                    <td>
+                      <ul class="flex-content">
+                        <li class="flex-item" data-label="No.">
+                           {{ $helper.showIndex(index, currentPage, itemsPerPage) }}
+                        </li>
+                        <li class="flex-item" data-label="Name">
+                          {{ item.name }}
+                        </li>
+                        <li class="flex-item" data-label="Color">
+                          {{ item.color }}
+                        </li>
+                        <li class="flex-item" data-label="Image">
+                          <v-img
+                            height="50"
+                            width="100"
+                            contain
+                            :src="item.image"
+                          ></v-img>
+                        </li>
+                        <li class="flex-item" data-label="Vehicle type">
+                          {{ item.vehicleType.name }}
+                        </li>
+                        <li class="flex-item" data-label="Price">
+                          {{ item.price }}
+                        </li>
+                        <li class="flex-item" data-label="Status">
+                          <v-chip
+                            small
+                            :color="$helper.colorStatusVehicle(item.valid)"
+                            dark
+                          >
+                            {{ item.valid === 0 ? "Sold" : "Waiting" }}
+                          </v-chip>
+                        </li>
+
+                        <li class="flex-item" data-label="Action">
+
+                          <btn-custom 
+                          icon="mdi-square-edit-outline"
+                          :classProp="`primary mr-4`"
+                          v-on:action="edit(item)"
+                          type="edit"
+                          >
+                        </btn-custom>
+
+                         <btn-custom 
+                          icon="mdi-delete-outline"
+                          :classProp="`warning`"
+                          type="delete"
+                        >
+                        </btn-custom>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </template>
+              </v-simple-table>
+            </v-responsive>
           </v-layout>
 
           <v-row justify="center">
-            <v-col cols="8">
+            <v-col cols="12">
               <v-container class="max-width">
                 <v-pagination
                   v-model="currentPage"
@@ -199,9 +202,12 @@
 </template>
 
 <script>
+// store
 import Vehicle from "@/store/models/vehicle";
 import Modal from "@/store/models/modal";
+import ComponentStore from "@/store/models/component";
 
+// component
 import CreateComponent from "./Create.vue";
 import EditComponent from "./Edit.vue";
 
@@ -212,16 +218,18 @@ export default {
   },
 
   async created() {
-    var progress = this.$Progress;
-    progress.start();
-    await this.retrieveData();
-    progress.finish();
+    ComponentStore.dispatch("loadingProgress", { option: "show" });
+    setTimeout(async () => {
+      await this.retrieveData();
+      ComponentStore.dispatch("loadingProgress", { option: "hide" });
+    }, 500);
   },
+
 
   data() {
     return {
       page: 1,
-      itemsPerPage: 2,
+      itemsPerPage: 5,
       search: "",
       itemsPerPageList: [5, 10, 15],
       pageCounts: 1,
@@ -232,7 +240,7 @@ export default {
 
       isMobile: false,
       loadData: false,
-      type: "table-tbody"
+      
     };
   },
 
@@ -249,7 +257,6 @@ export default {
     },
     nextPage(page) {
       this.currentPage = page;
-      this.loadData = false;
       this.retrieveData();
     },
     async retrieveData() {

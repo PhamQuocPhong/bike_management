@@ -6,10 +6,9 @@ const VehicleRepair = require('../models/vehicle_repair')
 const ReceptionCustomerSell = require('../models/reception_customer_sell')
 const Employee = require('../models/employee')
 const { Op } = require('sequelize')
-const POSITION_MANAGE_ID = 1
-
-const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "access-token-secret-quocphong@gmail.com"
+const config = require('../config')
 const helperFunctions = require('../helpers/function')
+const sequelize = require("../database/db")
 
 let getTechnicalTestPaging = async (req, res) => {
 
@@ -27,7 +26,7 @@ let getTechnicalTestPaging = async (req, res) => {
 		offset = ((page - 1) * itemPerPage) 
 	}
 
-	if(employeeInfo.positionId != POSITION_MANAGE_ID){
+	if(employeeInfo.positionId != config.employeePosition.MANAGE){
 		conditionGetData = {
 			[Op.or]: [
 				{employeeId: employeeInfo.id}, 
@@ -105,7 +104,7 @@ let getAllTechnicalRepairPaging = async (req, res) => {
 
 
 	var conditionGetData = {}
-	if(employeeInfo.positionId != POSITION_MANAGE_ID){
+	if(employeeInfo.positionId != config.employeePosition.MANAGE){
 		conditionGetData = {
 			[Op.or]: [
 				{employeeId: employeeInfo.id}, 
@@ -143,12 +142,15 @@ let updateVehicleTest = async (req, res) => {
 
 	var vehicalTestId = req.params.id
 	var vehicleTestData = req.body
+
+	const t = await sequelize.transaction();
 	try{	
+
 		await VehicleTest.update(vehicleTestData, {
 			where: {
 				id: vehicalTestId
 			},
-		}).then(async () => {
+		}, { transaction: t }).then(async () => {
 
 			var checkConfirm = await helperFunctions.checkConfirmReception(vehicleTestData.receptionCustomerSellId)
 			var confirmStatus = "waiting"
@@ -163,7 +165,9 @@ let updateVehicleTest = async (req, res) => {
 					id: vehicleTestData.receptionCustomerSellId,
 
 				},
-			})
+			}, { transaction: t })
+
+			await t.commit();
 
 			var returnRecord = await VehicleTest.findOne({
 				where: {
@@ -178,6 +182,7 @@ let updateVehicleTest = async (req, res) => {
 		})
 
 	}catch(error){
+		await t.rollback();
 		console.log(error)
 	}
 }
@@ -234,13 +239,13 @@ let updateTechnicalRepair = async (req, res) => {
 	const techinicalRepairId = req.params.id
 	const vehicleRepairId = data.vehicleRepairId
 
-
+	const t = await sequelize.transaction();
 	try {
 		await TechnicalRepair.update(data, {
 			where: {
 				id: techinicalRepairId
 			}
-		}).then(async (response) => {
+		}, { transaction: t }).then(async (response) => {
 
 			if(response){
 
@@ -251,7 +256,16 @@ let updateTechnicalRepair = async (req, res) => {
 				if(checkFixed){	
 					progessFixFlg = 1
 				}
-				VehicleRepair.update({ fixFlg: progessFixFlg, fixPrice: calcFixedRepairPrice }, { where: { id: vehicleRepairId} })
+				VehicleRepair.update({ 
+					fixFlg: progessFixFlg, fixPrice: calcFixedRepairPrice }, 
+				{ where: 
+					{ 
+						id: vehicleRepairId
+					} 
+				}, { transaction: t })
+
+
+				await t.commit();
 
 				var returnRecord = await TechnicalRepair.findOne({
 					where: {
@@ -269,6 +283,7 @@ let updateTechnicalRepair = async (req, res) => {
 			}
 		})
 	} catch(error) {
+		await t.rollback();
 		return res.status(500).json(error)
 	}
 }

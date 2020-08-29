@@ -29,72 +29,36 @@
         class="table"
         :class="{ 'mt-4': isMobile }"
       >
-        <v-simple-table :class="{ mobile: isMobile }">
-          <template v-slot:default v-if="!isMobile">
-            <thead>
-              <tr>
-                <th>No.</th>
-                <th>Customer name</th>
-                <th>Customer phone</th>
-                <th>Progess transaction</th>
-                <th class="text-center">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="item in receptionCustomerSells"
-                :key="item.id"
-                v-if="loadData"
-              >
-                <td>
-                  {{ $helper.indexColumn(item, receptionCustomerSells) }}
-                </td>
-                <td>{{ item.customer.name }}</td>
-                <td>{{ item.customer.phoneNumber }}</td>
-                <td>
-                  <v-chip
-                    small
-                    :color="$helper.colorStatusTransaction(item)"
-                    dark
-                  >
-                    {{ item.status }}
-                  </v-chip>
-                </td>
-                <td class="text-center">
-                  <v-btn
-                    color="white"
-                    small
-                    class="primary mr-4"
-                    @click="edit(item)"
-                  >
-                    <v-icon>mdi-square-edit-outline</v-icon>
-                  </v-btn>
-                  <v-btn color="white" small class="warning">
-                    <v-icon>mdi-delete-outline</v-icon>
-                  </v-btn>
-                </td>
-              </tr>
-            </tbody>
-          </template>
+        <v-responsive :aspect-ratio="$appConfig.aspectRatio.table">
+          <v-simple-table :class="{ mobile: isMobile }">
+            <template v-slot:default v-if="!isMobile">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Customer name</th>
+                  <th>Customer phone</th>
+                  <th>Progess transaction</th>
+                  <th class="text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-if="!loadData">
+                    <td colspan="100%">
+                      <skeleton-custom></skeleton-custom>
+                    </td>
+                </tr>
 
-          <template v-slot:default v-else>
-            <tr
-              v-for="(item, index) in receptionCustomerSells"
-              :key="item.id"
-              v-if="loadData"
-            >
-              <td>
-                <ul class="flex-content">
-                  <li class="flex-item" data-label="No.">
-                    {{ $helper.indexColumn(item, receptionCustomerSells) }}
-                  </li>
-                  <li class="flex-item" data-label="Customer name">
-                    {{ item.customer.name }}
-                  </li>
-                  <li class="flex-item" data-label="Customer phone">
-                    {{ item.customer.phoneNumber }}
-                  </li>
-                  <li class="flex-item" data-label="Progess transaction">
+                <tr
+                  v-for="(item, index) in receptionCustomerSells"
+                  :key="item.id"
+                  v-else
+                >
+                  <td>
+                   {{ $helper.showIndex(index, currentPage, itemsPerPage) }}
+                  </td>
+                  <td>{{ item.customer.name }}</td>
+                  <td>{{ item.customer.phoneNumber }}</td>
+                  <td>
                     <v-chip
                       small
                       :color="$helper.colorStatusTransaction(item)"
@@ -102,8 +66,8 @@
                     >
                       {{ item.status }}
                     </v-chip>
-                  </li>
-                  <li class="flex-item" data-label="Action">
+                  </td>
+                  <td class="text-center">
                     <v-btn
                       color="white"
                       small
@@ -115,12 +79,61 @@
                     <v-btn color="white" small class="warning">
                       <v-icon>mdi-delete-outline</v-icon>
                     </v-btn>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-          </template>
-        </v-simple-table>
+                  </td>
+                </tr>
+              </tbody>
+            </template>
+
+   <!--          <template v-slot:default v-else>
+              <tr v-if="!loadData">
+                    <td colspan="100%">
+                       <skeleton-custom></skeleton-custom>
+                    </td>
+                </tr>
+              <tr
+                v-for="(item, index) in receptionCustomerSells"
+                :key="item.id"
+                v-if="loadData"
+              >
+                <td>
+                  <ul class="flex-content">
+                    <li class="flex-item" data-label="No.">
+                     {{ $helper.showIndex(index, currentPage, itemsPerPage) }}
+                    </li>
+                    <li class="flex-item" data-label="Customer name">
+                      {{ item.customer.name }}
+                    </li>
+                    <li class="flex-item" data-label="Customer phone">
+                      {{ item.customer.phoneNumber }}
+                    </li>
+                    <li class="flex-item" data-label="Progess transaction">
+                      <v-chip
+                        small
+                        :color="$helper.colorStatusTransaction(item)"
+                        dark
+                      >
+                        {{ item.status }}
+                      </v-chip>
+                    </li>
+                    <li class="flex-item" data-label="Action">
+                      <v-btn
+                        color="white"
+                        small
+                        class="primary mr-4"
+                        @click="edit(item)"
+                      >
+                        <v-icon>mdi-square-edit-outline</v-icon>
+                      </v-btn>
+                      <v-btn color="white" small class="warning">
+                        <v-icon>mdi-delete-outline</v-icon>
+                      </v-btn>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </template> -->
+          </v-simple-table>
+        </v-responsive>
       </v-layout>
 
       <v-row justify="center">
@@ -152,21 +165,26 @@ import ReceptionCustomerSell from "@/store/models/reception_customer_sell";
 
 // component
 import EditComponent from "./Edit.vue";
+import ComponentStore from "@/store/models/component";
 
 export default {
   components: { edit: EditComponent },
   async created() {
-    this.retrieveData();
+    ComponentStore.dispatch("loadingProgress", { option: "show" });
+    setTimeout(async () => {
+      await this.retrieveData();
+      ComponentStore.dispatch("loadingProgress", { option: "hide" });
+    }, 500);
   },
 
   data() {
     return {
-      currentPage: 1,
-      itemsPerPage: 5,
-      search: "",
-      itemsPerPageList: [5, 10, 15],
-      pageCounts: 0,
+      currentPage: this.$appConfig.pagination.CURENT_PAGE,
+      itemsPerPage: this.$appConfig.pagination.ITEMS_PER_PAGE,
+      itemsPerPageList: this.$appConfig.pagination.ITEMS_PER_PAGE_LIST,
+      pageCounts:  this.$appConfig.pagination.PAGE_COUNTS_DEFAULT,
 
+      search: "",
       receptionCustomerSell: "",
 
       isMobile: false,
@@ -174,7 +192,10 @@ export default {
     };
   },
 
-  mounted() {},
+  mounted() {
+
+
+  },
 
   methods: {
     edit(item) {
@@ -188,8 +209,7 @@ export default {
     },
 
     async retrieveData() {
-      var progress = this.$Progress;
-      progress.start();
+
       const res = await ReceptionCustomerSell.api().fetchPaging(
         this.currentPage,
         this.itemsPerPage
@@ -198,10 +218,8 @@ export default {
         this.loadData = true;
         this.pageCounts = res.response.data.pageCounts;
         ReceptionCustomerSell.insert({ data: res.response.data.data });
-        progress.finish();
-      } else {
-        progress.fail();
       }
+
     },
 
     onResize() {
@@ -213,12 +231,7 @@ export default {
   computed: {
     receptionCustomerSells() {
       var itemsPerPage = this.itemsPerPage;
-      var page = this.currentPage;
-      if (page == 1) {
-        this.offset = 0;
-      } else {
-        this.offset = (page - 1) * itemsPerPage;
-      }
+      var offset = this.$helper.calcPagination(this.currentPage, itemsPerPage)
 
       return ReceptionCustomerSell.query()
         .with("employee")
@@ -226,7 +239,7 @@ export default {
         .with("vehicleTests", query => {
           query.with("vehicleType");
         })
-        .offset(this.offset)
+        .offset(offset)
         .limit(itemsPerPage)
         .get();
     },

@@ -80,10 +80,6 @@
                     {{ item.registrationPlate }}
                   </template>
 
-                  <template v-slot:item.bikeCode="{ item }">
-                    {{ item.bikeCode }}
-                  </template>
-
                   <template v-slot:item.bikeStatus="{ item }">
                     <v-chip
                       :color="$helper.colorStatusBike(item.bikeStatus)"
@@ -197,7 +193,6 @@ export default {
       headers: [
         { text: "No.", value: "no", width: 70 },
         { text: "Registration plate", value: "registrationPlate", width: 200 },
-        { text: "Bike code", value: "bikeCode", width: 200 },
         { text: "Bike status", value: "bikeStatus", width: 200 },
         { text: "Range Price", value: "rangePrice", width: 200 },
         { text: "Action", align: "center", value: "action", width: 120 }

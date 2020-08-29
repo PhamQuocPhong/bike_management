@@ -237,8 +237,14 @@
 </style>
 
 <script type="text/javascript">
+// store
+import ComponentStore from "@/store/models/component";
+
+// component
 import LineChart from "@/components/custom/chart/Line.vue";
 import PieChart from "@/components/custom/chart/Pie.vue";
+
+// service
 import HTTP from "@/services/http";
 export default {
   components: {
@@ -247,26 +253,30 @@ export default {
   },
 
   async created() {
-    const res = await HTTP.get("/dashboard", {
-      headers: {
-        "x-access-token": this.$cookies.get("accessToken")
+    ComponentStore.dispatch("loadingProgress", { option: "show" });
+    setTimeout(async () => {
+      const res = await HTTP.get("/dashboard");
+      if (res.status === 200) {
+        this.revenueChartData.datasets[0].data =
+          res.data.data.revenueChartData.revenue;
+        this.vehicleChartData = res.data.data.vehicleChart;
+        this.vehiclesSold = res.data.data.vehiclesSold;
+        this.allCustomer = res.data.data.allCustomer;
+        this.allOrdes = res.data.data.allOrdes;
+        this.revenuePerMonth = res.data.data.revenuePerMonth;
+        this.topCustomers = res.data.data.topCustomers;
+        this.loadRevenueChart = true;
+        this.loadVehicleChart = true;
       }
-    });
-    if (res.status === 200) {
-      this.revenueChartData.datasets[0].data =
-        res.data.data.revenueChartData.revenue;
-      this.vehicleChartData = res.data.data.vehicleChart;
-      this.vehiclesSold = res.data.data.vehiclesSold;
-      this.allCustomer = res.data.data.allCustomer;
-      this.allOrdes = res.data.data.allOrdes;
-      this.revenuePerMonth = res.data.data.revenuePerMonth;
-      this.topCustomers = res.data.data.topCustomers;
-      this.loadRevenueChart = true;
-      this.loadVehicleChart = true;
-    }
+      
+      ComponentStore.dispatch("loadingProgress", { option: "hide" });
+    }, 500)
+
   },
 
-  async mounted() {},
+  async mounted() {
+
+  },
 
   data() {
     return {

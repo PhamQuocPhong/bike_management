@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <!--     <v-row>
-      <label-table title="Warehouse"> </label-table>
+        <v-row>
+      <label-table title="Room"> </label-table>
     </v-row>
     <v-row>
       <v-flex :class="{ 'pa-4': !isMobile }">
@@ -44,32 +44,27 @@
                 <thead>
                   <tr>
                     <th>No.</th>
+                    <th>Pin</th>
                     <th>Name</th>
-                    <th>Color</th>
                     <th>Image</th>
-                    <th>Type</th>
-                    <th>Price</th>
-                    <th>Status</th>
+                    <th>Create date</th>
+                    <th>Maximum</th>
                     <th class="text-center">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-if="!loadData">
                     <td colspan="100%">
-                      <v-skeleton-loader
-                        ref="skeleton"
-                        :type="type"
-                        class="mx-auto"
-                      ></v-skeleton-loader>
+                       <skeleton-custom></skeleton-custom>
                     </td>
                   </tr>
 
-                  <tr v-for="item in vehicles" :key="item.id" v-else>
+                  <tr v-else v-for="(item, index) in rooms" :key="item.id" >
                     <td>
-                      {{ $helper.indexColumn(item, vehicles) }}
+                       {{ $helper.showIndex(index, currentPage, itemsPerPage) }}
                     </td>
                     <td>{{ item.name }}</td>
-                    <td>{{ item.color }}</td>
+                    <td>{{ item.pin }}</td>
                     <td>
                       <v-img
                         height="50"
@@ -78,17 +73,8 @@
                         :src="item.image"
                       ></v-img>
                     </td>
-                    <td>{{ item.vehicleType.name }}</td>
-                    <td>{{ item.price }}</td>
-                    <td>
-                      <v-chip
-                        small
-                        :color="$helper.colorStatusVehicle(item.valid)"
-                        dark
-                      >
-                        {{ item.valid === 0 ? "Sold" : "Waiting" }}
-                      </v-chip>
-                    </td>
+                    <td>{{ $helper.convertTzTo(item.date) }}</td>
+                    <td>{{ item.maximum }}</td>
 
                     <td class="text-center">
                       <v-btn
@@ -108,19 +94,21 @@
               </template>
 
               <template v-slot:default v-else>
-                <tr v-for="(item, index) in vehicles" :key="item.id">
+                <tr v-if="!loadData">
+                    <td colspan="100%">
+                       <skeleton-custom></skeleton-custom>
+                    </td>
+                </tr>
+
+                <tr v-else v-for="(item, index) in rooms" :key="item.id">
                   <td>
                     <ul class="flex-content">
-                      <li class="flex-item" data-label="No.">
-                        {{ $helper.indexColumn(item, vehicles) }}
+                      <li>
+                          {{ $helper.showIndex(index, currentPage, itemsPerPage) }}
                       </li>
-                      <li class="flex-item" data-label="Name">
-                        {{ item.name }}
-                      </li>
-                      <li class="flex-item" data-label="Color">
-                        {{ item.color }}
-                      </li>
-                      <li class="flex-item" data-label="Image">
+                      <li>{{ item.name }}</li>
+                      <li>{{ item.pin }}</li>
+                      <li>
                         <v-img
                           height="50"
                           width="100"
@@ -128,23 +116,10 @@
                           :src="item.image"
                         ></v-img>
                       </li>
-                      <li class="flex-item" data-label="Vehicle type">
-                        {{ item.vehicleType.name }}
-                      </li>
-                      <li class="flex-item" data-label="Price">
-                        {{ item.price }}
-                      </li>
-                      <li class="flex-item" data-label="Status">
-                        <v-chip
-                          small
-                          :color="$helper.colorStatusVehicle(item.valid)"
-                          dark
-                        >
-                          {{ item.valid === 0 ? "Sold" : "Waiting" }}
-                        </v-chip>
-                      </li>
+                      <li>{{ $helper.convertTzTo(item.date) }}</li>
+                      <li>{{ item.maximum }}</li>
 
-                      <li class="flex-item" data-label="Action">
+                      <li class="text-center">
                         <v-btn
                           color="white"
                           small
@@ -179,119 +154,111 @@
         </v-card>
       </v-flex>
     </v-row>
-
-    <create v-if="warehouseCreate"></create>
-    <edit v-if="warehouseEdit"></edit> -->
+<!-- 
+    <create v-if="manageRoomCreate"></create>
+    <edit v-if="manageRoomEdit"></edit> -->
   </v-container>
 </template>
 
 <script>
-// import Room from "@/store/models/room";
+import Room from "@/store/models/room";
 
-// import Modal from "@/store/models/modal";
+import Modal from "@/store/models/modal";
 
-// import CreateComponent from "./Create.vue";
-// import EditComponent from "./Edit.vue";
+import CreateComponent from "./Create.vue";
+import EditComponent from "./Edit.vue";
 
-// export default {
-//   components: {
-//     create: CreateComponent,
-//     edit: EditComponent
-//   },
+export default {
+  components: {
+    create: CreateComponent,
+    edit: EditComponent
+  },
 
-//   async created() {
-//     var progress = this.$Progress;
-//     progress.start();
-//     await this.retrieveData();
-//     progress.finish();
-//   },
+  async created() {
+    var progress = this.$Progress;
+    progress.start();
+    await this.retrieveData();
+    progress.finish();
+  },
 
-//   data() {
-//     return {
-//       page: 1,
-//       itemsPerPage: 2,
-//       search: "",
-//       itemsPerPageList: [5, 10, 15],
-//       pageCounts: 1,
-//       offset: 0,
-//       currentPage: 1,
-//       editDialog: false,
-//       createDialog: false,
+  data() {
+    return {
+      currentPage: this.$appConfig.pagination.CURENT_PAGE,
+      itemsPerPage: this.$appConfig.pagination.ITEMS_PER_PAGE,
+      itemsPerPageList: this.$appConfig.pagination.ITEMS_PER_PAGE_LIST,
+      pageCounts:  this.$appConfig.pagination.PAGE_COUNTS_DEFAULT,
+      search: "",
 
-//       isMobile: false,
-//       loadData: false,
-//       type: "table-tbody"
-//     };
-//   },
+      isMobile: false,
+      loadData: false,
+      room: null
 
-//   mounted() {},
+    };
+  },
 
-//   methods: {
-//     create() {
-//       Modal.dispatch("warehouseCreate", { option: "show" });
-//     },
+  mounted() {},
 
-//     edit(item) {
-//       this.technicalRepair = { ...item };
-//       Modal.dispatch("warehouseEdit", { option: "show" });
-//     },
-//     nextPage(page) {
-//       this.currentPage = page;
-//       this.loadData = false;
-//       this.retrieveData();
-//     },
-//     async retrieveData() {
-//       this.loadData = false;
-//       setTimeout(async () => {
-//         const res = await Room.api().fetchPaging(
-//           this.currentPage,
-//           this.itemsPerPage
-//         );
-//         if (res.response.status === 200) {
-//           Room.insert({ data: res.response.data.data });
-//           this.loadData = true;
-//           this.pageCounts = res.response.data.pageCounts;
-//         }
-//       }, 500);
-//     },
+  methods: {
+    create() {
+      Modal.dispatch("manageRoomCreate", { option: "show" });
+    },
 
-//     changePerPage() {
-//       this.retrieveData();
-//     },
+    edit(item) {
+      this.room = { ...item };
+      Modal.dispatch("manageRoomEdit", { option: "show" });
+    },
+    nextPage(page) {
+      this.currentPage = page;
+      this.loadData = false;
+      this.retrieveData();
+    },
+    async retrieveData() {
+      this.loadData = false;
+      setTimeout(async () => {
+        const res = await Room.api().fetchPaging(
+          this.currentPage,
+          this.itemsPerPage
+        );
+        if (res.response.status === 200) {
+          Room.insert({ data: res.response.data.data });
+          this.loadData = true;
+          this.pageCounts = res.response.data.pageCounts;
+        }
+      }, 500);
+    },
 
-//     onResize() {
-//       if (window.innerWidth < 769) this.isMobile = true;
-//       else this.isMobile = false;
-//     }
-//   },
+    changePerPage() {
+      this.retrieveData();
+    },
 
-//   computed: {
-//     vehicles() {
-//       var itemsPerPage = this.itemsPerPage;
-//       var page = this.currentPage;
-//       if (page == 1) {
-//         this.offset = 0;
-//       } else {
-//         this.offset = (page - 1) * itemsPerPage;
-//       }
-//       return Room.query()
-//         .with("vehicleType")
-//         .offset(this.offset)
-//         .limit(itemsPerPage)
-//         .get();
-//     },
+    onResize() {
+      if (window.innerWidth < 769) this.isMobile = true;
+      else this.isMobile = false;
+    }
+  },
 
-//     warehouseCreate() {
-//       return Modal.getters("warehouseCreate");
-//     },
+  computed: {
+    rooms() {
+      var itemsPerPage = this.itemsPerPage;
+      var offset = this.$helper.calcPagination(this.currentPage, itemsPerPage)
 
-//     warehouseEdit() {
-//       return Modal.getters("warehouseEdit");
-//     }
-//   },
+      return Room.query()
+        .offset(offset)
+        .limit(itemsPerPage)
+        .get();
+    },
 
-//   destroyed() {
-//     Vehicle.deleteAll();
-//   }
-// };
+    manageRoomCreate() {
+      return Modal.getters("manageRoomCreate");
+    },
+
+    manageRoomEdit() {
+      return Modal.getters("manageRoomEdit");
+    }
+  },
+
+  destroyed() {
+    Room.deleteAll();
+  }
+};
 </script>

@@ -100,6 +100,20 @@ export default {
     return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
   },
 
+  convertTzTo(date){
+    var d = new Date(date),
+          month = '' + (d.getMonth() + 1),
+          day = '' + d.getDate(),
+          year = d.getFullYear();
+
+      if (month.length < 2) 
+          month = '0' + month;
+      if (day.length < 2) 
+          day = '0' + day;
+
+    return [year, month, day].join('/')
+  },
+
   // 2 color (condtion === 1 ? blue : grey )
   colorStatusFinish(condition) {
     return condition === 1 ? "blue" : "grey";
@@ -123,5 +137,25 @@ export default {
       case 2:
         return "mdi-car-side";
     }
+  },
+
+  calcPagination(currentPage, itemsPerPage){
+    var offset;
+    if (currentPage == 1) {
+        offset = 0;
+    } else {
+        offset = (currentPage - 1) * itemsPerPage;
+    }
+    return offset
+  },
+
+  showIndex(index, page, itemsPerPage) {
+    index++
+    if(page === 1){
+      return index
+    }
+
+    return index + ( (page - 1) * itemsPerPage)
   }
+
 };

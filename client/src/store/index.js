@@ -4,8 +4,7 @@ import VuexORM from "@vuex-orm/core";
 import VuexORMAxios from "@vuex-orm/plugin-axios";
 import database from "./database/index";
 import axios from "axios";
-import ModalModules from "./modules/modal";
-import CookieService from '@/services/cookie'
+import CookieService from '@/services/cookie';
 
 Vue.use(Vuex);
 
@@ -25,7 +24,24 @@ const store = new Vuex.Store({
 });
 
 
-axios.interceptors.response.use((response) => {
+
+global.axiosInstance = require('axios')
+// Request interceptor for API calls
+axiosInstance.interceptors.request.use(
+  async config => {
+    config.headers = { 
+      'Authorization': 'Bearer ' + CookieService.get('accessToken'),
+      'Accept': 'application/json',
+    }
+    return config;
+  },
+  error => {
+    Promise.reject(error)
+});
+
+// Response interceptors for API
+axiosInstance.interceptors.response.use((response) => {
+
   return response
 },
 (error) => {
@@ -33,33 +49,29 @@ axios.interceptors.response.use((response) => {
    if (error.response.status === 401 && !originalRequest._retry) {
 
        originalRequest._retry = true;
-       return axios.post('/auth/token/refresh_token',
+       return axiosInstance.post('/auth/token/refresh_token',
            {
                "refreshToken": CookieService.get('refreshToken')
            })
            .then(res => {
-
                if (res.status === 200) {
-                   // 1) put token to LocalStorage
                    CookieService.set('accessToken', res.data.accessToken)
 
-                   // 2) Change Authorization header
-                   axios.defaults.headers.common['Authorization'] = 'Bearer ' + CookieService.get('accessToken')
-                   // 3) return originalRequest object with Axios.
-                   return axios(originalRequest);
+                   axiosInstance.defaults.headers.common['Authorization'] = 'Bearer ' + CookieService.get('accessToken')
+
+                   return axiosInstance(originalRequest);
                }
            })
    }
 
-   // return Error object with Promise
    return Promise.reject(error);
 });
+
 
 VuexORM.use(VuexORMAxios, {
   axios,
   headers: {
     "X-Requested-With": "XMLHttpRequest",
-    "x-access-token": CookieService.get('accessToken')
   },
   baseURL: process.env.VUE_APP_ROOT_API || "http://localhost:3000/api"
 });

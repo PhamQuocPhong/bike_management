@@ -34,98 +34,45 @@
             class="table"
             :class="{ 'mt-4': isMobile }"
           >
-            <v-simple-table :class="{ mobile: isMobile }">
-              <template v-slot:default v-if="!isMobile">
-                <thead>
-                  <tr>
-                    <th>No.</th>
-                    <th>Name</th>
-                    <th>Color</th>
-                    <th>Image</th>
-                    <th>Code</th>
-                    <th>Registration plate</th>
-                    <th>Status</th>
-                    <th>Price</th>
-                    <th class="text-center" style="width: 200px;">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="item in vehiclePurchases" :key="item.id">
-                    <td>
-                      {{ $helper.indexColumn(item, vehiclePurchases) }}
-                    </td>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.color }}</td>
-                    <td>
-                      <v-img
-                        height="50"
-                        width="100"
-                        contain
-                        :src="item.image"
-                      ></v-img>
-                    </td>
-                    <td>{{ item.code }}</td>
-                    <td>{{ item.registrationPlate }}</td>
-                    <td>
-                      <v-chip
-                        :color="$helper.colorStatusBike(item.status)"
-                        class="justify-center status-bike"
-                        small
-                        dark
-                      >
-                        {{ item.status }}
-                      </v-chip>
-                    </td>
-                    <td>{{ item.price | toCurrency }}</td>
-                    <td class="text-center">
-                      <v-btn
-                        color="white"
-                        small
-                        class="primary mr-4"
-                        @click="edit(item)"
-                      >
-                        <v-icon>mdi-square-edit-outline</v-icon>
-                      </v-btn>
-                      <v-btn color="white" small class="warning">
-                        <v-icon>mdi-delete-outline</v-icon>
-                      </v-btn>
-                    </td>
-                  </tr>
-                </tbody>
-              </template>
+            <v-responsive :aspect-ratio="$appConfig.aspectRatio.table">
+              <v-simple-table :class="{ mobile: isMobile }">
+                <template v-slot:default v-if="!isMobile">
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>Name</th>
+                      <th>Color</th>
+                      <th>Image</th>
+                      <th>Registration plate</th>
+                      <th>Status</th>
+                      <th>Price</th>
+                      <th class="text-center" style="width: 200px;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
 
-              <template v-slot:default v-else>
-                <tr
-                  v-for="(item, index) in vehiclePurchases"
-                  :key="item.id"
-                  v-if="loadData"
-                >
-                  <td>
-                    <ul class="flex-content">
-                      <li class="flex-item" data-label="No.">
-                        {{ $helper.indexColumn(item, vehiclePurchases) }}
-                      </li>
-                      <li class="flex-item" data-label="Name">
-                        {{ item.name }}
-                      </li>
-                      <li class="flex-item" data-label="Color">
-                        {{ item.color }}
-                      </li>
-                      <li class="flex-item" data-label="Image">
+                    <tr v-if="!loadData">
+                        <td colspan="100%">
+                          <skeleton-custom></skeleton-custom>
+                        </td>
+                    </tr>
+
+                    <tr v-else v-for="(item, index) in vehiclePurchases" :key="item.id">
+                      <td>
+                         {{ $helper.showIndex(index, currentPage, itemsPerPage) }}
+                      </td>
+                      <td>{{ item.name }}</td>
+                      <td>{{ item.color }}</td>
+                      <td>
                         <v-img
                           height="50"
                           width="100"
                           contain
                           :src="item.image"
                         ></v-img>
-                      </li>
-                      <li class="flex-item" data-label="Code">
-                        {{ item.code }}
-                      </li>
-                      <li class="flex-item" data-label="Registration plate">
-                        {{ item.registrationPlate }}
-                      </li>
-                      <li class="flex-item" data-label="Status">
+                      </td>
+                      <td>{{ item.registrationPlate }}</td>
+                      <td>
                         <v-chip
                           :color="$helper.colorStatusBike(item.status)"
                           class="justify-center status-bike"
@@ -134,12 +81,9 @@
                         >
                           {{ item.status }}
                         </v-chip>
-                      </li>
-                      <li class="flex-item" data-label="Price">
-                        {{ item.price | toCurrency }}
-                      </li>
-
-                      <li class="flex-item" data-label="Action">
+                      </td>
+                      <td>{{ item.price | toCurrency }}</td>
+                      <td class="text-center">
                         <v-btn
                           color="white"
                           small
@@ -151,12 +95,78 @@
                         <v-btn color="white" small class="warning">
                           <v-icon>mdi-delete-outline</v-icon>
                         </v-btn>
-                      </li>
-                    </ul>
-                  </td>
-                </tr>
-              </template>
-            </v-simple-table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </template>
+
+                <template v-slot:default v-else>
+                  <tr v-if="!loadData">
+                      <td colspan="100%">
+                         <skeleton-custom></skeleton-custom>
+                      </td>
+                  </tr>
+
+                  <tr
+                    v-for="(item, index) in vehiclePurchases"
+                    :key="item.id"
+                    v-else
+                  >
+                    <td>
+                      <ul class="flex-content">
+                        <li class="flex-item" data-label="No.">
+                           {{ $helper.showIndex(index, currentPage, itemsPerPage) }}
+                        </li>
+                        <li class="flex-item" data-label="Name">
+                          {{ item.name }}
+                        </li>
+                        <li class="flex-item" data-label="Color">
+                          {{ item.color }}
+                        </li>
+                        <li class="flex-item" data-label="Image">
+                          <v-img
+                            height="50"
+                            width="100"
+                            contain
+                            :src="item.image"
+                          ></v-img>
+                        </li>
+                        <li class="flex-item" data-label="Registration plate">
+                          {{ item.registrationPlate }}
+                        </li>
+                        <li class="flex-item" data-label="Status">
+                          <v-chip
+                            :color="$helper.colorStatusBike(item.status)"
+                            class="justify-center status-bike"
+                            small
+                            dark
+                          >
+                            {{ item.status }}
+                          </v-chip>
+                        </li>
+                        <li class="flex-item" data-label="Price">
+                          {{ item.price | toCurrency }}
+                        </li>
+
+                        <li class="flex-item" data-label="Action">
+                          <v-btn
+                            color="white"
+                            small
+                            class="primary mr-4"
+                            @click="edit(item)"
+                          >
+                            <v-icon>mdi-square-edit-outline</v-icon>
+                          </v-btn>
+                          <v-btn color="white" small class="warning">
+                            <v-icon>mdi-delete-outline</v-icon>
+                          </v-btn>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </template>
+              </v-simple-table>
+            </v-responsive>
           </v-layout>
 
           <v-row justify="center">
@@ -185,9 +195,9 @@
 <script>
 // component
 import VehilcePurChaseEdit from "./Edit";
+import ComponentStore from "@/store/models/component";
 
 // store
-
 import VehiclePurchase from "@/store/models/vehicle_purchase";
 import Modal from "@/store/models/modal";
 
@@ -197,23 +207,25 @@ export default {
   },
 
   async created() {
-    this.retrieveData();
+    ComponentStore.dispatch("loadingProgress", { option: "show" });
+    setTimeout(async () => {
+      await this.retrieveData();
+      ComponentStore.dispatch("loadingProgress", { option: "hide" });
+    }, 500);
   },
 
   data() {
     return {
-      page: 1,
-      pageCount: 0,
-      itemsPerPage: 10,
+      currentPage: this.$appConfig.pagination.CURENT_PAGE,
+      itemsPerPage: this.$appConfig.pagination.ITEMS_PER_PAGE,
+      itemsPerPageList: this.$appConfig.pagination.ITEMS_PER_PAGE_LIST,
+      pageCounts:  this.$appConfig.pagination.PAGE_COUNTS_DEFAULT,
+
+
       search: "",
-      itemsPerPageList: [5, 10, 15],
-      dialogVehicleTest: false,
-      vehicleTest: "",
       role: "technical",
-      currentPage: 1,
       dialogEdit: false,
       vehiclePurchase: null,
-      pageCounts: 0,
 
       isMobile: false,
       loadData: false
@@ -229,20 +241,18 @@ export default {
     },
 
     async retrieveData() {
-      var progress = this.$Progress;
-      progress.start();
-      const res = await VehiclePurchase.api().fetchPaging(
-        this.currentPage,
-        this.itemsPerPage
-      );
-      if (res.response.status === 200) {
-        this.loadData = true;
-        VehiclePurchase.insert({ data: res.response.data.data });
-        this.pageCounts = res.response.data.pageCounts;
-        progress.finish();
-      } else {
-        progress.fail();
-      }
+      this.loadData = false;
+      setTimeout(async () => {
+        const res = await VehiclePurchase.api().fetchPaging(
+          this.currentPage,
+          this.itemsPerPage
+        );
+        if (res.response.status === 200) {
+          this.loadData = true;
+          VehiclePurchase.insert({ data: res.response.data.data });
+          this.pageCounts = res.response.data.pageCounts;
+        }
+      }, 500)
     },
 
     nextPage(page) {

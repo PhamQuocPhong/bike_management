@@ -34,6 +34,7 @@
             class="table"
             :class="{ 'mt-4': isMobile }"
           >
+          <v-responsive :aspect-ratio="$appConfig.aspectRatio.table">
             <v-simple-table :class="{ mobile: isMobile }">
               <template v-slot:default v-if="!isMobile">
                 <thead>
@@ -49,13 +50,19 @@
                   </tr>
                 </thead>
                 <tbody>
+                  <tr v-if="!loadData">
+                      <td colspan="100%">
+                         <skeleton-custom></skeleton-custom>
+                      </td>
+                  </tr>
+
                   <tr
-                    v-for="item in vehicleTests"
+                    v-for="(item, index) in vehicleTests"
                     :key="item.id"
-                    v-if="loadData"
+                    v-else
                   >
                     <td>
-                      {{ $helper.indexColumn(item, vehicleTests) }}
+                      {{ $helper.showIndex(index, currentPage, itemsPerPage) }}
                     </td>
                     <td>{{ item.bikeCode }}</td>
                     <td>
@@ -109,6 +116,12 @@
               </template>
 
               <template v-slot:default v-else>
+                <tr v-if="!loadData">
+                    <td colspan="100%">
+                      <skeleton-custom></skeleton-custom>
+                    </td>
+                </tr>
+
                 <tr
                   v-for="(item, index) in vehicleTests"
                   :key="item.id"
@@ -117,7 +130,7 @@
                   <td>
                     <ul class="flex-content">
                       <li class="flex-item" data-label="No.">
-                        {{ $helper.indexColumn(item, vehicleTests) }}
+                        {{ $helper.showIndex(index, currentPage, itemsPerPage) }}
                       </li>
                       <li class="flex-item" data-label="Accessory">
                         {{ item.bikeCode }}
@@ -177,6 +190,7 @@
                 </tr>
               </template>
             </v-simple-table>
+          </v-responsive>
           </v-layout>
           <v-row justify="center">
             <v-col cols="8">
@@ -207,6 +221,8 @@ import VehicleTestComponent from "./VehicleTest.vue";
 import TechnicalTest from "@/store/models/technical_test";
 import VehicleTest from "@/store/models/vehicle_test";
 import Modal from "@/store/models/modal";
+import ComponentStore from "@/store/models/component";
+
 
 export default {
   components: {
@@ -214,21 +230,25 @@ export default {
   },
 
   async created() {
-    this.retrieveData();
+    ComponentStore.dispatch("loadingProgress", { option: "show" });
+    setTimeout(async () => {
+      await this.retrieveData();
+      ComponentStore.dispatch("loadingProgress", { option: "hide" });
+    }, 500);
   },
 
   data() {
     return {
-      currentPage: 1,
-      itemsPerPage: 5,
+      currentPage: this.$appConfig.pagination.CURENT_PAGE,
+      itemsPerPage: this.$appConfig.pagination.ITEMS_PER_PAGE,
+      itemsPerPageList: this.$appConfig.pagination.ITEMS_PER_PAGE_LIST,
+      pageCounts:  this.$appConfig.pagination.PAGE_COUNTS_DEFAULT,
+
       search: "",
-      itemsPerPageList: [5, 10, 15],
-      pageCounts: 0,
       vehicleTest: "",
       role: "technical",
-
       isMobile: false,
-      loadData: false
+      loadData: false,
     };
   },
 
@@ -246,21 +266,18 @@ export default {
     },
 
     async retrieveData() {
-      var progress = this.$Progress;
-      progress.start();
-      const res = await TechnicalTest.api().fetchPaging(
-        this.currentPage,
-        this.itemsPerPage
-      );
-
-      if (res.response.status === 200) {
-        this.loadData = true;
-        this.pageCounts = res.response.data.pageCounts;
-        TechnicalTest.insert({ data: res.response.data.data });
-        progress.finish();
-      } else {
-        progress.fail();
-      }
+      this.loadData = false;
+      setTimeout(async () => {
+        const res = await TechnicalTest.api().fetchPaging(
+          this.currentPage,
+          this.itemsPerPage
+        );
+        if (res.response.status === 200) {
+          TechnicalTest.insert({ data: res.response.data.data });
+          this.loadData = true;
+          this.pageCounts = res.response.data.pageCounts;
+        }
+      }, 500);
     },
 
     nextPage(page) {
@@ -271,9 +288,14 @@ export default {
 
   computed: {
     vehicleTests() {
+      var itemsPerPage = this.itemsPerPage;
+      var offset = this.$helper.calcPagination(this.currentPage, itemsPerPage)
+
       return VehicleTest.query()
         .with("technicalTest")
         .with("vehicleType")
+        .offset(offset)
+        .limit(itemsPerPage)
         .get();
     },
 

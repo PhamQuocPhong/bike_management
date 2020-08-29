@@ -1,4 +1,5 @@
 import { Model } from "@vuex-orm/core";
+import CookieService from '@/services/cookie';
 import Customer from "./customer";
 import Sales from "./sales";
 import ReceptionCustomerBuy from "./sales";

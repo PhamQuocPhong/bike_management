@@ -8,19 +8,18 @@ const ReceptionCustomerSell = require('../models/reception_customer_sell')
 const SalesCustomerBuy = require('../models/sales_customer_buy')
 const Employee = require('../models/employee')
 const Customer = require('../models/customer')
-const helpers =  require('../helpers/function')
-const moment = require('moment')
-const sequelize = require('../database/db')
 const { Op } = require("sequelize")
 const config = require('../config')
+const sequelize = require("../database/db")
 
 let createTransaction = async (req, res) => {
 
 	var transactionData = req.body.transaction
 	var transactionDetailData = req.body.transactionDetailData
-	try {
 
-		var newTransaction = await Transaction.create(transactionData)
+	const t = await sequelize.transaction();
+	try {
+		var newTransaction = await Transaction.create(transactionData, { transaction: t })
 		if(newTransaction){
 			if(newTransaction.mode === 'sell'){
 				var infoTransaction = req.body.infoTransaction
@@ -33,7 +32,7 @@ let createTransaction = async (req, res) => {
 						totalPrice: item.totalPrice,
 						vehicleId: item.vehicleId,
 						transactionId: newTransaction.id
-					})
+					}, { transaction: t })
 
 					Vehicle.update({valid: config.vehicle.UNVALID}, {
 						where: {
@@ -49,7 +48,9 @@ let createTransaction = async (req, res) => {
 						},
 						returning: true,
 	  					plain: true
-					})
+					}, { transaction: t })
+
+					await t.commit();
 
 					return res.status(200).json({message: 'Payment success!', data: salesCustomerBuyUpadate[1]})
 
@@ -72,13 +73,13 @@ let createTransaction = async (req, res) => {
 						image: item.image,
 						receptionCustomerSellId: item.receptionCustomerSellId,
 						vehicleTypeId: item.vehicleTypeId
-					})
+					}, { transaction: t })
 
 
 					if(newVehiclePurchase){
 						VehicleRepair.create({
 							 vehiclePurchaseId: newVehiclePurchase.id,
-						})
+						}, { transaction: t })
 
 						TransactionDetailBuy.create({
 							averagePrice: item.averagePrice,
@@ -86,7 +87,7 @@ let createTransaction = async (req, res) => {
 							totalPrice: item.totalPrice,
 							vehiclePurchaseId: newVehiclePurchase.id,
 							transactionId: newTransaction.id
-						})
+						}, { transaction: t })
 					}
 				})
 
@@ -99,13 +100,17 @@ let createTransaction = async (req, res) => {
 					},
 					returning: true,
 	  				plain: true
-				})
+				}, { transaction: t })
+
+
+				await t.commit();
 		
 				return res.status(200).json({message: 'Payment success!', data: receptionCustomerSellUpdate[1]})
 			}
 		}
 		
 	} catch(error) {
+		await t.rollback();
 		return res.status(500).json(error)
 	}
 }

@@ -20,6 +20,9 @@ export default {
     manageVehicleRepairAddFixDetail: state => state.manage.vehicle.repair.addFixDetail,
     manageVehiclePurchaseEdit: state => state.manage.vehicle.purchase.edit,
 
+    manageRoomCreate: state => state.manage.room.create,
+    manageRoomEdit: state => state.manage.room.edit,
+
     warehouseCreate: state => state.warehouse.create,
     warehouseEdit: state => state.warehouse.edit
   },
@@ -70,7 +73,12 @@ export default {
         repair: {
           edit: false,
           addFixDetail: false
-        }
+        },
+
+        room: {
+          edit: false,
+          create: false
+        },
       }
     },
 
@@ -136,6 +144,14 @@ export default {
 
     manageVehiclePurchaseEdit({ commit }, data) {
       commit("manageVehiclePurchaseEdit", data);
+    },
+
+    manageRoomCreate({ commit }, data) {
+      commit("manageRoomCreate", data);
+    },
+
+    manageRoomEdit({ commit }, data) {
+      commit("manageRoomCreate", data);
     },
 
     // warehouse
@@ -280,6 +296,26 @@ export default {
         return;
       }
       state.manage.vehicle.purchase.edit = false;
+    },
+
+    manageRoomCreate(state, payload) {
+      var option = payload.option;
+
+      if (option === "show") {
+        state.manage.room.create = true;
+        return;
+      }
+       state.manage.room.create = false;
+    },
+
+    manageRoomEdit(state, payload) {
+      var option = payload.option;
+
+      if (option === "show") {
+        state.manage.room.edit = true;
+        return;
+      }
+      state.manage.room.edit = false;
     },
 
     // warehouse

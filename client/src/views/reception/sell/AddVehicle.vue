@@ -27,17 +27,6 @@
 
                 <v-col cols="6">
                   <v-text-field
-                    label="Code"
-                    type="text"
-                    v-model="vehicleItem.bikeCode"
-                    :rules="[
-                      $validation.required(vehicleItem.bikeCode, 'Vehicle code')
-                    ]"
-                  ></v-text-field>
-                </v-col>
-
-                <v-col cols="6">
-                  <v-text-field
                     label="Color"
                     v-model="vehicleItem.color"
                     :rules="[
@@ -67,19 +56,6 @@
                   ></v-text-field>
                 </v-col>
 
-                <v-col cols="6">
-                  <v-select
-                    :items="vehicleStatus"
-                    label="Bike status"
-                    v-model="vehicleItem.bikeStatus"
-                    :rules="[
-                      $validation.required(
-                        vehicleItem.bikeStatus,
-                        'Bike status'
-                      )
-                    ]"
-                  ></v-select>
-                </v-col>
 
                 <v-col cols="6">
                   <v-file-input

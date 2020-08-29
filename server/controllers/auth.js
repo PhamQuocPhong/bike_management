@@ -4,7 +4,7 @@ const Employee = require('../models/employee')
 const Position = require('../models/position')
 const Role = require('../models/role')
 const bcrypt = require('bcrypt')
-const accessTokenLife = process.env.ACCESS_TOKEN_LIFE || "60"
+const accessTokenLife = process.env.ACCESS_TOKEN_LIFE 
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET 
 const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE 
 const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET 
@@ -127,13 +127,11 @@ let refreshToken = async (req, res) => {
       },
   })
 
-  console.log(findUser)
 
   if (findUser) {
     try {
   
       const decoded = await jwtHelper.verifyToken(refreshTokenFromClient, refreshTokenSecret)
-
       const accessToken = await jwtHelper.generateToken(decoded.userId, accessTokenSecret, accessTokenLife)
 
       return res.status(200).json({accessToken})

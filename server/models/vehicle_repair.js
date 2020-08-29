@@ -25,12 +25,14 @@ const VehicleRepair = db.define('vehicleRepair', {
 
   fixPrice: {
     type: Sequelize.DOUBLE,
-    allowNull: true
+    allowNull: true,
+    defaultValue: 0
   },
 
   price: {
     type: Sequelize.DOUBLE,
-    allowNull: true
+    allowNull: true,
+    defaultValue: 0
   },
 
   approveFlg: {

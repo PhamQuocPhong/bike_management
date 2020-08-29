@@ -28,12 +28,13 @@ let sendMailRegister = (from, mailTo, subject, verifyCode) => {
       });
 }
 
-let sendMailContactCustomer = async  (from, mailTo, subject, data, callback) => {
+let sendMailContactCustomer = async  (from, mailTo, subject, customer, callback) => {
+
    var mainOptions = { 
             from: from,
             to: mailTo,
             subject: subject,
-            html: formatEmail.formatContactCustomer(data)
+            html: formatEmail.formatContactCustomer(customer)
     }
 
     await transporter.sendMail(mainOptions, function(err, info){
