@@ -16,13 +16,6 @@ export default class UserNotification extends Model {
   }
 
   static apiConfig = {
-
-    
-    // headers: { 
-    //   'X-Requested-With': 'XMLHttpRequest',
-    //   'Authorization': 'Bearer ' + CookieService.get("accessToken"),
-    // },
-
     actions: {
       async fetchPaging(userId, type, page, itemPerPage = null) {
         try {

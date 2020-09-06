@@ -15,13 +15,6 @@ export default class ReceptionCustomerBuy extends Model {
   }
 
   static apiConfig = {
-
-    
-    // headers: { 
-    //   'X-Requested-With': 'XMLHttpRequest',
-    //   'Authorization': 'Bearer ' + CookieService.get("accessToken"),
-    // },
-
     actions: {
       async fetchAll() {
         try {

@@ -17,13 +17,6 @@ export default class VehicleSuggest extends Model {
   }
 
   static apiConfig = {
-
-    
-    // headers: { 
-    //   'X-Requested-With': 'XMLHttpRequest',
-    //   'Authorization': 'Bearer ' + CookieService.get("accessToken"),
-    // },
-
     actions: {
       fetchAll() {},
 

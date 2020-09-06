@@ -45,23 +45,30 @@ axiosInstance.interceptors.response.use((response) => {
   return response
 },
 (error) => {
+
    const originalRequest = error.config;
-   if (error.response.status === 401 && !originalRequest._retry) {
 
-       originalRequest._retry = true;
-       return axiosInstance.post('/auth/token/refresh_token',
-           {
-               "refreshToken": CookieService.get('refreshToken')
-           })
-           .then(res => {
-               if (res.status === 200) {
-                   CookieService.set('accessToken', res.data.accessToken)
+  // if no login => 
+  if(error.response.status === 401 && !CookieService.get('refreshToken')){
+      return Promise.reject(error);
+  }
 
-                   axiosInstance.defaults.headers.common['Authorization'] = 'Bearer ' + CookieService.get('accessToken')
+  if (error.response.status === 401 && !originalRequest._retry) {
 
-                   return axiosInstance(originalRequest);
-               }
-           })
+     originalRequest._retry = true;
+     return axiosInstance.post('/auth/token/refresh_token',
+         {
+             "refreshToken": CookieService.get('refreshToken')
+         })
+         .then(res => {
+             if (res.status === 200) {
+                 CookieService.set('accessToken', res.data.accessToken)
+
+                 axiosInstance.defaults.headers.common['Authorization'] = 'Bearer ' + CookieService.get('accessToken')
+
+                 return axiosInstance(originalRequest);
+             }
+         })
    }
 
    return Promise.reject(error);

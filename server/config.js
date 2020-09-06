@@ -10,14 +10,14 @@ module.exports = {
 	REFRESH_TOKEN_LIFE   :  process.env.REFRESH_TOKEN_LIFE,
 	REFRESH_TOKEN_SECRET :  process.env.REFRESH_TOKEN_SECRET,
 
-	BUCKET :  process.env.BUCKET,
+	BIKE_BUCKET :  process.env.BIKE_BUCKET,
+	AVATAR_BUCKET :  process.env.AVATAR_BUCKET,
 	REGION :  process.env.REGION,
 	AWS_ACCESS_KEY :  process.env.AWS_ACCESS_KEY,
 	AWS_SECRET_KEY :  process.env.AWS_SECRET_KEY,
 
 	PUBLIC_VAPID_KEY: process.env.PUBLIC_VAPID_KEY,
 	PRIVATE_VAPID_KEY: process.env.PRIVATE_VAPID_KEY,
-
 
 	userRole: {
 		SUPER_ADMIN: 1,

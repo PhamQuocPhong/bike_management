@@ -22,11 +22,6 @@ cd server
 npm install
 ```
 
-
-```
-npm run seed
-```
-
 ### Compiles and run server 
 
 ```

@@ -5,6 +5,9 @@ const UserNotification = require('../models/user_notification')
 const helper = require('../helpers/helper')
 const moment = require('moment')
 const { Op } = require("sequelize")
+const AwsService = require('../services/aws')
+const config = require('../config')
+const urlAvatar = config.URL_AVATAR_AWS
 
 // get notifications of user for 7 days ago
 
@@ -115,11 +118,39 @@ let getUser = async (req, res) => {
 		return res.status(500).json(error)
 	}
 
+}
 
+let uploadAvatar = async (req, res) => {
+	
+	var avatar = req.body.avatar 
+	var oldAvatarUrl = req.body.oldAvatarUrl
+	var userId = req.params.id
+	var typeUpload = "avatars"
+	if(avatar) {
+
+		AwsService.removeImageAws(oldAvatarUrl, typeUpload)
+
+		await AwsService.uploadImageBase64(avatar, typeUpload, (url) => {
+			var avatarName = AwsService.getCallbackURL(url)
+
+			if(avatarName){
+				User.update({
+					avatar: avatarName
+				}, 
+				{
+					where: {
+						id: userId
+					}
+				})
+				return res.status(200).json({message: "Upload avatar success", newAvatar: avatarName})
+			}
+		})
+	}
 }
 
 
 module.exports = {
 	getNotificationUser: getNotificationUser,
-	getUser: getUser
+	getUser: getUser,
+	uploadAvatar: uploadAvatar,
 }

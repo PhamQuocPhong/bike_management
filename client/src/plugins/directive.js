@@ -30,4 +30,6 @@ Vue.directive("check-position", {
   }
 });
 
+
+
 export default {};

@@ -92,7 +92,6 @@
                       </td>
 
                       <td class="text-center">
-                        
                         <btn-custom 
                           icon="mdi-square-edit-outline"
                           :classProp="`primary mr-4`"
@@ -156,21 +155,20 @@
                         </li>
 
                         <li class="flex-item" data-label="Action">
-
                           <btn-custom 
-                          icon="mdi-square-edit-outline"
-                          :classProp="`primary mr-4`"
-                          v-on:action="edit(item)"
-                          type="edit"
-                          >
-                        </btn-custom>
+                            icon="mdi-square-edit-outline"
+                            :classProp="`primary mr-4`"
+                            v-on:action="edit(item)"
+                            type="edit"
+                            >
+                          </btn-custom>
 
-                         <btn-custom 
-                          icon="mdi-delete-outline"
-                          :classProp="`warning`"
-                          type="delete"
-                        >
-                        </btn-custom>
+                           <btn-custom 
+                            icon="mdi-delete-outline"
+                            :classProp="`warning`"
+                            type="delete"
+                          >
+                          </btn-custom>
                         </li>
                       </ul>
                     </td>

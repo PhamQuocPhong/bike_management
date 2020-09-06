@@ -56,7 +56,6 @@
                   ></v-text-field>
                 </v-col>
 
-
                 <v-col cols="6">
                   <v-file-input
                     label="Image"
@@ -167,10 +166,6 @@ export default {
   },
 
   computed: {
-    vehicleTypes() {
-      return VehicleType.all();
-    },
-
     receptionSellAddVehicle() {
       return Modal.getters("receptionSellAddVehicle");
     }

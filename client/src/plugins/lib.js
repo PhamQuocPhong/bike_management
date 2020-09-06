@@ -5,10 +5,17 @@ import Loading from "vue-loading-overlay";
 import colors from "vuetify/lib/util/colors";
 import VueChatScroll from "vue-chat-scroll";
 import VueCropper from 'vue-cropperjs';
-
 import "vue-loading-overlay/dist/vue-loading.css";
 import 'cropperjs/dist/cropper.css';
 
+// component
+import ConfirmDialog from "@/components/custom/dialog/Confirm.vue";
+import PinDialog from "@/components/custom/dialog/Pin.vue";
+import BreadCrumbs from "@/components/custom/BreadCrumbs";
+import LabelTable from "@/components/custom/LabelTable";
+import Sekeleton from '@/components/custom/Sekeleton';
+import Button from '@/components/custom/button/Button';
+import SortItemPagination from '@/components/custom/SortItemPagination';
 
 global.axios = require("axios");
 global.axios.defaults.headers.common = {
@@ -26,22 +33,19 @@ global.toastr.options.closeMethod = "fadeOut";
 global.toastr.options.closeDuration = 500;
 global.toastr.options.closeEasing = "swing";
 
+Vue.component("vue-cropper", VueCropper);
 
-// component
-import ConfirmDialog from "@/components/custom/dialog/Confirm.vue";
-import PinDialog from "@/components/custom/dialog/Pin.vue";
-import BreadCrumbs from "@/components/custom/BreadCrumbs";
-import LabelTable from "@/components/custom/LabelTable";
-import Sekeleton from '@/components/custom/Sekeleton';
-import Button from '@/components/custom/button/Button';
 
-Vue.component(VueCropper);
+
+
+
 Vue.component("confirm-dialog", ConfirmDialog);
 Vue.component("breadcrumbs", BreadCrumbs);
 Vue.component("label-table", LabelTable);
 Vue.component("pin-dialog", PinDialog);
 Vue.component("skeleton-custom", Sekeleton);
 Vue.component("btn-custom", Button);
+Vue.component("sort-item-pagination", SortItemPagination);
 
 
 Vue.use(VueChatScroll);

@@ -84,17 +84,20 @@
                       </td>
                       <td>{{ item.price | toCurrency }}</td>
                       <td class="text-center">
-                        <v-btn
-                          color="white"
-                          small
-                          class="primary mr-4"
-                          @click="edit(item)"
-                        >
-                          <v-icon>mdi-square-edit-outline</v-icon>
-                        </v-btn>
-                        <v-btn color="white" small class="warning">
-                          <v-icon>mdi-delete-outline</v-icon>
-                        </v-btn>
+                        <btn-custom 
+                            icon="mdi-square-edit-outline"
+                            :classProp="`primary mr-4`"
+                            v-on:action="edit(item)"
+                            type="edit"
+                            >
+                          </btn-custom>
+
+                          <btn-custom 
+                            icon="mdi-delete-outline"
+                            :classProp="`warning`"
+                            type="delete"
+                          >
+                          </btn-custom>
                       </td>
                     </tr>
                   </tbody>
@@ -149,17 +152,20 @@
                         </li>
 
                         <li class="flex-item" data-label="Action">
-                          <v-btn
-                            color="white"
-                            small
-                            class="primary mr-4"
-                            @click="edit(item)"
+                         <btn-custom 
+                            icon="mdi-square-edit-outline"
+                            :classProp="`primary mr-4`"
+                            v-on:action="edit(item)"
+                            type="edit"
+                            >
+                          </btn-custom>
+
+                          <btn-custom 
+                            icon="mdi-delete-outline"
+                            :classProp="`warning`"
+                            type="delete"
                           >
-                            <v-icon>mdi-square-edit-outline</v-icon>
-                          </v-btn>
-                          <v-btn color="white" small class="warning">
-                            <v-icon>mdi-delete-outline</v-icon>
-                          </v-btn>
+                          </btn-custom>
                         </li>
                       </ul>
                     </td>

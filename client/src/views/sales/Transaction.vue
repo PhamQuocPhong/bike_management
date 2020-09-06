@@ -107,12 +107,23 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" outlined text @click.native="payment()"
-            >Payment</v-btn
+          <btn-custom 
+            :outlined="true"
+            title="Payment"
+            v-on:action="payment()"
+            color="blue darken-1"
+            type="save"
           >
-          <v-btn color="blue darken-1" outlined text @click.native="close"
-            >Cancel</v-btn
+          </btn-custom>
+          
+          <btn-custom 
+            :outlined="true"
+            title="Cancel"
+            v-on:action="close()"
+            color="blue darken-1"
+            type="close"
           >
+          </btn-custom>
         </v-card-actions>
       </v-card>
     </v-dialog>

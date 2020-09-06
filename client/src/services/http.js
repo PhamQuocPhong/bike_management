@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
 });
 
 
-// Request interceptor for API calls
+// // Request interceptor for API calls
 axiosInstance.interceptors.request.use(
   async config => {
     config.headers = { 
@@ -27,26 +27,31 @@ axiosInstance.interceptors.response.use((response) => {
 },
 (error) => {
    const originalRequest = error.config;
+
+    // if no login => 
+    if(error.response.status === 401 && !CookieService.get('refreshToken')){
+        return Promise.reject(error);
+    }
+
    if (error.response.status === 401 && !originalRequest._retry) {
 
-       originalRequest._retry = true;
-       return axiosInstance.post('/auth/token/refresh_token',
-           {
-               "refreshToken": CookieService.get('refreshToken')
-           })
-           .then(res => {
+    originalRequest._retry = true;
+    return axiosInstance.post('/auth/token/refresh_token',
+         {
+             "refreshToken": CookieService.get('refreshToken')
+         })
+         .then(res => {
 
-               if (res.status === 200) {
+             if (res.status === 200) {
 
-                   CookieService.set('accessToken', res.data.accessToken)
+                 CookieService.set('accessToken', res.data.accessToken)
 
-                   axiosInstance.defaults.headers.common['Authorization'] = 'Bearer ' + CookieService.get('accessToken')
+                 axiosInstance.defaults.headers.common['Authorization'] = 'Bearer ' + CookieService.get('accessToken')
 
-                   return axiosInstance(originalRequest);
-               }
-           })
+                 return axiosInstance(originalRequest);
+             }
+         })
    }
-
    // return Error object with Promise
    return Promise.reject(error);
 });

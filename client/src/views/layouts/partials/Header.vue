@@ -26,7 +26,7 @@
       <v-menu transition="slide-y-transition">
         <template v-slot:activator="{ on: activeMenu }">
           <v-avatar v-on="activeMenu">
-            <img :src="userInfo.avatar" alt="Avatar" />
+            <img :src="avatar" alt="Avatar" />
           </v-avatar>
         </template>
         <v-list>
@@ -61,6 +61,9 @@ import NavigationDrawer from "./Sidebar";
 import NotifyHeaderMenu from "@/views/components/NotifyHeaderMenu";
 import EmailHeaderMenu from "@/views/components/EmailHeaderMenu";
 
+// store
+import User from '@/store/models/user'
+
 export default {
   components: {
     navigation: NavigationDrawer,
@@ -76,7 +79,6 @@ export default {
         { title: "Profile", icon: "mdi-account-circle", link: "/user/profile" },
         { title: "Logout", icon: "mdi-login-variant", link: "/auth/logout" }
       ],
-      userInfo: this.$cookies.get("dataUser"),
       theme: this.getTheme()
     };
   },
@@ -120,6 +122,14 @@ export default {
   computed: {
     modeIcon() {
       return this.theme ? "mdi-brightness-4" : "mdi-brightness-5";
+    },
+
+    userInfo(){
+      return User.getters('getCurrentUser')
+    },
+
+    avatar(){
+      return this.$appConfig.URL_AVATAR_AWS  + this.userInfo.avatar
     }
   }
 };

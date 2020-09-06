@@ -22,10 +22,7 @@ export default class TechnicalRepair extends Model {
 
   static apiConfig = {
 
-    // headers: { 
-    //   'X-Requested-With': 'XMLHttpRequest',
-    //   'Authorization': 'Bearer ' + CookieService.get("accessToken"),
-    // },
+    
 
     actions: {
       async create(payload) {
