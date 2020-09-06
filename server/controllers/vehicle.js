@@ -15,22 +15,21 @@ let createVehicle = async(req, res) => {
 
 	var data = req.body
 	var lastBike = await helperFunctions.getLastRecord(Vehicle, {vehicleTypeId: 1})
-
+	var newCode = helper.addCode(lastBike.code, vehicleType)
 	var vehicleType = null
+	var typeUpload = "bikes"
 	if(data.vehicleTypeId === config.vehicleType.MOTOR_BIKE){
 		vehicleType = 'bike'
 	}else{
 		vehicleType = 'car'
 	}
 
-	var newCode = helper.addCode(lastBike.code, vehicleType)
-
 	const t = await sequelize.transaction();
 	try {
 
 		var urlImage = '';
 		if(data.image) {
-			await AwsService.uploadImageBase64(data.image, (url) => {
+			await AwsService.uploadImageBase64(data.image, typeUpload, (url) => {
 				urlImage = AwsService.getCallbackURL(url)
 			})
 		}

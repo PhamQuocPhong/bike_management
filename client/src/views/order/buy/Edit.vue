@@ -66,13 +66,14 @@
                     <td>{{ item.vehicleRepair.fixPrice }}</td>
 
                     <td class="text-center">
-                      <v-btn
-                        color="white"
-                        small
-                        class="primary mr-4"
-                        @click="report(item)"
-                        >Report</v-btn
-                      >
+                      <btn-custom 
+                          :outlined="true"
+                          title="Close"
+                          v-on:action="close()"
+                          color="blue darken-1"
+                          type="close"
+                        >
+                      </btn-custom>
                     </td>
                   </tr>
                 </tbody>

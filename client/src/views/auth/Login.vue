@@ -135,12 +135,13 @@ export default {
         Auth.login(dataLogin).then(res => {
           if (res.status == 200) {
             loader.hide();
-            this.$cookies.set("dataUser", res.data.findUser);
-            this.$cookies.set("accessToken", res.data.accessToken);
-            this.$cookies.set("refreshToken", res.data.refreshToken);
+            this.$cookies.set("dataUser", res.data.data.userInfo);
+            User.dispatch('updateUser', res.data.data.userInfo);
+            this.$cookies.set("accessToken", res.data.data.accessToken);
+            this.$cookies.set("refreshToken", res.data.data.refreshToken);
 
             this.$socket.emit("ADD_USER", {
-              userId: res.data.findUser.id
+              userId: res.data.data.userInfo.id
             });
 
             this.$router.push("/dashboard");
@@ -160,7 +161,7 @@ export default {
         var data = {};
 
         data.email =
-          googleUser.getBasicProfile().$t || googleUser.getBasicProfile().yu;
+        googleUser.getBasicProfile().$t || googleUser.getBasicProfile().yu;
         data.password = "";
         data.providerId = googleUser.getId();
         data.providerType = googleUser.getAuthResponse().idpId;
@@ -173,10 +174,12 @@ export default {
             this.$cookies.set("dataUser", res.data.data.userInfo);
             this.$cookies.set("accessToken", res.data.data.accessToken);
             this.$cookies.set("refreshToken", res.data.data.refreshToken);
-
             this.$socket.emit("ADD_USER", {
               userId: res.data.data.userInfo.id
             });
+
+            // store user vuex 
+            User.dispatch('updateUser', res.data.data.userInfo);
 
             this.$router.push("/dashboard");
           }
@@ -213,6 +216,9 @@ export default {
                     this.$socket.emit("ADD_USER", {
                       userId: res.data.data.userInfo.id
                     });
+
+                    // store user vuex 
+                    User.dispatch('updateUser', res.data.data.userInfo);
 
                     this.$router.push("/dashboard");
                   }

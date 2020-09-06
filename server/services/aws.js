@@ -4,7 +4,8 @@ require('dotenv').config({path: path.resolve('../.env')})
 const aws  = require('aws-sdk')
 const fs = require('fs')
 
-const bucket = process.env.BUCKET
+const bikeBucket = process.env.BIKE_BUCKET
+const avatarBucket = process.env.AVATAR_BUCKET
 const region = process.env.REGION
 const accessKey = process.env.AWS_ACCESS_KEY 
 const secretAccessKey = process.env.AWS_SECRET_KEY 
@@ -16,30 +17,60 @@ aws.config.update({
   // region: region
 })
 
+let removeImageAws = async (image, type) => {
 
-let uploadImageBase64 = async (image, callback) => {
+	// don't remove default avatar
+	if(image === "default.png"){
+		return;
+	}
 
-	if(!image || image === ''){
+	var params = {}
+	if(type === "avatars"){
+		params.Key = image
+		params.Bucket = avatarBucket
+	}
+	var s3 = new aws.S3()
+
+	console.log(image)
+	
+
+	s3.deleteObject(params, function (err, data) {
+	
+    });
+}
+
+let uploadImageBase64 = async (imageBase64, type, callback) => {
+
+	var bucket = null
+	var imageRemoteName = null
+	var buff = Buffer.from(imageBase64.replace(/^data:image\/\w+;base64,/, ""),'base64')
+	var s3 = new aws.S3()
+	var params = {}
+
+	if(!imageBase64 || imageBase64 === ''){
 		return ''
 	}
 
-	var buff = Buffer.from(image.replace(/^data:image\/\w+;base64,/, ""),'base64')
-	const imageRemoteName = `bike_${new Date().getTime()}.jpg`
-	var s3 = new aws.S3()
-		
-	const res = await s3.putObject({
-		Bucket: bucket,
-		Body: buff,
-		Key: imageRemoteName,
-		ACL: "public-read"
-	})
+	if(type === "bikes"){
+		params.Key = `bike_${new Date().getTime()}.jpg`
+		params.Bucket = bikeBucket
+		params.Body = buff
+		params.ACL = "public-read"
+	}else if(type === "avatars"){
+		params.Key = `avatar_${new Date().getTime()}.jpg`
+		params.Bucket = avatarBucket
+		params.Body = buff
+		params.ACL = "public-read"
+	}
+	
+
+	const res = await s3.putObject(params)
 	.promise()
 	.then(async res => {
 
-	  	const url = await s3.getSignedUrl('getObject', { Bucket: bucket, Key: imageRemoteName })
-
+	  	const url = await s3.getSignedUrl('getObject', {Key: params.Key, Bucket: params.Bucket})
 	  	if(typeof callback === 'function'){
-	  		callback(url)
+	  		callback(params.Key)
 	  	}
 	})
 	.catch(err => {
@@ -47,12 +78,15 @@ let uploadImageBase64 = async (image, callback) => {
 	})
 }
 
+
+
 let getCallbackURL = (url) => {
 	return url.split("?")[0]
 }
 
 module.exports = {
 	uploadImageBase64: uploadImageBase64,
+	removeImageAws: removeImageAws,
 	getCallbackURL: getCallbackURL
 }
 

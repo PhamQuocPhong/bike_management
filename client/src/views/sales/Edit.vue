@@ -28,15 +28,14 @@
                 </v-row>
 
                 <v-row flex :align="alignment">
-                  <v-col md="3" sm="6" cols="12">
-                    <v-select
-                      label="Vehicle Type"
-                      :items="vehicleTypes"
-                      v-model="vehicleType"
-                      item-text="name"
-                      return-object
-                      @input="changeVehicleType"
-                    ></v-select>
+                  <v-col md="4" sm="6" cols="12">
+                    <vehicle-type
+                      :vehicleType.sync="vehicleType"
+                      :vehicleTypeRule="[
+                         $validation.required(vehicleType, 'Vehicle type')
+                      ]"
+                    >
+                    </vehicle-type>
                   </v-col>
 
                   <v-col md="4" sm="6" cols="12">
@@ -53,9 +52,13 @@
                   </v-col>
 
                   <v-col md="4" sm="6" cols="12" class="text-center">
-                    <v-btn color="success" small v-on:click="suggestVehicle"
-                      >Add
-                    </v-btn>
+                    <btn-custom 
+                      title="Add"
+                      :classProp="`success`"
+                      v-on:action="suggestVehicle()"
+                      type="save"
+                      >
+                    </btn-custom>
                   </v-col>
                 </v-row>
 
@@ -194,6 +197,7 @@
 <script>
 // component
 import TransactionSell from "./Transaction";
+import VehicleTypeComponent from "@/components/custom/VehicleType";
 
 // store
 import VehicleType from "@/store/models/vehicle_type";
@@ -205,26 +209,11 @@ import Modal from "@/store/models/modal";
 export default {
   props: ["sales"],
   components: {
-    transaction: TransactionSell
+    "transaction": TransactionSell,
+    "vehicle-type": VehicleTypeComponent
   },
 
-  created() {
-    var vehicalTypes = VehicleType.all();
-    if (vehicalTypes.length <= 0) {
-      VehicleType.insert({
-        data: [
-          {
-            id: 1,
-            name: "Motor bike"
-          },
-          {
-            id: 2,
-            name: "Cycle bike"
-          }
-        ]
-      });
-    }
-  },
+  created() {},
 
   data() {
     return {
@@ -232,20 +221,7 @@ export default {
       valid: true,
       getSales: this.sales,
       date: null,
-      trip: {
-        name: "",
-        location: null,
-        start: null,
-        end: null
-      },
-      locations: [
-        "Australia",
-        "Barbados",
-        "Chile",
-        "Denmark",
-        "Ecuador",
-        "France"
-      ],
+
       alignment: "center",
       justify: "left",
       vehicleType: "",
@@ -305,9 +281,6 @@ export default {
   },
 
   computed: {
-    vehicleTypes() {
-      return VehicleType.all();
-    },
 
     vehicleSuggests() {
       return VehicleSuggest.query()

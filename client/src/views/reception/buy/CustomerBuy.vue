@@ -14,12 +14,12 @@
         </v-col>
 
         <v-col md="2" sm="6" cols="12" v-if="!isMobile">
-          <v-select
-            :items="itemsPerPageList"
-            label="Item per page"
-            v-model="itemsPerPage"
-            class="ml-4"
-          ></v-select>
+          <sort-item-pagination
+
+             :itemsPerPage.sync="itemsPerPage"
+          >
+            
+          </sort-item-pagination>
         </v-col>
       </v-row>
 
@@ -242,6 +242,11 @@ export default {
     onResize() {
       if (window.innerWidth < 769) this.isMobile = true;
       else this.isMobile = false;
+    },
+
+    changePerPage(){
+
+      // this.retrieveData()
     },
 
     async retrieveData() {

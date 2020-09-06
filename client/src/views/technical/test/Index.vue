@@ -40,7 +40,6 @@
                 <thead>
                   <tr>
                     <th>No.</th>
-                    <th>Bike code</th>
                     <th>Image</th>
                     <th>Vehicle type</th>
                     <th>Registration plate</th>
@@ -64,7 +63,6 @@
                     <td>
                       {{ $helper.showIndex(index, currentPage, itemsPerPage) }}
                     </td>
-                    <td>{{ item.bikeCode }}</td>
                     <td>
                       <v-img
                         height="50"
@@ -102,14 +100,13 @@
                       </div>
                     </td>
                     <td class="text-center">
-                      <v-btn
-                        color="white"
-                        small
-                        class="primary mr-4"
-                        @click="edit(item)"
-                      >
-                        <v-icon>mdi-square-edit-outline</v-icon>
-                      </v-btn>
+                      <btn-custom 
+                          icon="mdi-square-edit-outline"
+                          :classProp="`primary mr-4`"
+                          v-on:action="edit(item)"
+                          type="edit"
+                          >
+                      </btn-custom>
                     </td>
                   </tr>
                 </tbody>
@@ -131,9 +128,6 @@
                     <ul class="flex-content">
                       <li class="flex-item" data-label="No.">
                         {{ $helper.showIndex(index, currentPage, itemsPerPage) }}
-                      </li>
-                      <li class="flex-item" data-label="Accessory">
-                        {{ item.bikeCode }}
                       </li>
                       <li class="flex-item" data-label="Start date">
                         <v-img
@@ -176,14 +170,13 @@
                         </div>
                       </li>
                       <li class="flex-item" data-label="Action">
-                        <v-btn
-                          color="white"
-                          small
-                          class="primary mr-4"
-                          @click="edit(item)"
-                        >
-                          <v-icon>mdi-square-edit-outline</v-icon>
-                        </v-btn>
+                        <btn-custom 
+                          icon="mdi-square-edit-outline"
+                          :classProp="`primary mr-4`"
+                          v-on:action="edit(item)"
+                          type="edit"
+                          >
+                        </btn-custom>
                       </li>
                     </ul>
                   </td>

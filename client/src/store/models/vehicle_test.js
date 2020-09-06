@@ -26,13 +26,6 @@ export default class VehicleTest extends Model {
   }
 
   static apiConfig = {
-
-    
-    // headers: { 
-    //   'X-Requested-With': 'XMLHttpRequest',
-    //   'Authorization': 'Bearer ' + CookieService.get("accessToken"),
-    // },
-
     actions: {
       async update(id, data) {
         try {

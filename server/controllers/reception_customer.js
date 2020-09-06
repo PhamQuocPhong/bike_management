@@ -77,7 +77,7 @@ let createReceptionCustomerSell = async (req, res) => {
 	var customerData = req.body.customer
 	var vehicleTestData = req.body.vehicleTests
 	var employeeTest = req.body.employeeTest
-
+	var typeUpload = "bikes"
 	var decoded = req.decoded
 	var userId = decoded.userId
 	var customerId = null
@@ -116,7 +116,7 @@ let createReceptionCustomerSell = async (req, res) => {
 				if(vehicleTestData.length > 0){
 					for(var i = 0; i < vehicleTestData.length; i++){
 						var urlImage = '';
-						await AwsService.uploadImageBase64(vehicleTestData[i].imageSrc, (url) => {
+						await AwsService.uploadImageBase64(vehicleTestData[i].imageSrc, typeUpload, (url) => {
 							urlImage = AwsService.getCallbackURL(url)
 						})
 						await VehicleTest.create({

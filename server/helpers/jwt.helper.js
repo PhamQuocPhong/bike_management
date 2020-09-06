@@ -1,10 +1,5 @@
 const jwt = require("jsonwebtoken");
-/**
- * private function generateToken
- * @param user 
- * @param secretSignature 
- * @param tokenLife 
- */
+
 let generateToken = (userId, secretSignature, tokenLife) => {
   return new Promise((resolve, reject) => {
 
@@ -17,11 +12,7 @@ let generateToken = (userId, secretSignature, tokenLife) => {
   });
 }
 
-/**
- * This module used for verify jwt token
- * @param {*} token 
- * @param {*} secretKey 
- */
+
 let verifyToken = (token, secretKey) => {
   return new Promise((resolve, reject) => {
     jwt.verify(token, secretKey, (error, decoded) => {

@@ -9,7 +9,7 @@
       >
         <v-card>
           <v-card-title class="headline d-flex pb-4">
-            Edit Customer Buy
+            Edit Room
           </v-card-title>
           <v-card-text class="mt-4">
             <v-form ref="form" v-model="valid" :lazy-validation="lazy">
@@ -75,12 +75,23 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" outlined text @click="save()">
-              Save
-            </v-btn>
-            <v-btn color="blue darken-1" outlined text @click="close()">
-              Close
-            </v-btn>
+            <btn-custom 
+              :outlined="true"
+              title="Save"
+              v-on:action="save()"
+              color="blue darken-1"
+              type="save"
+            >
+            </btn-custom>
+            
+            <btn-custom 
+              :outlined="true"
+              title="Close"
+              v-on:action="close()"
+              color="blue darken-1"
+              type="close"
+            >
+            </btn-custom>
           </v-card-actions>
         </v-card>
       </v-dialog>

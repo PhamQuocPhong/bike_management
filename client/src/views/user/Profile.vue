@@ -15,9 +15,9 @@
               >
                 <v-row align="end" class="fill-height">
                   <v-col align-self="start" class="pt-0" cols="12">
-                    <v-avatar class="profile" color="white" size="180" tile>
+                    <v-avatar class="profile" color="white" tile  width="200" height="250">
                       <v-img
-                        :src="userInfo.avatar"
+                        :src="avatar"
                       ></v-img>
                     </v-avatar>
                   </v-col>
@@ -36,7 +36,28 @@
                 </v-row>
               </v-img>
               <v-card-actions class="justify-center border-bottom pa-4">
-                <v-btn color="success" small>Upload avatar</v-btn>
+                  <input
+                    type="file"
+                    ref="inputAvatar"
+                    accept="image/*"
+                    @change="onFilePicked"
+                    v-show="false"
+
+                  />
+                <v-btn 
+                  color="primary" 
+                  small 
+                  v-on:click="onSelectedFile()"
+                  depressed
+                  :loading="isSelecting"
+                >
+                  <v-icon left>
+                    cloud_upload
+                  </v-icon>
+
+                  Upload avatar
+
+                </v-btn>
               </v-card-actions>
 
               <v-list flat class="pa-0">
@@ -172,6 +193,12 @@
           </v-col>
         </v-row>
       </v-container>
+      <upload-avatar
+      :isVisible.sync="showAvatarDialog"
+      :image="image"
+      :oldImageUrl="userInfo.avatar"
+      v-if="showAvatarDialog"
+      ></upload-avatar>
     </v-layout>
   </div>
 </template>
@@ -179,12 +206,13 @@
 <script>
 // store
 import User from '@/store/models/user'
-import UploadAvatarComponent from "@/components/custom/DropZone.vue";
+import UploadAvatar from "./UploadAvatar.vue";
+
 
 export default {
 
   components: {
-    'upload-avatar': UploadAvatarComponent
+    'upload-avatar': UploadAvatar,
   },
 
   data() {
@@ -195,11 +223,12 @@ export default {
       ],
       edit: false,
       isMobile: false,
-
-      userInfo: this.$cookies.get('dataUser')
-
+      showAvatarDialog: false,
+      image: null,
+      isSelecting: false,
     };
   },
+
 
   methods: {
     onResize() {
@@ -207,12 +236,36 @@ export default {
        this.isMobile = true;
       else this.isMobile = false;
     },
+
+    onSelectedFile() {
+
+      this.$refs.inputAvatar.click()
+    },
+
+    onFilePicked(event){
+
+      const files = event.target.files[0]
+
+      if (!files.type.includes('image/')) {
+        alert('Please select an image file');
+        return;
+      }
+      this.image = {data: files}
+      this.showAvatarDialog = true
+    }
+
   },
 
   computed: {
     employeeInfo(){
-      return this.userInfo.employee
+      return User.getters('getCurrentEmployee')
     },
+    userInfo(){
+      return User.getters('getCurrentUser')
+    },
+    avatar(){
+      return this.$appConfig.URL_AVATAR_AWS + this.userInfo.avatar
+    }
   }
   
 };

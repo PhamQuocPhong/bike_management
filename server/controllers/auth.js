@@ -12,13 +12,6 @@ const sendMailService = require("../services/email")
 const randomString = require('randomstring')
 const config = require('../config')
 
-
-let tokenList = {}
-/**
- * controller login
- * @param {*} req 
- * @param {*} res 
- */
 let login = async (req, res) => {
 
 	const { email, password } = req.body
@@ -42,7 +35,8 @@ let login = async (req, res) => {
     })
 
     if(findUser && bcrypt.compareSync(password, findUser.password)){
-      delete findUser.dataValues.password
+     delete findUser.password
+      
       const accessToken = await jwtHelper.generateToken(findUser.id, accessTokenSecret, accessTokenLife)
       const refreshToken = await jwtHelper.generateToken(findUser.id, refreshTokenSecret, refreshTokenLife)
 
@@ -52,22 +46,20 @@ let login = async (req, res) => {
         refreshToken: refreshToken
       })
 
-      return res.status(200).json({accessToken, refreshToken, findUser})
+      return res.status(200).json({message: "Login success", data: {
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+          userInfo: findUser,
+       }})
     }else{
       return res.status(401).json({message: "Email or Password is not exactly!" })
     }
 
 	}catch (error) {
-    console.log(error)
+
 	    return res.status(500).json(error)
 	}
 }
-
-/**
- * controller refreshToken
- * @param {*} req 
- * @param {*} res 
- */
 
 let register = async (req, res) => {
 
@@ -127,7 +119,6 @@ let refreshToken = async (req, res) => {
       },
   })
 
-
   if (findUser) {
     try {
   
@@ -172,6 +163,7 @@ let loginSocial = async (req, res) => {
     if(findUser){
 
       delete findUser.password
+      
 
       const accessToken = await jwtHelper.generateToken(findUser.id, accessTokenSecret, accessTokenLife)
       const refreshToken = await jwtHelper.generateToken(findUser.id, refreshTokenSecret, refreshTokenLife)
@@ -187,8 +179,6 @@ let loginSocial = async (req, res) => {
         refreshToken: refreshToken,
         userInfo: findUser,
       }})
-
-
 
     }else{
 
@@ -217,6 +207,7 @@ let loginSocial = async (req, res) => {
         })
 
         delete findUser.password
+        
         const accessToken = await jwtHelper.generateToken(findUser.id, accessTokenSecret, accessTokenLife)
         const refreshToken = await jwtHelper.generateToken(findUser.id, refreshTokenSecret, refreshTokenLife)
 
@@ -224,7 +215,6 @@ let loginSocial = async (req, res) => {
         findUser.update({
           refreshToken: refreshToken
         })
-
 
         return res.status(200).json({message: "Login success", data: {
           accessToken: accessToken,
@@ -238,8 +228,6 @@ let loginSocial = async (req, res) => {
     return res.status(500).json(error)
   }
 }
-
-
 
 
 module.exports = {

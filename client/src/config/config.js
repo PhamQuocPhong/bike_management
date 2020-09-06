@@ -3,6 +3,7 @@
 export default {
   BASE_URL: process.env.VUE_APP_ROOT,
   BASE_API_URL: process.env.VUE_APP_ROOT_API,
+  URL_AVATAR_AWS: "https://quanlymuabanxe.s3.ap-southeast-1.amazonaws.com/avatars/",
 
   roles: {
   	SUPER_ADMIN: 1,

@@ -24,8 +24,8 @@
 
                   <v-col cols="12" md="6" sm="6">
                     <v-text-field
-                      label="Code"
-                      v-model="getVehiclePurchase.code"
+                      label="Color"
+                      v-model="getVehiclePurchase.color"
                     ></v-text-field>
                   </v-col>
 
@@ -73,12 +73,23 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" outlined text @click="save()">
-              Save
-            </v-btn>
-            <v-btn color="blue darken-1" outlined text @click="close()">
-              Close
-            </v-btn>
+            <btn-custom 
+              :outlined="true"
+              title="Save"
+              v-on:action="save()"
+              color="blue darken-1"
+              type="save"
+            >
+            </btn-custom>
+            
+            <btn-custom 
+              :outlined="true"
+              title="Close"
+              v-on:action="close()"
+              color="blue darken-1"
+              type="close"
+            >
+            </btn-custom>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -97,8 +108,6 @@ export default {
 
   data() {
     return {
-      right: 10,
-      top: 10,
       valid: true,
       lazy: false,
       // rule form
@@ -137,7 +146,7 @@ export default {
           toastr.success("<p>Update success!</p>", "Success", {
             timeOut: 500
           });
-          this.$emit("update:dialogEdit", false);
+           Modal.dispatch("manageVehiclePurchaseEdit", { option: "hide" });
         }
 
         if (!this.checkVehicleRepairExist()) {
@@ -154,7 +163,7 @@ export default {
             toastr.success("<p>Change success!</p>", "Success", {
               timeOut: 500
             });
-            this.$emit("update:dialogEdit", false);
+              Modal.dispatch("manageVehiclePurchaseEdit", { option: "hide" });
           }
         }
       }

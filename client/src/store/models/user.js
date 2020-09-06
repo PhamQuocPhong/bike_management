@@ -14,13 +14,7 @@ export default class User extends Model {
   }
 
   static apiConfig = {
-
-    
-    // headers: { 
-    //   'X-Requested-With': 'XMLHttpRequest',
-    //   'Authorization': 'Bearer ' + CookieService.get("accessToken"),
-    // },
-
+   
   	actions: {
   		async getInfo(id){
   			try {
@@ -31,7 +25,18 @@ export default class User extends Model {
         } catch (error) {
           return error.response;
         }
-  		}
+  		},
+
+      async uploadAvatar(id, data){
+        try {
+          return await this.post(`/user/upload-avatar/${id}`, data, {
+            save: false,
+          });
+        } catch (error) {
+          return error.response;
+        }
+
+      }
   	}
   }
 

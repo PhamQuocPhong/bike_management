@@ -77,7 +77,14 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click.native="close">close</v-btn>
+           <btn-custom 
+              :outlined="true"
+              title="Close"
+              v-on:action="close()"
+              color="blue darken-1"
+              type="close"
+            >
+          </btn-custom>
         </v-card-actions>
       </v-card>
     </v-dialog>

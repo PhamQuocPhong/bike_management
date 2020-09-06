@@ -6,4 +6,6 @@ router.get('/notification/:id', userController.getNotificationUser)
 
 router.get('/:id', userController.getUser)
 
+router.post('/upload-avatar/:id', userController.uploadAvatar)
+
 module.exports = router
