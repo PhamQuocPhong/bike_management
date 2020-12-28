@@ -13,20 +13,16 @@
             </v-btn>
           </template>
 
-          <v-list two-line>
+          <v-list>
             <v-list-item-group>
               <template v-for="(item, index) in menu">
                 <v-list-item>
-                  <template>
                     <v-list-item-icon>
                       <v-icon>{{ item.icon }}</v-icon>
                     </v-list-item-icon>
                     <v-list-item-content>
-                      <v-list-item-title class="font-weight-bold">{{
-                        item.title
-                      }}</v-list-item-title>
+                      <v-list-item-title  v-text="item.title" class="font-weight-bold"></v-list-item-title>
                     </v-list-item-content>
-                  </template>
                 </v-list-item>
               </template>
             </v-list-item-group>
@@ -48,7 +44,7 @@
             <v-subheader class="header-name">{{ item.username }}</v-subheader>
             <v-list-item v-if="item.userId !== userInfo.id">
               <v-list-item-avatar class="logo-img">
-                <v-img :src="userInfo.avatar"></v-img>
+                <v-img :src="getAvatar(item.userInfo.avatar)"></v-img>
               </v-list-item-avatar>
               <v-list-item-title>
                 <v-chip :ripple="false">{{ item.message }}</v-chip>
@@ -123,33 +119,25 @@
 .v-chip.pink {
   color: #fff;
 }
+
 </style>
 
 <script>
 import Modal from "@/store/models/modal";
-
+import User from "@/store/models/user";
 export default {
   async created() {
-    var progress = this.$Progress;
-    progress.start();
-    await this.retrieveData();
-    progress.finish();
+
+    this.$socket.emit(this.$socketEvent.ROOM_USER_JOIN, {
+      roomId: this.$route.params.id
+    });
   },
 
   data() {
     return {
-      page: 1,
-      itemsPerPage: 2,
-      search: "",
-      pageCounts: 1,
-      offset: 0,
-      currentPage: 1,
-
       isMobile: false,
       loadData: false,
-
       message: "",
-      userInfo: this.$cookies.get("dataUser"),
       roomId: this.$route.params.id,
 
       menu: [
@@ -171,16 +159,18 @@ export default {
   },
 
   mounted() {
-    this.sockets.listener.subscribe("SEND_MESSENGER", res => {
+
+
+    this.sockets.listener.subscribe(this.$socketEvent.ROOM_SEND_MESSENGER, res => {
       if (res) {
         this.listMessengers.push({
-          userId: res.userId,
+          userInfo: res.userInfo,
           message: res.message
         });
       }
     });
 
-    this.sockets.listener.subscribe("USER_LEAVE_ROOM", res => {
+    this.sockets.listener.subscribe(this.$socketEvent.ROOM_USER_LEAVE, res => {
       if (res) {
         this.listMessengers.push({
           userId: res.userId,
@@ -199,9 +189,10 @@ export default {
       this.technicalRepair = { ...item };
       Modal.dispatch("warehouseEdit", { option: "show" });
     },
-    nextPage() {},
 
-    async retrieveData() {},
+    getAvatar(fileName){
+      return this.$appConfig.URL_AVATAR_AWS + fileName
+    },
 
     send() {
       this.listMessengers.push({
@@ -209,10 +200,10 @@ export default {
         message: this.message
       });
 
-      this.$socket.emit("SEND_MESSENGER", {
+      this.$socket.emit(this.$socketEvent.ROOM_SEND_MESSENGER, {
         message: this.message,
         roomId: this.roomId,
-        userId: this.userInfo.id
+        userInfo: this.userInfo
       });
       this.clearMessage();
     },
@@ -230,10 +221,15 @@ export default {
     }
   },
 
-  computed: {},
+  computed: {
+    userInfo(){
+      return User.getters('getCurrentUser')
+    }
+
+  },
 
   beforeDestroy() {
-    this.$socket.emit("USER_LEAVE_ROOM", {});
+    this.$socket.emit(this.$socketEvent.ROOM_USER_LEAVE, {});
     // var conf = confirm('Do you want to exit?')
     // if(conf){
     // 	return false

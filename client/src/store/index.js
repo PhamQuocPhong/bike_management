@@ -11,7 +11,10 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {},
   mutations: {
-    SOCKET_REMOVE_USER() {}
+    SOCKET_REMOVE_USER() {
+
+      
+    }
   },
   actions: {
     SOCKET_REMOVE_USER() {

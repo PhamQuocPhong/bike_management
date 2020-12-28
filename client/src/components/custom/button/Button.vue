@@ -62,6 +62,7 @@ export default {
 		methods: {
 			checkSizeBtn(){
 				switch(this.type){
+					case "upload":
 					case "save":
 					case "close": 
 						this.checkSmall = false
@@ -85,6 +86,7 @@ export default {
 						}
 						break;
 					case "edit":
+					case "upload":
 					case "close":
 						this.$emit('action')
 						break;

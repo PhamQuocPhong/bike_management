@@ -14,26 +14,27 @@ var users = {}
 
 let addUser = (socket) => {
 
-	socket.on('ADD_USER', async (req, res) => {
+	socket.on('ADD_USER', async (data) => {
 
-		socket.userId = req.userId
+		socket.userId = data.id
+		socket.userInfo = data
 		users[socket.userId] = socket
 
 	})	
 }
 
-let userJoinRoom = (socket) => {
+let roomUserJoin = (socket) => {
 
-	socket.on('USER_JOIN_ROOM', (req, res) => {
-		var roomId = req.roomId
+	socket.on('ROOM_USER_JOIN', (data) => {
+		var roomId = data.roomId
 		socket.join(roomId)
 	})
 }
 
-let userLeaveRoom = (socket) => {
+let roomUserLeave = (socket) => {
 
-	socket.on('USER_LEAVE_ROOM', (req, res) => {
-		var roomId = req.roomId
+	socket.on('ROOM_USER_LEAVE', (data) => {
+		var roomId = data.roomId
 
 		socket.leave(roomId, () => {
 
@@ -42,20 +43,36 @@ let userLeaveRoom = (socket) => {
 	})
 }
 
-let sendMessenger = (socket) => {
+let roomSendMessenger = (socket) => {
 
-	socket.on('SEND_MESSENGER', (req, res) => {
-		var roomId = req.roomId
-		var message = req.message
-		var userId = req.userId		
-		socket.to(roomId).emit('SEND_MESSENGER', {message: message, userId: userId})
+	socket.on('ROOM_SEND_MESSENGER', (data) => {
+		var roomId = data.roomId
+		var message = data.message
+		var userInfo = data.userInfo		
+
+		socket.to(roomId).emit('ROOM_SEND_MESSENGER', {message: message, userInfo: userInfo})
+
+	})
+}
+
+let userSendMessenger = (socket) => {
+	socket.on('USER_SEND_MESSENGER', (data, receiver) => {
+		var message = data.message
+		var receiverId = receiver.id
+		if(!users[receiverId])
+			return
+		users[receiverId].emit('USER_SEND_MESSENGER', {
+			message: message,
+			receiver: receiver,
+			sender: socket.userInfo
+		})
 
 	})
 }
 
 let sendNotify = (socket) => {
-	socket.on('SEND_NOTIFY', async (req, res) => {
-		var userId = req.userId
+	socket.on('SEND_NOTIFY', async (data) => {
+		var userId = data.userId
 		if(users[userId]){
 
 			var newNotify = await UserNotification.create({
@@ -72,7 +89,7 @@ let sendNotify = (socket) => {
 
 let sendMail = (socket) => {
 
-	socket.on('SEND_MAIL', async (req, res) => {
+	socket.on('SEND_MAIL', async (data) => {
 		setTimeout(async () => {
 
 			var from = 'zipzizza20@gmail.com'
@@ -92,17 +109,17 @@ let sendMail = (socket) => {
 }
 
 let removeUser = (socket) => {
-	socket.on('REMOVE_USER', (req, res) => {
-		var userId = req.userId
-		delete users[userId]
+	socket.on('REMOVE_USER', (data) => {
+		var userId = data.userId
+		// delete users[userId]
 
-		console.log("remove success")
+		// console.log("remove success")
 	})
 }
 
 let showUsersInRoom = (socket) => {
-	// socket.on('REMOVE_USER', (req, res) => {
-	// 	var userId = req.userId
+	// socket.on('REMOVE_USER', (data) => {
+	// 	var userId = data.userId
 	// 	delete users[userId]
 
 	// 	console.log("remove success")
@@ -114,7 +131,8 @@ module.exports = {
 	addUser: addUser,
 	sendNotify: sendNotify,
 	removeUser: removeUser,
-	sendMessenger: sendMessenger, 
-	userJoinRoom: userJoinRoom,
-	userLeaveRoom: userLeaveRoom
+	roomSendMessenger: roomSendMessenger, 
+	roomUserJoin: roomUserJoin,
+	roomUserLeave: roomUserLeave,
+	userSendMessenger: userSendMessenger,
 }

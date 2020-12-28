@@ -21,7 +21,7 @@ let getAllRoomsPaging = async (req, res) => {
 		limit: itemPerPage,
 		include: [
 			{
-				model: UserInRoom
+				model: UserInRoom,
 			},
 			{
 				attributes: ['id', 'email', 'roleId'],
@@ -39,19 +39,52 @@ let getAllRoomsPaging = async (req, res) => {
 
 let joinRoom = async (req, res) => {
 
+	const userId = req.decoded.userId
 	var pin = req.body.pin
 	var roomId = req.params.id
-	var checkValid = await Room.count({
+
+	try {
+
+		var checkValid = await Room.count({
+			where: {
+				pin: pin,
+				id: roomId
+			}
+		})
+
+		return res.status(200).json({message: "Join room success", data: checkValid})
+
+	} catch(e) {
+		// statements
+		console.log(e);
+	}
+}
+
+let autoJoinRoom = async(req, res) => {
+
+	const userId = req.decoded.userId
+	var roomId = req.params.id
+
+	var checkEXist =  await UserInRoom.count({
 		where: {
-			pin: pin,
-			id: roomId
+			roomId: roomId,
+			userId: userId,
+			status: 1,
 		}
 	})
 
-	return res.status(200).json({message: "Join room success", data: checkValid})
+
+	if(checkEXist)	{
+		return res.status(200).json({message: "Join room success", data: Boolean(checkEXist)})
+	}else {
+		return res.status(200).json({message: "Can't join room", data: Boolean(checkEXist)})
+	}
+
+
 }
 
 module.exports = {
 	getAllRoomsPaging: getAllRoomsPaging,
-	joinRoom: joinRoom
+	joinRoom: joinRoom,
+	autoJoinRoom: autoJoinRoom
 }

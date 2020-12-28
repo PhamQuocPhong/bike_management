@@ -1,3 +1,5 @@
+import Config from '@/config/config'
+
 export default {
   defaultString(val) {
     return !val ? "" : val;
@@ -156,6 +158,10 @@ export default {
     }
 
     return index + ( (page - 1) * itemsPerPage)
+  },
+
+  getAvatar(fileName){
+    return  Config.URL_AVATAR_AWS + fileName
   }
 
 };

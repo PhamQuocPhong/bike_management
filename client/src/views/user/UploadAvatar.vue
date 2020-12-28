@@ -22,7 +22,7 @@
                 title="Save"
                 v-on:action="save()"
                 color="blue darken-1"
-                type="save"
+                type="upload"
               >
               </btn-custom>
               

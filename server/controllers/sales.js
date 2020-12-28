@@ -72,7 +72,10 @@ let suggestVehiclesForCustomer = async (req, res) => {
 	var vehicleSelected = req.body.vehicleSelected
 
 	const t = await sequelize.transaction();
+
 	try {
+
+
 
 		await Sales.update(
 			{
@@ -86,7 +89,7 @@ let suggestVehiclesForCustomer = async (req, res) => {
 				transaction: t 
 			}
 		)
-			
+		
 		var salesCustomerBuyUpdate = await SalesCustomerBuy.update({
 			customerRequire: salesCustomerBuy.customerRequire,
 			contactFlg: config.sales.CONTACTED_FLG,
@@ -98,20 +101,23 @@ let suggestVehiclesForCustomer = async (req, res) => {
 		}, { transaction: t })
 
 
-		for(var i = 0; i < vehicleSelected.length; i ++){
-			var vehicleSuggestStore = await VehicleSuggest.findOrCreate({
-				defaults: { 
+		if(vehicleSelected.length > 0){
+			for(var i = 0; i < vehicleSelected.length; i ++){
+
+				console.log(salesCustomerBuy)
+
+				var vehicleSuggestStore = await VehicleSuggest.create({
 					vehicleId: vehicleSelected[i].id,
 					salesCustomerBuyId: salesCustomerBuy.id
-				},
-	  			where: { 
-	  				salesCustomerBuyId: salesCustomerBuy.id,
-	  				vehicleId: vehicleSelected[i].id
-	  			}
-			}, { transaction: t })	
+				}, 
+				{
+					transaction: t 
+				})	
+			}
 		}
-
+		
 		await t.commit();
+
 
 		var returnSales = await Sales.findOne({
 			where: {

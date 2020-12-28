@@ -97,7 +97,7 @@
                       <v-text-field
                         :disabled="!edit"
                         class="font-weight-bold"
-                        :value="employeeInfo.fullName"
+                        v-model="employeeInfo.fullName"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -112,7 +112,7 @@
                       <v-text-field
                         :disabled="!edit"
                         class="font-weight-bold"
-                        :value="userInfo.email"
+                        v-model="userInfo.email"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -127,7 +127,7 @@
                       <v-text-field
                         :disabled="!edit"
                         class="font-weight-bold"
-                        :value="employeeInfo.phoneNumber"
+                        v-model="employeeInfo.phoneNumber"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -140,7 +140,7 @@
                     </v-col>
                     <v-col cols="8">
                       <v-text-field
-                        :value="employeeInfo.address"
+                        v-model="employeeInfo.address"
                         :disabled="!edit"
                         class="font-weight-bold"
                       >
@@ -156,9 +156,10 @@
                     </v-col>
                     <v-col cols="8">
                       <v-text-field
+                        readonly
                         :disabled="!edit"
                         class="font-weight-bold"
-                        :value="employeeInfo.position.name"
+                        v-model="employeeInfo.position.name"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -172,7 +173,9 @@
 
                     <v-divider class="mx-2" vertical> </v-divider>
 
-                    <v-btn color="primary" small>
+                    <v-btn color="primary" small
+                      v-on:click="handleUpdateUserInfo()"
+                    >
                       Save
                     </v-btn>
 
@@ -252,19 +255,24 @@ export default {
       }
       this.image = {data: files}
       this.showAvatarDialog = true
+    },
+
+    handleUpdateUserInfo(){
+      var userId = this.$route.params.id
+      User.api().updateUserInfo(userId, this.employeeInfo)
     }
 
   },
 
   computed: {
     employeeInfo(){
-      return User.getters('getCurrentEmployee')
+      return {... User.getters('getCurrentEmployee') }
     },
     userInfo(){
       return User.getters('getCurrentUser')
     },
     avatar(){
-      return this.$appConfig.URL_AVATAR_AWS + this.userInfo.avatar
+      return User.getters('getAvatarCurrentUser')
     }
   }
   

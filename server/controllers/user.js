@@ -3,6 +3,7 @@ const Employee = require('../models/employee')
 const Position = require('../models/position')
 const UserNotification = require('../models/user_notification')
 const helper = require('../helpers/helper')
+const helperFunction = require('../helpers/function')
 const moment = require('moment')
 const { Op } = require("sequelize")
 const AwsService = require('../services/aws')
@@ -27,36 +28,9 @@ let getNotificationUser = async (req, res) => {
 
 	try {
 
-		var before7Days = moment().subtract(7, 'days').format("YYYY-MM-DD HH:mm:ss")
-		const userNotfiy = await UserNotification.findAll({
-			include: [
-				{
-					attributes: [
-						['id', 'userId']
-					],
-					model: User,
-					as: 'sender',
+		var before7Days = moment().subtract(365, 'days').format("YYYY-MM-DD HH:mm:ss")
+		const userNotify = await UserNotification.findAll({
 
-					include: {
-						attributes: ['fullName'],
-						model: Employee,
-					}
-
-				},
-
-				{
-					
-					attributes: [
-						['id', 'userId']
-					],
-					model: User,
-					as: 'receiver',
-					include: {
-						attributes: ['fullName'],
-						model: Employee,
-					}
-				},
-			],
 			where: {
 				receiverId: userId,
 				type: type,
@@ -70,27 +44,50 @@ let getNotificationUser = async (req, res) => {
 		})
 
 		var retrieveData = []
-		var userNotfiyLength = userNotfiy.length
+		var userNotifyLength = userNotify.length
 
-		if(userNotfiyLength > 0){
-			for(var i = 0; i < userNotfiyLength; i++){
-				var spaceTime = helper.subtractNotifyDateTime(userNotfiy[i].createdAt, new Date())
+		if(userNotifyLength > 0){
+			for(var i = 0; i < userNotifyLength; i++){
+				var spaceTime = helper.subtractNotifyDateTime(userNotify[i].createdAt, new Date())
+				var sender = await helperFunction.findEmployee(userNotify[i].senderId)
+				var receiver = await helperFunction.findEmployee(userNotify[i].receiverId)
 				retrieveData.push({
-					id: userNotfiy[i].id,
-					name: userNotfiy[i].name,
-					senderId:userNotfiy[i].sender.userId,
-					senderName: userNotfiy[i].sender.employee.fullName,
-					receiverId:userNotfiy[i].receiver.userId,
-					receiverName: userNotfiy[i].receiver.employee.fullName,
+					id: userNotify[i].id,
+					name: userNotify[i].name,
+					senderId: sender.userId,
+					senderName: sender.fullName,
+					receiverId: receiver.userId,
+					receiverName: receiver.fullName,
 					spaceTime: spaceTime
 				})
 			}	
 		}
+
 		return res.status(200).json({message: "Retrieve sucess", data: retrieveData})
+
 	} catch(error) {
 		return res.status(500).json(error)
 	}
 
+}
+
+
+let getAllUsers = async (req, res) => {
+
+	try {
+		var data = await User.findAll({
+			attributes: ['id','email', 'avatar', 'roleId'],
+			include: {
+				attributes: ['id', 'fullName'],
+				model: Employee,
+			},
+		})	
+
+		return res.status(200).json({message: "Retrieve sucess", data: data})
+	} catch(error) {
+		// statements
+		return res.status(500).json(error)
+	}
 }
 
 let getUser = async (req, res) => {
@@ -148,9 +145,16 @@ let uploadAvatar = async (req, res) => {
 	}
 }
 
+let updateUserInfo = async (req, res) => {
+
+	console.log(req.body)
+}
+
 
 module.exports = {
 	getNotificationUser: getNotificationUser,
 	getUser: getUser,
+	getAllUsers: getAllUsers,
 	uploadAvatar: uploadAvatar,
+	updateUserInfo: updateUserInfo
 }

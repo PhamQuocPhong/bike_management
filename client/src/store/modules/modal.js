@@ -74,12 +74,12 @@ export default {
           edit: false,
           addFixDetail: false
         },
+      },
 
-        room: {
-          edit: false,
-          create: false
-        },
-      }
+      room: {
+        edit: false,
+        create: false
+      },
     },
 
     warehouse: {
@@ -151,7 +151,7 @@ export default {
     },
 
     manageRoomEdit({ commit }, data) {
-      commit("manageRoomCreate", data);
+      commit("manageRoomEdit", data);
     },
 
     // warehouse

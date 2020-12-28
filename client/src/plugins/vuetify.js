@@ -25,7 +25,8 @@ export default new Vuetify({
         }
       },
       dark: {
-        pink: colors.pink
+        pink: colors.pink,
+        primary: colors.blue.darken4,
       }
     },
   }

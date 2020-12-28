@@ -46,7 +46,8 @@
 
                 <div class="text-center pb-8">
                   <v-btn
-                    :class="{ 'mx-2': !isMobile }"
+                    v-bind:style="[isMobile ? styleBtn : '']"
+                    :class="{ 'mx-2': !isMobile}"
                     dark
                     color="red darken-4"
                     v-on:click="loginGoogle"
@@ -56,6 +57,7 @@
                   </v-btn>
 
                   <v-btn
+                    v-bind:style="[isMobile ? styleBtn : '']"
                     :class="{ 'mx-2': !isMobile }"
                     dark
                     color="primary"
@@ -110,7 +112,12 @@ export default {
       valid: true,
       lazy: false,
       emailRules: [v => !!v || "Email is required!"],
-      passwordRules: [v => !!v || "Password is required!"]
+      passwordRules: [v => !!v || "Password is required!"],
+
+      styleBtn: {
+        width: '100%',
+        marginTop: '10px'
+      },
     };
   },
 
@@ -140,9 +147,7 @@ export default {
             this.$cookies.set("accessToken", res.data.data.accessToken);
             this.$cookies.set("refreshToken", res.data.data.refreshToken);
 
-            this.$socket.emit("ADD_USER", {
-              userId: res.data.data.userInfo.id
-            });
+            this.$socket.emit(this.$socketEvent.ADD_USER, res.data.data.userInfo);
 
             this.$router.push("/dashboard");
           } else {
@@ -165,7 +170,7 @@ export default {
         data.password = "";
         data.providerId = googleUser.getId();
         data.providerType = googleUser.getAuthResponse().idpId;
-        data.fullName = googleUser.getBasicProfile().Cd;
+        data.fullName = googleUser.getBasicProfile().Ad; //(FV + GT)
         data.accessToken = googleUser.getAuthResponse().access_token;
         data.expires = googleUser.getAuthResponse().expires_in;
 
@@ -174,9 +179,7 @@ export default {
             this.$cookies.set("dataUser", res.data.data.userInfo);
             this.$cookies.set("accessToken", res.data.data.accessToken);
             this.$cookies.set("refreshToken", res.data.data.refreshToken);
-            this.$socket.emit("ADD_USER", {
-              userId: res.data.data.userInfo.id
-            });
+            this.$socket.emit(this.$socketEvent.ADD_USER, res.data.data.userInfo);
 
             // store user vuex 
             User.dispatch('updateUser', res.data.data.userInfo);
@@ -213,9 +216,7 @@ export default {
                       res.data.data.refreshToken
                     );
 
-                    this.$socket.emit("ADD_USER", {
-                      userId: res.data.data.userInfo.id
-                    });
+                    this.$socket.emit(this.$socketEvent.ADD_USER, res.data.data.userInfo);
 
                     // store user vuex 
                     User.dispatch('updateUser', res.data.data.userInfo);

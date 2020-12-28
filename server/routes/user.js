@@ -8,4 +8,8 @@ router.get('/:id', userController.getUser)
 
 router.post('/upload-avatar/:id', userController.uploadAvatar)
 
+router.get('/', userController.getAllUsers)
+
+router.put('/update-info/:id', userController.updateUserInfo)
+
 module.exports = router

@@ -220,17 +220,22 @@ export default {
       lazy: false,
       valid: true,
       getSales: this.sales,
-      date: null,
-
       alignment: "center",
       justify: "left",
       vehicleType: "",
       vehicles: [],
       vehicleSelected: [],
-      transactionDialog: false,
       vehiclesTransaction: null,
       infoTransaction: null
     };
+  },
+
+  watch: {
+    async vehicleType(item){
+      const vehicleTypeId = item.id;
+      const res = await Vehicle.api().fetchByType(vehicleTypeId);
+      this.vehicles = res.response.data;
+    }
   },
 
   methods: {
@@ -272,12 +277,6 @@ export default {
         });
       }
     },
-
-    async changeVehicleType(item) {
-      const vehicleTypeId = item.id;
-      const res = await Vehicle.api().fetchByType(vehicleTypeId);
-      this.vehicles = res.response.data;
-    }
   },
 
   computed: {

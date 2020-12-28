@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <label-table title="Warehouse"> </label-table>
+      <label-table title="Chatting"> </label-table>
     </v-row>
     <v-row>
       <v-flex :class="{ 'pa-4': !isMobile }">
@@ -62,7 +62,7 @@
                   </v-btn>
 
                   <v-btn text color="white" class="primary">
-                    50
+                    {{usersInRoom(item.userInRooms)}}
                     <v-icon>mdi-account</v-icon>
                   </v-btn>
                 </v-card-actions>
@@ -99,7 +99,8 @@ export default {
       rooms: [],
       pin: "",
       showPinDialog: false,
-      roomSelected: ""
+      roomSelected: "",
+      checkEXistInRoom: false
     };
   },
 
@@ -112,8 +113,6 @@ export default {
   },
 
   methods: {
-    nextPage() {},
-
     async retrieveData() {
       setTimeout(async () => {
         const res = await Room.api().fetchPaging(this.currentPage, this.itemsPerPage);
@@ -123,26 +122,47 @@ export default {
       }, 500)
     },
 
-    joinRoom(id) {
-      this.roomSelected = id;
-      this.showPinDialog = true;
-    }
-  },
+    async joinRoom(roomId) {
+      this.autoJoinRoom(roomId)
+    },
 
-  watch: {
-    pin(val) {
-      var payload = { pin: val };
+    usersInRoom(data){
+      return data.length
+    },
+
+    async autoJoinRoom(roomId)  {
+      var payload = {}
+      const res = await Room.api().autoJoinRoom(roomId, payload);
+
+      if (res.response.status === 200 && res.response.data.data) {
+        var loader = this.$loading.show();
+        setTimeout(() => {
+          this.$socket.emit(this.$socketEvent.ROOM_USER_JOIN, {
+            roomId: roomId
+          });
+          this.$router.push("/chat/room/" + roomId);
+           loader.hide();
+        }, 500);
+      }else {
+        this.roomSelected = roomId;
+        this.showPinDialog = true;
+      }
+    },
+
+    handleJoinRoom(roomId, pin = null){
+
+      var payload = { pin: pin };
       var loader = this.$loading.show();
-
       Room.api()
-        .joinRoom(this.roomSelected, payload)
+        .joinRoom(roomId, payload)
         .then(res => {
           setTimeout(() => {
-            if (res.response.status === 200 && res.response.data.data) {
-              this.$socket.emit("USER_JOIN_ROOM", {
-                roomId: this.roomSelected
+            if (res.response.status === 200) {
+
+              this.$socket.emit(this.$socketEvent.ROOM_USER_JOIN, {
+                roomId: roomId
               });
-              this.$router.push("/chat/room/" + this.roomSelected);
+              this.$router.push("/chat/room/" + roomId);
             } else {
               toastr.error("Pin does not matched", "Error!", {
                 timeOut: 1000
@@ -152,6 +172,13 @@ export default {
             loader.hide();
           }, 500);
         });
+    }
+
+  },
+
+  watch: {
+    pin(val) {
+      this.handleJoinRoom(this.roomSelected, val)
     }
   },
 

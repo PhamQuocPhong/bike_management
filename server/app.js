@@ -87,9 +87,10 @@ io.on('connection', (socket) => {
 	socketModules.sendMail(socket)
   socketModules.sendNotify(socket)
 	socketModules.removeUser(socket)
-  socketModules.sendMessenger(socket)
-  socketModules.userJoinRoom(socket)
-  socketModules.userLeaveRoom(socket)
+  socketModules.roomSendMessenger(socket)
+  socketModules.roomUserJoin(socket)
+  socketModules.roomUserLeave(socket)
+  socketModules.userSendMessenger(socket)
 	socket.on('disconnect', () => {
 
 	})

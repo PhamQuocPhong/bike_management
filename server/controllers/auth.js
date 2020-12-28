@@ -35,7 +35,7 @@ let login = async (req, res) => {
     })
 
     if(findUser && bcrypt.compareSync(password, findUser.password)){
-     delete findUser.password
+      delete findUser.dataValues.password
       
       const accessToken = await jwtHelper.generateToken(findUser.id, accessTokenSecret, accessTokenLife)
       const refreshToken = await jwtHelper.generateToken(findUser.id, refreshTokenSecret, refreshTokenLife)
@@ -146,6 +146,7 @@ let loginSocial = async (req, res) => {
   try{
 
     var findUser = await User.findOne({
+      attributes: ['id','email', 'avatar', 'roleId'],
       where: {
         email: userData.email
       },
@@ -161,10 +162,7 @@ let loginSocial = async (req, res) => {
 
     // if exist user => return 
     if(findUser){
-
-      delete findUser.password
       
-
       const accessToken = await jwtHelper.generateToken(findUser.id, accessTokenSecret, accessTokenLife)
       const refreshToken = await jwtHelper.generateToken(findUser.id, refreshTokenSecret, refreshTokenLife)
 
@@ -193,6 +191,7 @@ let loginSocial = async (req, res) => {
         })
 
         var findUser = await User.findOne({
+          attributes: ['id','email', 'avatar', 'roleId'],
           where: {
             id: newUser.id
           },
@@ -206,8 +205,7 @@ let loginSocial = async (req, res) => {
           },
         })
 
-        delete findUser.password
-        
+
         const accessToken = await jwtHelper.generateToken(findUser.id, accessTokenSecret, accessTokenLife)
         const refreshToken = await jwtHelper.generateToken(findUser.id, refreshTokenSecret, refreshTokenLife)
 

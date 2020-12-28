@@ -12,7 +12,7 @@ import validation from "./helpers/validation";
 
 import VueSocketIO from "vue-socket.io";
 import SocketIO from "socket.io-client";
-
+import SocketEvent from '@/config/socket_event'
 
 Vue.config.productionTip = false;
 
@@ -54,6 +54,7 @@ Vue.prototype.$helper = helper;
 Vue.prototype.$validation = validation;
 Vue.prototype.$appConfig = config;
 Vue.prototype.$appData = appData;
+Vue.prototype.$socketEvent = SocketEvent;
 
 require("./plugins/lib");
 require("./plugins/directive");

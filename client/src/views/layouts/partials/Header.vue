@@ -16,7 +16,7 @@
       </div>
 
       <div style="width: 60px;">
-        <email-header></email-header>
+        <messenger-header></messenger-header>
       </div>
 
       <div style="width: 60px;">
@@ -59,7 +59,7 @@
 <script>
 import NavigationDrawer from "./Sidebar";
 import NotifyHeaderMenu from "@/views/components/NotifyHeaderMenu";
-import EmailHeaderMenu from "@/views/components/EmailHeaderMenu";
+import MessengerHeaderMenu from "@/views/components/MessengerHeaderMenu";
 
 // store
 import User from '@/store/models/user'
@@ -68,7 +68,7 @@ export default {
   components: {
     navigation: NavigationDrawer,
     "notify-header": NotifyHeaderMenu,
-    "email-header": EmailHeaderMenu
+    "messenger-header": MessengerHeaderMenu
   },
 
   data() {
@@ -129,7 +129,7 @@ export default {
     },
 
     avatar(){
-      return this.$appConfig.URL_AVATAR_AWS  + this.userInfo.avatar
+      return User.getters('getAvatarCurrentUser')
     }
   }
 };

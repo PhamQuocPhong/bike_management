@@ -112,13 +112,7 @@ VehicleType.hasMany(VehiclePurchase, {onDelete: 'cascade', hooks:true})
 // vehicle  repair
 VehicleRepair.belongsTo(VehiclePurchase, {onDelete: 'cascade', hooks:true})
 VehiclePurchase.hasOne(VehicleRepair, {onDelete: 'cascade', hooks:true})
- 
- 
- // user notify
-UserNotification.belongsTo(User, {onDelete: 'cascade', hooks:true, foreignKey: 'receiverId', as: 'receiver'})
-UserNotification.belongsTo(User, {onDelete: 'cascade', hooks:true, foreignKey: 'senderId',  as: 'sender'})
-User.hasMany(UserNotification, {onDelete: 'cascade', hooks:true , foreignKey: 'receiverId'})
-User.hasMany(UserNotification, {onDelete: 'cascade', hooks:true , foreignKey: 'senderId'})
+
 
 // user room
 UserInRoom.belongsTo(User, {onDelete: 'cascade', hooks:true })

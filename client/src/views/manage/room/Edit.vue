@@ -2,10 +2,10 @@
   <div>
     <v-layout row justify-center>
       <v-dialog
-        v-model="manageVehiclePurchaseEdit"
+        v-model="manageRoomEdit"
         persistent
         max-width="900"
-        v-if="getVehiclePurchase"
+
       >
         <v-card>
           <v-card-title class="headline d-flex pb-4">
@@ -14,58 +14,49 @@
           <v-card-text class="mt-4">
             <v-form ref="form" v-model="valid" :lazy-validation="lazy">
               <v-container>
-                <v-row v-if="getVehiclePurchase">
+                <v-row v-if="getManageRoom">
                   <v-col cols="12" md="6" sm="6">
                     <v-text-field
-                      label="Customer name"
-                      v-model="getVehiclePurchase.name"
+                      label="Room name"
+                      v-model="getManageRoom.name"
                     ></v-text-field>
                   </v-col>
 
                   <v-col cols="12" md="6" sm="6">
                     <v-text-field
-                      label="Code"
-                      v-model="getVehiclePurchase.code"
+                      label="Room pin"
+                      v-model="getManageRoom.pin"
                     ></v-text-field>
                   </v-col>
 
                   <v-col cols="12" md="6" sm="6">
                     <v-text-field
-                      label="Registration Plate"
-                      type="text"
-                      v-model="getVehiclePurchase.registrationPlate"
+                      label="Maximum person"
+                      v-model="getManageRoom.maximum"
                     ></v-text-field>
                   </v-col>
 
-                  <v-col cols="12" md="6" sm="6">
-                    <v-text-field
-                      label="Status"
-                      type="text"
-                      v-model="getVehiclePurchase.status"
-                    ></v-text-field>
-                  </v-col>
-
-                  <v-col cols="12" md="6" sm="6">
-                    <v-text-field
-                      label="Price"
-                      type="text"
-                      v-model="getVehiclePurchase.price"
-                    ></v-text-field>
-                  </v-col>
-
+                  
                   <v-col
                     cols="12"
                     md="6"
                     sm="6"
-                    v-if="getVehiclePurchase.image"
                   >
                     <v-img
                       height="50"
                       width="100"
                       contain
-                      :src="getVehiclePurchase.image"
+                      :src="getManageRoom.image"
                     ></v-img>
                   </v-col>
+
+
+                  <v-col cols="12"
+                    md="12"
+                    sm="12">
+                    <upload :image.sync="getManageRoom.image"></upload>
+                  </v-col>
+
                 </v-row>
 
                 <v-row class="d-flex" align="center"> </v-row>
@@ -101,116 +92,48 @@
 
 <script>
 // store
-import VehicleRepair from "@/store/models/vehicle_repair";
-import VehiclePurchase from "@/store/models/vehicle_purchase";
+import Room from "@/store/models/room";
 import Modal from "@/store/models/modal";
-
+// component
+import UploadFileComponent from "@/components/custom/DropZone.vue";
 export default {
-  props: ["dialogEdit", "vehiclePurchase"],
+
+  components: {
+    'upload': UploadFileComponent
+  },
+
+  props: ["manageRoom"],
 
   data() {
     return {
-      right: 10,
-      top: 10,
       valid: true,
       lazy: false,
-      // rule form
-      page: 1,
-      pageCount: 0,
-      itemsPerPage: 10,
-      search: "",
-      itemsPerPageList: [5, 10, 15],
-      dialogVehicleTest: false,
-      role: "reception",
-      getVehiclePurchase: this.vehiclePurchase
+      getManageRoom: this.manageRoom
     };
   },
 
-  mounted() {},
+  mounted() {
+
+    console.log(this.manageRoom)
+
+  },
 
   methods: {
     close() {
-      Modal.dispatch("manageVehiclePurchaseEdit", { option: "hide" });
+      Modal.dispatch("manageRoomEdit", { option: "hide" });
     },
 
     async save() {
       if (this.$refs.form.validate()) {
-        const vehiclePurchaseUpdate = await VehiclePurchase.api().update(
-          this.getVehiclePurchase.id,
-          this.getVehiclePurchase
-        );
-        VehiclePurchase.update({
-          data: vehiclePurchaseUpdate.response.data.data
-        });
-
-        if (
-          vehiclePurchaseUpdate.response.status === 200 &&
-          this.checkVehicleRepairExist()
-        ) {
-          toastr.success("<p>Update success!</p>", "Success", {
-            timeOut: 500
-          });
-          this.$emit("update:dialogEdit", false);
-        }
-
-        if (!this.checkVehicleRepairExist()) {
-          var dataVehicleRepairStore = {
-            vehiclePurchaseId: this.getVehiclePurchase.id,
-            approveFlg: this.vehicleRepair.approveFlg === true ? 1 : 0,
-            note: "Oke",
-            startDate: this.$moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
-          };
-
-          const res = await VehicleRepair.api().create(dataVehicleRepairStore);
-          if (res.response.status === 200) {
-            await VehicleRepair.insert({ data: res.response.data.data });
-            toastr.success("<p>Change success!</p>", "Success", {
-              timeOut: 500
-            });
-            this.$emit("update:dialogEdit", false);
-          }
-        }
+        
       }
-    },
-
-    checkVehicleRepairExist() {
-      return VehicleRepair.query()
-        .where("vehiclePurchaseId", this.getVehiclePurchase.id)
-        .exists();
     },
 
   },
 
   computed: {
-    vehicleRepair: {
-      get() {
-        if (!this.getVehiclePurchase.vehicleRepair) {
-          return Object.create(null);
-        } else {
-          return this.getVehiclePurchase.vehicleRepair;
-        }
-      }
-    },
-
-    approveFlg: {
-      set(val) {
-        if (this.vehicleRepair) this.vehicleRepair.approveFlg = val;
-      },
-
-      get() {
-        if (Object.entries(this.vehicleRepair).length === 0) {
-          return false;
-        } else {
-          if (this.vehicleRepair.approveFlg === 1) {
-            return true;
-          }
-          return false;
-        }
-      }
-    },
-
-    manageVehiclePurchaseEdit() {
-      return Modal.getters("manageVehiclePurchaseEdit");
+    manageRoomEdit() {
+      return Modal.getters("manageRoomEdit");
     }
   }
 };

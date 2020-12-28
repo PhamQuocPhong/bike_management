@@ -23,6 +23,7 @@
               <template v-slot:default="{ active, toggle }">
                 <v-list-item-content>
                   <v-list-item-title
+                    class="font-weight-bold"
                     v-text="item.senderName"
                   ></v-list-item-title>
 
@@ -68,7 +69,7 @@
 
 <style scoped="">
 .v-list {
-  height: 300px;
+  height: 400px;
   overflow-y: auto;
 }
 .menu {
@@ -123,7 +124,7 @@ export default {
     },
 
     async onScroll(e) {
-      if (e.target.scrollHeight - 300 === e.target.scrollTop) {
+      if (e.target.scrollHeight - 400 === e.target.scrollTop) {
         this.loadData = true;
         if (this.loadData === true && this.nextPageAllow !== false) {
           this.loadingProgress = true;

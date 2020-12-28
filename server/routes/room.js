@@ -7,4 +7,6 @@ router.get('/page/:page', roomController.getAllRoomsPaging)
 
 router.post('/join/:id', roomController.joinRoom)
 
+router.post('/auto-join/:id', roomController.autoJoinRoom)
+
 module.exports = router

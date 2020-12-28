@@ -44,7 +44,18 @@ export default class Room extends Model {
         } catch (error) {
           return error.response;
         }
-      }
+      },
+
+      async autoJoinRoom(id, payload) {
+        try {
+          return await this.post("/room/auto-join/" + id, payload, {
+            save: false,
+            
+          });
+        } catch (error) {
+          return error.response;
+        }
+      },
     }
   };
 }

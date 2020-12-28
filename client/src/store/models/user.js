@@ -35,7 +35,16 @@ export default class User extends Model {
         } catch (error) {
           return error.response;
         }
+      },
 
+      async updateUserInfo(id, data){
+        try {
+          return await this.put(`/user/update-info/${id}`, data, {
+            save: false,
+          });
+        } catch (error) {
+          return error.response;
+        }
       }
   	}
   }

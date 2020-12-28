@@ -44,9 +44,9 @@
                 <thead>
                   <tr>
                     <th>No.</th>
-                    <th>Pin</th>
                     <th>Name</th>
                     <th>Image</th>
+                    <th>Pin</th>
                     <th>Create date</th>
                     <th>Maximum</th>
                     <th class="text-center">Action</th>
@@ -64,7 +64,6 @@
                        {{ $helper.showIndex(index, currentPage, itemsPerPage) }}
                     </td>
                     <td>{{ item.name }}</td>
-                    <td>{{ item.pin }}</td>
                     <td>
                       <v-img
                         height="50"
@@ -73,6 +72,7 @@
                         :src="item.image"
                       ></v-img>
                     </td>
+                    <td>{{ item.pin }}</td>
                     <td>{{ $helper.convertTzTo(item.date) }}</td>
                     <td>{{ item.maximum }}</td>
 
@@ -160,9 +160,16 @@
         </v-card>
       </v-flex>
     </v-row>
-<!-- 
-    <create v-if="manageRoomCreate"></create>
-    <edit v-if="manageRoomEdit"></edit> -->
+
+    <create 
+      v-if="manageRoomCreate"
+    >
+    </create>
+    <edit 
+    v-if="manageRoomEdit"
+    :manageRoom.sync="room"
+    >
+    </edit>
   </v-container>
 </template>
 
@@ -176,8 +183,8 @@ import EditComponent from "./Edit.vue";
 
 export default {
   components: {
-    create: CreateComponent,
-    edit: EditComponent
+    'create': CreateComponent,
+    'edit': EditComponent
   },
 
   async created() {
